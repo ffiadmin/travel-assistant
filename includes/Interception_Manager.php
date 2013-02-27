@@ -217,9 +217,16 @@ class Interception_Manager {
  * @since  v2.0 Dev
 */
 	
-	public function intercept404() {		
+	public function intercept404() {
+		global $wp_query;
+				
 	//Check to see if the user is really requesting a page that exists
 		if (!empty($this->content)) {
+		//Override the 404 header sent by Wordpress
+	        status_header(200);
+    	    $wp_query->is_404 = false;
+			
+		//Build the page content
 			get_header();
 			echo $this->content;
 			get_footer();
