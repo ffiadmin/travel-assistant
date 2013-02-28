@@ -21,7 +21,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   includes
- * @since     v2.0 Dev
+ * @since     v1.0 Dev
 */
 
 namespace FFI\TA;
@@ -73,7 +73,7 @@ class Interception_Manager {
  * 
  * @access public
  * @return void
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	
 	public function __construct() {
@@ -134,7 +134,7 @@ class Interception_Manager {
  *
  * @access private
  * @return void
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	
 	private function URLNoRoot() {
@@ -151,7 +151,7 @@ class Interception_Manager {
  *
  * @access private
  * @return boolean
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	
 	private function activatePlugin() {
@@ -171,7 +171,7 @@ class Interception_Manager {
  *
  * @access private
  * @return void
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	
 	private function generateURL() {
@@ -202,7 +202,7 @@ class Interception_Manager {
  *
  * @access public
  * @return void
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	public function intercept() {
 		echo $this->content;
@@ -214,7 +214,7 @@ class Interception_Manager {
  *
  * @access public
  * @return void
- * @since  v2.0 Dev
+ * @since  v1.0 Dev
 */
 	
 	public function intercept404() {
@@ -223,8 +223,8 @@ class Interception_Manager {
 	//Check to see if the user is really requesting a page that exists
 		if (!empty($this->content)) {
 		//Override the 404 header sent by Wordpress
-	        status_header(200);
-    	    $wp_query->is_404 = false;
+			status_header(200);
+			$wp_query->is_404 = false;
 			
 		//Build the page content
 			get_header();

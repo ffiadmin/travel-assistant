@@ -14,14 +14,37 @@
 		  zoomControl : false
         });
 		
-		var points = new google.maps.FusionTablesLayer({
-		  query: {
-            select: '\'Location\'',
-            from: '1e0wPmtYawLjFAoV6BipQxCyAO9IkbkXuzifuats'
-          }
+		var infoWindow = new google.maps.InfoWindow;
+		var documentURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'travel-assistant/';
+		var dataURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/map_points.php';
+		
+		$.ajax({
+			'dataType' : 'xml',
+			'url' : dataURL,
+			'type' : 'GET',
+			'success' : function(data) {
+				var markers = $(data).find('marker');
+				
+				for (var i = 0; i < markers.length; ++i) {
+					var html = '<b>' + markers.eq(i).attr('name') + '</b><br><br><a href=\'' + documentURL + markers.eq(i).attr('state').toLowerCase() + '/' + markers.eq(i).attr('city').toLowerCase() + '\'>Avaliable Trips</a>';
+					var point = new google.maps.LatLng(parseFloat(markers.eq(i).attr('lat')), parseFloat(markers.eq(i).attr('lng')));
+					var marker = new google.maps.Marker({
+						'animation' : google.maps.Animation.DROP,
+						'map' : map,
+						'position' : point
+					});
+					
+					markerClick(marker, html)
+				}
+			}
 		});
 		
-		points.setMap(map);
+		function markerClick(marker, html) {
+			google.maps.event.addListener(marker, 'click', function() {
+				infoWindow.setContent(html);
+				infoWindow.open(map, marker);
+			});
+		}
 	  });
     </script>";
 
