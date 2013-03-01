@@ -1,52 +1,64 @@
 <?php
-	$essentials->setTitle("Travel Assistant");
-	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=AIzaSyCCfXsNv47Xg62-Kz6opyvmn3YBPhliZ0k&sensor=false");
+//Fetch the Google Maps API key for use in the Google Maps JavaScript request
+	$APIs = $wpdb->get_results("SELECT `GoogleMaps` FROM `ffi_ta_apis`");
+	$API = $APIs[0]->GoogleMaps;
 	
-	 echo "<script>
-	  $(document).ready(function() {
-		var map = new google.maps.Map(document.getElementById('map_canvas'), {
-          center : new google.maps.LatLng(37.0902400, -95.7128910), //Center of United States
-		  mapTypeControl : false,
-		  mapTypeId : google.maps.MapTypeId.TERRAIN,
-		  panControl : false,
-		  streetViewControl : false,
-          zoom : 4,                                                 //Zoom out to see all of the United States
-		  zoomControl : false
-        });
-		
-		var infoWindow = new google.maps.InfoWindow;
-		var documentURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'travel-assistant/';
-		var dataURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/map_points.php';
-		
-		$.ajax({
-			'dataType' : 'xml',
-			'url' : dataURL,
-			'type' : 'GET',
-			'success' : function(data) {
-				var markers = $(data).find('marker');
-				
-				for (var i = 0; i < markers.length; ++i) {
-					var html = '<b>' + markers.eq(i).attr('name') + '</b><br><br><a href=\'' + documentURL + markers.eq(i).attr('state').toLowerCase() + '/' + markers.eq(i).attr('city').toLowerCase() + '\'>Avaliable Trips</a>';
-					var point = new google.maps.LatLng(parseFloat(markers.eq(i).attr('lat')), parseFloat(markers.eq(i).attr('lng')));
-					var marker = new google.maps.Marker({
-						'animation' : google.maps.Animation.DROP,
-						'map' : map,
-						'position' : point
-					});
-					
-					markerClick(marker, html)
-				}
-			}
-		});
-		
-		function markerClick(marker, html) {
-			google.maps.event.addListener(marker, 'click', function() {
-				infoWindow.setContent(html);
-				infoWindow.open(map, marker);
-			});
-		}
-	  });
-    </script>";
+//Include the necessary scripts
+	$essentials->setTitle("Travel Assistant");
+	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=" . $API . "&sensor=false");
+	$essentials->includeJS("scripts/FFI_Map_Maker.js");
+	$essentials->includeJS("scripts/FFI_Jump.min.js");
+	$essentials->includeCSS("styles/welcome.css");
+	
+	echo "<script>
+$(function() {
+	$('select#states').FFI_Jump();
+	$('article#map').FFI_Map_Maker();
+});
+</script>
 
-	echo "<div id=\"map_canvas\" style=\"width:100%; height:480px\"></div>";
+";
+
+//Display the a Google Maps of the United States with all avaliable or needed trip locations
+	echo "<article id=\"map\"><h2>Map of Avaliable or Needed Trip Locations</h2></article>
+
+";
+	
+//Description and "I Have or Need a Ride" Section
+	$states = $wpdb->get_results("SELECT `Name` FROM `ffi_ta_states` ORDER BY `Name` ASC");
+	$list = "<select name=\"states\" id=\"states\">
+<option selected value=\"\">- Select a State -</option>\n";
+	
+	foreach($states as $state) {
+		$list .= "<option value=\"" . strtolower($state->Name) . "\">" . $state->Name . "</option>\n";
+	}
+	
+	$list .= "</select>";
+
+	echo "<article class=\"center content\" id=\"welcome\">
+<h2>SGA Travel Assistant</h2>
+<p>Whether you are a commuter and are looking for someone with whom you can share a ride, or already thinking about planning your next trip home, the SGA Travel Assistant is here to help. If you are in need of a ride home, browse the listing of avaliable rides to your hometown or post your need and have someone help you out. If you have an extra seat or two to spare, you can post their avaliability here and help someone with their ride home.</p>
+
+<ul>
+<li class=\"need\">
+<h3>I Need a Ride</h3>
+
+<div class=\"control-group\">
+<label class=\"control-label\" for=\"states\">Browse by State:</label>
+<div class=\"input-append\">
+" . $list . "
+<button class=\"btn btn-primary\" id=\"jumper\">Go!</button>
+</div>
+</div>
+
+<a class=\"btn btn-block\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
+</li>
+
+<li class=\"share\">
+<a href=\"" . $essentials->friendlyURL("share-a-ride") . "\">
+<h3>I Can Share a Ride</h3>
+</a>
+</li>
+</ul>
+</article>";
 ?>

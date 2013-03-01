@@ -1,0 +1,65 @@
+/**
+ * Google Maps canvas
+ * ----------------------------------
+*/
+
+article#map {
+	height: 480px;
+	width: 100%;
+}
+
+article#map h2 {
+	display: none;
+}
+
+article#map img {
+  max-width: none; /* Fixes a Google Maps/Twitter Bootstrap styling conflict */
+}
+
+/**
+ * Welcome content area styles
+ * ----------------------------------
+*/
+
+article#welcome ul {
+	list-style: none;
+	margin-top: 60px;
+	padding: 0px;
+	text-align: center;
+}
+
+article#welcome ul li {
+    -moz-transition: all .25s ease-in-out;
+	-ms-transition: all .25s ease-in-out;
+    -o-transition: all .25s ease-in-out;
+	-webkit-transition: all .25s ease-in-out;
+    transition: all .25s ease-in-out;
+    
+	background: #F5F5F5 url(sprites/welcome-icons.png) no-repeat;
+    border: 1px solid #E4E4E4;
+    display: inline-block;
+    height: 200px;
+    margin: 7px;
+	padding: 20px;
+    position: relative;
+    vertical-align: top;
+    width: 280px;
+}
+
+article#welcome ul li:hover {
+    border: 1px solid #555555;
+}
+
+article#welcome ul li.need {
+	background-position: 200px -20px;
+}
+
+article#welcome ul li.share {
+	background-position: -10px 130px;
+}
+
+article#welcome ul li h3 {
+    font-size: 20px;
+	font-weight: lighter;
+	padding-top: 0px;
+}

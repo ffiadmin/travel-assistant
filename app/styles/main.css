@@ -1,0 +1,68 @@
+/**
+ * Content area styles
+ * ----------------------------------
+*/
+
+article.content {
+	background: #FFFFFF;
+	padding: 65px 10% 65px 10%;
+}
+
+article.content.even {
+	background: #F5F5F5;
+	border-bottom: 1px solid #DDDDDD;
+	border-top: 1px solid #DDDDDD;
+}
+
+article.content h2 {
+	color: #303030;	
+	font-size: 24px;
+	font-weight: lighter;
+    padding-bottom: 10px;
+	text-transform: uppercase;
+}
+
+article.content h2::after {
+	border-top: 2px solid #303030;
+	content: ' ';
+	display: block;
+	margin: 7px auto 0px 0px;
+	padding: 0px;
+	width: 300px;
+}
+
+article.content p {
+	color: #777777;
+	font-size: 15px;
+	margin: 10px 0px 10px 0px;
+	max-width: 650px;
+}
+
+article.content h3 {
+	padding-top: 40px;
+}
+
+article.content.center h2 {
+	text-align: center;
+}
+
+article.content.center h2::after {
+	margin: 7px auto 0px auto;
+	text-align: center;
+}
+
+article.content.center p {
+	margin: 15px auto 15px auto;
+	max-width: 850px;
+	text-align: center;
+}
+
+@media screen and (max-width: 650px) {
+    article.content {
+        padding: 15px 10% 15px 10%;
+    }
+    
+    article.content h2::after {
+        content: none;
+    }
+}

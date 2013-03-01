@@ -69,6 +69,7 @@ class Interception_Manager {
  *  - Include requests for the appropriate application files
  *  - Utilize the Essentials class to give the page an appropriate 
  *    title and load necessary stylesheets and scripts
+ *  - Include the run the global plugin file
  *  - Replace the content of the page with that from the loaded page
  * 
  * @access public
@@ -114,6 +115,9 @@ class Interception_Manager {
 			//Plugin essentials
 				require_once(PATH . "/includes/Essentials.php");
 				$essentials = new Essentials();
+				
+			//Run the global plugin file
+				require_once(PATH . "/global.php");
 				
 			//Generate the content of the page
 				ob_start();
