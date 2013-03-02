@@ -150,7 +150,7 @@ class Essentials {
 /**
  * Include the requested PHP script with respect to the app folder.
  * So a request like this "system/server/Validate.php" will include
- * the script like so: .../<plugin-name>/app/system/server/Validate.php.
+ * the script like so: .../<plugin-name>/app/system/server/Validate.php,
  * regardless of the address of the PHP file which requested the script.
  *
  * This method uses the "require_once()" function to import the 
@@ -164,6 +164,25 @@ class Essentials {
 
 	public function includePHP($address) {
 		require_once(PATH . "app/" . $address);
+	}
+	
+/**
+ * Include the requested PHP class script with respect to the includes
+ * folder. So a request like this "Validate" will include the class script
+ * like so: .../<plugin-name>/includes/Validate.php, regardless of the
+ * address of the PHP file which requested the script.
+ *
+ * This method uses the "require_once()" function to import the 
+ * script.
+ *
+ * @access public
+ * @param  string   $class The name of of the PHP plugin class to import
+ * @return void
+ * @since  v1.0 Dev
+*/
+
+	public function includePluginClass($class) {
+		require_once(PATH . "includes/" . $class . ".php");
 	}
 	
 /**
@@ -204,7 +223,7 @@ class Essentials {
 */
 	
 	public function actionHookIncludeCSS($CSS) {		
-		for($i = count($this->CSS) - 1; $i >= 0; $i--) {
+		for($i = 0; $i < count($this->CSS); ++$i) {
 			$styleName = "STYLE_ID_" . mt_rand();
 			
 		//Local stylesheets will need their address modified
@@ -256,7 +275,7 @@ class Essentials {
 */
 	
 	public function actionHookIncludeJS() {
-		for($i = count($this->JS) - 1; $i >= 0; $i--) {
+		for($i = 0; $i < count($this->JS); ++$i) {
 			$styleName = "SCRIPT_ID_" . mt_rand();
 			
 		//Local scripts will need their address modified

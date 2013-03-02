@@ -1,0 +1,65 @@
+/**
+ * General styles
+ * ----------------------------------
+*/
+
+select#where-state {
+	border-left: none;
+	border-radius: 0px 4px 4px 0px;
+}
+
+/**
+ * Welcome container
+ * ----------------------------------
+*/
+
+section.welcome {
+	padding: 15px 10% 35px 10%;
+}
+
+section.welcome h2 {
+	font-size: 27px;
+	font-weight: 300;
+}
+
+/**
+ * Step containers
+ * ----------------------------------
+*/
+
+section.step {
+	border-top: 1px solid #DDDDDD;
+	padding: 5px 10% 35px 10%;
+}
+
+section.step.no-border {
+	border-top: none;
+}
+
+section.step header {
+	background: url(sprites/step-circle.png) no-repeat left;
+	padding: 30px 0px 30px 65px;
+	position: relative;
+}
+
+section.step header h2 {
+	color: #505050;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 22px;
+	margin: 0px;
+}
+
+section.step header h3 {
+	color: #505050;
+	font-size: 11px;
+	line-height: 13px;
+	margin: 0px;
+}
+
+section.step header h4.step {
+	color: #FFFFFF;
+	left: 12.5px;
+	position: absolute;
+	top: 27.5px;
+}

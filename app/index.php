@@ -5,6 +5,7 @@
 	
 //Include the necessary scripts
 	$essentials->setTitle("Travel Assistant");
+	$essentials->includePluginClass("Destination_Manager");
 	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=" . $API . "&sensor=false");
 	$essentials->includeJS("scripts/FFI_Map_Maker.js");
 	$essentials->includeJS("scripts/FFI_Jump.min.js");
@@ -25,16 +26,6 @@ $(function() {
 ";
 	
 //Description and "I Have or Need a Ride" Section
-	$states = $wpdb->get_results("SELECT `Name` FROM `ffi_ta_states` ORDER BY `Name` ASC");
-	$list = "<select name=\"states\" id=\"states\">
-<option selected value=\"\">- Select a State -</option>\n";
-	
-	foreach($states as $state) {
-		$list .= "<option value=\"" . strtolower($state->Name) . "\">" . $state->Name . "</option>\n";
-	}
-	
-	$list .= "</select>";
-
 	echo "<article class=\"center content\" id=\"welcome\">
 <h2>SGA Travel Assistant</h2>
 <p>Whether you are a commuter and are looking for someone with whom you can share a ride, or already thinking about planning your next trip home, the SGA Travel Assistant is here to help. If you are in need of a ride home, browse the listing of avaliable rides to your hometown or post your need and have someone help you out. If you have an extra seat or two to spare, you can post their avaliability here and help someone with their ride home.</p>
@@ -46,18 +37,20 @@ $(function() {
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"states\">Browse by State:</label>
 <div class=\"input-append\">
-" . $list . "
+<select name=\"states\" id=\"states\">
+<option selected value=\"\">- Select a State -</option>
+" . Destination_Manager::buildStatesDropDown("") . "
+</select>
 <button class=\"btn btn-primary\" id=\"jumper\">Go!</button>
 </div>
 </div>
 
-<a class=\"btn btn-block\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
+<a class=\"btn btn-block btn-inverse\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
 </li>
 
 <li class=\"share\">
-<a href=\"" . $essentials->friendlyURL("share-a-ride") . "\">
 <h3>I Can Share a Ride</h3>
-</a>
+<a class=\"btn btn-block btn-inverse\" href=\"" . $essentials->friendlyURL("share-a-ride") . "\">Share a Ride</a>
 </li>
 </ul>
 </article>";
