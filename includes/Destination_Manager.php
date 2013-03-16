@@ -1,4 +1,6 @@
 <?php
+namespace FFI\TA;
+
 class Destination_Manager {
 	private static $previousSelectedOption = "";
 	private static $stateCodes = array();
@@ -49,18 +51,18 @@ class Destination_Manager {
 		return self::$stateURLs;
 	}
 	
-	public static function buildStatesDropDown($selectedValue) {
-		$names = &self::getStateNames();
-		$URLs = &self::getStateURLs();
+	public static function buildStatesDropDown($selectedValue, $valueStyle = "URL") {
+		$names = self::getStateNames();
+		$values = $valueStyle == "URL" ? self::getStateURLs() : self::getStateCodes();
 		
 		if (empty(self::$stateMenu) || self::$previousSelectedOption != $selectedValue) {
 			self::$stateMenu = "";
 			
 			for ($i = 0; $i < count($names); ++$i) {
-				if ($selectedValue == $URLs[$i]) {
-					self::$stateMenu .= "<option selected value=\"" . htmlentities($URLs[$i]) . "\">" . $names[$i] . "</option>\n";
+				if ($selectedValue == $values[$i]) {
+					self::$stateMenu .= "<option selected value=\"" . htmlentities($values[$i]) . "\">" . $names[$i] . "</option>\n";
 				} else {
-					self::$stateMenu .= "<option value=\"" . htmlentities($URLs[$i]) . "\">" . $names[$i] . "</option>\n";
+					self::$stateMenu .= "<option value=\"" . htmlentities($values[$i]) . "\">" . $names[$i] . "</option>\n";
 				}
 			}
 			

@@ -1,9 +1,11 @@
 (function($) {
 	$(function() {
+	//Initialize the date/time picker
 		$('input#when').datetimepicker({
 			'minDate' : new Date(),
 			'showButtonPanel' : false,
 			'showTimezone' : true,
+			'stepMinute' : 10,
 			'timeFormat' : 'hh:mm tt z',
 			'timezone' : 'ET',
 			'timezoneList' : [ 
@@ -14,13 +16,35 @@
 			]
 		});
 		
+	//Toggle the trip recurrence days
+		var recurringDays = $('input.recurring-day'), recurringLabels = $('label.recurring-label'), untilField = $('input#until');
+	
+		$('label#recurring-yes-label').click(function() {
+			recurringDays.removeAttr('disabled');
+			recurringLabels.removeClass('disabled');
+			untilField.removeAttr('disabled');
+		});
+		
+		$('label#recurring-no-label').click(function() {
+			recurringDays.attr('disabled', 'disabled').removeAttr('checked');
+			recurringLabels.addClass('disabled').removeClass('active');
+			untilField.val('').attr('disabled', 'disabled');
+		});
+		
+	//Initialize the date picker
+		$('input#until').datepicker({
+			'minDate' : new Date() 
+		});
+		
+	//Initialize TinyMCE
 		tinyMCE.init({
 			mode : 'textareas',
-			theme : 'advanced',
 			skin : 'o2k7',
 			skin_variant : 'silver',
+			theme : 'advanced',
+			
 			plugins :'inlinepopups,spellchecker,tabfocus,autosave,autolink',
-			theme_advanced_buttons1 : 'bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink',
+			theme_advanced_buttons1 : 'bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,separator,undo,redo,link,unlin',
 			theme_advanced_buttons2 : '',
 			theme_advanced_buttons3 : '',
 			theme_advanced_resizing : true,
@@ -28,13 +52,5 @@
 			theme_advanced_toolbar_location : 'top',
 			theme_advanced_toolbar_align : 'left'
 		});
-		
-		$( ".slider" ).slider({
-			value:1,
-			min: 1,
-			max: 9,
-			step: 1,
-			range: "min"
-    	});
 	});
 })(jQuery)

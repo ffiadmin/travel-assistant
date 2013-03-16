@@ -2,13 +2,15 @@
 //Include the necessary scripts
 	$essentials->requireLogin();
 	$essentials->setTitle("Ask for Ride");
-	$essentials->includePluginClass("Destination_Manager");
+	$essentials->includePluginClass("forms/display/Ride_Request_Display");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
 	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
-	$essentials->includeJS("scripts/jquery-ui.timepicker.js");
-	$essentials->includeJS("scripts/ride.js");
-	$essentials->includeCSS("styles/ride.css");
+	$essentials->includeJS("scripts/ride.superpackage.min.js");
+	$essentials->includeCSS("styles/ride.superpackage.min.css");
+	
+//Instantiate necessary classes
+	$display = new FFI\TA\Ride_Request_Display(1);
 	
 	echo "<h1>Ask for Ride</h1>
 	
@@ -33,21 +35,21 @@
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"who\">Who:</label>
 <div class=\"controls\">
-<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">
+" . $display->getWho() . "
 </div>
 </div>
 
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"what\">What:</label>
 <div class=\"controls\">
-<input disabled id=\"what\" name=\"what\" type=\"text\" value=\"You need a lift\">
+" . $display->getWhat() . "
 </div>
 </div>
 
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"when\">When:</label>
 <div class=\"controls\">
-<input id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\">
+" . $display->getWhen() . "
 </div>
 </div>
 
@@ -55,12 +57,7 @@
 <label class=\"control-label\" for=\"where-city\">Where:</label>
 <div class=\"controls\">
 <div class=\"input-append\">
-<input id=\"where-city\" name=\"where-city\" placeholder=\"To which city are you going?\" type=\"text\">
-
-<select id=\"where-state\" name=\"where-state\">
-<option selected value=\"\">- Select a State -</option>
-" . Destination_Manager::buildStatesDropDown("") . "
-</select>
+" . $display->getWhere() . "
 </div>
 </div>
 </div>
@@ -68,7 +65,7 @@
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"why\">Why:</label>
 <div class=\"controls\">
-<input disabled id=\"why\" name=\"why\" type=\"text\" value=\"None of our business\">
+" . $display->getWhy() . "
 </div>
 </div>
 </section>
@@ -84,26 +81,34 @@
 </header>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"seats\">Reserve:</label>
+<label class=\"control-label\" for=\"males\">Other than myself:</label>
 <div class=\"controls\">
-<div class=\"input-append\">
-<input class=\"input-mini\" id=\"seats\" name=\"seats\" type=\"text\" value=\"1\">
-<span class=\"add-on\">seat(s)</span>
+<div class=\"input-prepend input-append\">
+" . $display->getMales() . "
+<span class=\"add-on\">male(s) and</span>
+" . $display->getFemales() . "
+<span class=\"add-on\">female(s) will accompany me</span>
 </div>
-
-<div class=\"slider\" style=\"display:inline-block; width: 300px; margin-left: 178px;\"></div>
 </div>
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"days\">I need:</label>
+<label class=\"control-label\" for=\"days\">If no one helps, I need:</label>
 <div class=\"controls\">
 <div class=\"input-append\">
-<input class=\"input-mini\" id=\"days\" name=\"days\" type=\"text\" value=\"1\">
+" . $display->getDaysNotice() . "
 <span class=\"add-on\">day(s) notice before my trip</span>
 </div>
+</div>
+</div>
 
-<div class=\"slider\" style=\"display:inline-block; width: 300px; margin-left: 50px;\"></div>
+<div class=\"control-group\">
+<label class=\"control-label\" for=\"time\">Please take me within:</label>
+<div class=\"controls\">
+<div class=\"input-append\">
+" . $display->getMinutesWithin() . "
+<span class=\"add-on\">minute(s) of my destination</span>
+</div>
 </div>
 </div>
 
@@ -112,21 +117,16 @@
 <div class=\"controls\">
 <div class=\"input-prepend input-append\">
 <span class=\"add-on\">\$</span>
-<input class=\"input-mini\" id=\"reimburse\" name=\"reimburse\" type=\"text\" value=\"5\">
+" . $display->getGasMoney() . "
 <span class=\"add-on\">.00 of gas</span>
 </div>
-
-<div class=\"slider\" style=\"display:inline-block; width: 300px; margin-left: 135px;\"></div>
 </div>
 </div>
 
 <div class=\"control-group\">
 <label class=\"control-label\">I'll be bringing luggage:</label>
 <div class=\"controls\">
-<div class=\"btn-group\" data-toggle=\"buttons-radio\">
-<button class=\"btn\" type=\"button\">Yes</button>
-<button class=\"btn\" type=\"button\">No</button>
-</div>
+" . $display->getLuggage() . "
 </div>
 </div>
 </section>
@@ -142,24 +142,23 @@
 </header>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"recurrence\">I need a ride regularly:</label>
+<label class=\"control-label\">I need a ride regularly:</label>
 <div class=\"controls\">
-<input id=\"recurrence\" name=\"recurrence\" type=\"checkbox\">
+" . $display->getRecurrence() . "
 </div>
 </div>
 
 <div class=\"control-group\">
 <label class=\"control-label\">I need a ride every:</label>
 <div class=\"controls\">
-<div class=\"btn-group\" data-toggle=\"buttons-checkbox\">
-<button class=\"btn\" disabled type=\"button\">Sunday</button>
-<button class=\"btn\" disabled type=\"button\">Monday</button>
-<button class=\"btn\" disabled type=\"button\">Tuesday</button>
-<button class=\"btn\" disabled type=\"button\">Wednesday</button>
-<button class=\"btn\" disabled type=\"button\">Thursday</button>
-<button class=\"btn\" disabled type=\"button\">Friday</button>
-<button class=\"btn\" disabled type=\"button\">Saturday</button>
+" . $display->getRecurrenceDays() . "
 </div>
+</div>
+
+<div class=\"control-group\">
+<label class=\"control-label\" for=\"until\">Until:</label>
+<div class=\"controls\">
+" . $display->getEndDate() . "
 </div>
 </div>
 </section>
@@ -177,26 +176,29 @@
 <div class=\"control-group\">
 <label class=\"control-label\">Comments:</label>
 <div class=\"controls\">
-<textarea></textarea>
-</div>
-</div>
-
-<div class=\"control-group\">
-<label class=\"control-label\">I will bring my pet piranha:</label>
-<div class=\"controls\">
-<div class=\"btn-group\" data-toggle=\"buttons-radio\">
-<button class=\"btn\" type=\"button\">Yes</button>
-<button class=\"btn\" type=\"button\">No</button>
-</div>
+" . $display->getComments() . "
 </div>
 </div>
 </section>
 
 ";
 
+//Display the comments section
+	echo "<section class=\"step\">
+<header>
+<h2>The Fine Print</h2>
+<h3>... but we won't make ours so small that you can't read it.</h3>
+<h4 class=\"step\">5</h4>
+</header>
+
+<p>This service provided by the Student Government Association at Grove City College is strictly intended to serve as a convenient service to Grove City College attendees. Neither the Student Government Association nor Grove City College can be responsible for any property damage, personal injury, or further inconveniences which may result from sharing a ride with another student or faculty member. It is solely your responsiblity to take any necessary steps before and during the trip to prevent property damage and/or personal injury.</p>
+</section>
+
+";
+
 //Display the submit button
 	echo "<section class=\"no-border step\">
-<button class=\"btn btn-primary\" type=\"submit\">Submit Request</button>
+<button class=\"btn btn-primary\" type=\"submit\">Agree to Terms &amp; Submit Request</button>
 <button class=\"btn\" type=\"button\">Cancel</button>
 </section>
 </form>";
