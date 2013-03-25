@@ -28,6 +28,17 @@ namespace FFI\TA;
 
 class Interception_Manager {
 /**
+ * Hold the generated page content until Wordpress is ready to place the
+ * content.
+ *
+ * @access private
+ * @type   string 
+*/
+
+	private $content = "";
+	private $pluginActive = false;
+	
+/**
  * Hold the address current page without the protocol and installation
  * address of Wordpress.
  *
@@ -35,7 +46,7 @@ class Interception_Manager {
  * @type   string 
 */
 
-	private $requestedURL;
+	private $requestedURL = "";
 	
 /**
  * Hold the address of the actual script which replace the body of the
@@ -45,17 +56,7 @@ class Interception_Manager {
  * @type   string 
 */
 	
-	private $scriptURL;
-	
-/**
- * Hold the generated page content until Wordpress is ready to place the
- * content.
- *
- * @access private
- * @type   string 
-*/
-
-	private $content;
+	private $scriptURL = "";
 	
 /**
  * CONSTRUCTOR
@@ -84,8 +85,31 @@ class Interception_Manager {
 		
 	//Check if the plugin should be activated
 		$this->URLNoRoot();
+		$this->activatePlugin();
+	}
 	
-		if ($this->activatePlugin()) {
+	public function addException() {
+		$params = func_get_args();
+		
+		if ($this->pluginActive && $this->activateException($params[0])) {
+			$replace = $params[1];
+			$URL = array_filter(explode("/", ltrim($this->requestedURL, "/")));
+			$URLIndexes = count($URL) - 1;
+			
+			for($i = 2; $i < count($params); ++$i) {
+				if ($params[$i] <= $URLIndexes) {
+					$replace = str_replace("{" . ($i - 1) . "}", $URL[$params[$i]], $replace);
+				} else {
+					return;
+				}
+			}
+			
+			$this->scriptURL = $replace;
+		}
+	}
+	
+	public function go() {
+		if ($this->pluginActive) {
 		//Generate the URL to fetch the appropriate script
 			$this->generateURL();
 			
@@ -110,7 +134,7 @@ class Interception_Manager {
 			
 		//Run the required script first, so if any modifications should be made to header
 			$path = PATH . "app" . $this->scriptURL;
-		
+			
 			if (file_exists($path)) {
 			//Plugin essentials
 				require_once(PATH . "/includes/Essentials.php");
@@ -160,13 +184,12 @@ class Interception_Manager {
 	
 	private function activatePlugin() {
 		$URL = parse_url($this->requestedURL);
-		
-		if (stristr($URL['path'], URL_ACTIVATE)) {
-			define("ACTIVE", TRUE);
-			return true;
-		}
-		
-		return false;
+		return $this->pluginActive = stristr($URL['path'], URL_ACTIVATE);
+	}
+	
+	private function activateException($exception) {
+		$URL = parse_url($this->requestedURL);
+		return stristr($URL['path'], URL_ACTIVATE . "/" . $exception);
 	}
 	
 /**
@@ -179,6 +202,10 @@ class Interception_Manager {
 */
 	
 	private function generateURL() {
+		if ($this->scriptURL != "") {
+			return;
+		}
+		
 		$URL =  parse_url(str_ireplace("/" . URL_ACTIVATE, "", $this->requestedURL));
 		$return = $URL['path'];
 		

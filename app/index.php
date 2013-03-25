@@ -39,18 +39,18 @@ $(function() {
 <div class=\"input-append\">
 <select name=\"states\" id=\"states\">
 <option selected value=\"\">- Select a State -</option>
-" . Destination_Manager::buildStatesDropDown("") . "
+" . FFI\TA\Destination_Manager::buildStatesDropDown("") . "
 </select>
-<button class=\"btn btn-primary\" id=\"jumper\">Go!</button>
+<button class=\"btn btn-success\" id=\"jumper\">Go!</button>
 </div>
 </div>
 
-<a class=\"btn btn-block btn-inverse\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
+<a class=\"btn btn-block btn-success\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
 </li>
 
 <li class=\"share\">
 <h3>I Can Share a Ride</h3>
-<a class=\"btn btn-block btn-inverse\" href=\"" . $essentials->friendlyURL("share-a-ride") . "\">Share a Ride</a>
+<a class=\"btn btn-block btn-success\" href=\"" . $essentials->friendlyURL("share-a-ride") . "\">Share a Ride</a>
 </li>
 </ul>
 </article>";

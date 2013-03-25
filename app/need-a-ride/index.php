@@ -3,14 +3,13 @@
 	$essentials->requireLogin();
 	$essentials->setTitle("Ask for Ride");
 	$essentials->includePluginClass("forms/display/Ride_Request_Display");
-	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
 	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
 	$essentials->includeJS("scripts/ride.superpackage.min.js");
 	$essentials->includeCSS("styles/ride.superpackage.min.css");
 	
 //Instantiate necessary classes
-	$display = new FFI\TA\Ride_Request_Display(1);
+	$display = new FFI\TA\Ride_Request_Display(0);
 	
 	echo "<h1>Ask for Ride</h1>
 	
@@ -56,7 +55,7 @@
 <div class=\"control-group\">
 <label class=\"control-label\" for=\"where-city\">Where:</label>
 <div class=\"controls\">
-<div class=\"input-append\">
+<div class=\"input-append input-prepend\">
 " . $display->getWhere() . "
 </div>
 </div>
@@ -81,13 +80,13 @@
 </header>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"males\">Other than myself:</label>
+<label class=\"control-label\" for=\"males\">Joining me will be:</label>
 <div class=\"controls\">
-<div class=\"input-prepend input-append\">
+<div class=\"input-append input-prepend\">
 " . $display->getMales() . "
 <span class=\"add-on\">male(s) and</span>
 " . $display->getFemales() . "
-<span class=\"add-on\">female(s) will accompany me</span>
+<span class=\"add-on\">female(s)</span>
 </div>
 </div>
 </div>
@@ -198,7 +197,7 @@
 
 //Display the submit button
 	echo "<section class=\"no-border step\">
-<button class=\"btn btn-primary\" type=\"submit\">Agree to Terms &amp; Submit Request</button>
+<button class=\"btn btn-success\" type=\"submit\">Agree<span class=\"collapse\"> to Terms</span> &amp; Submit<span class=\"collapse\"> Request</span></button>
 <button class=\"btn\" type=\"button\">Cancel</button>
 </section>
 </form>";

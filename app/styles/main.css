@@ -3,15 +3,13 @@
  * ----------------------------------
 */
 
-body > h1 {
+h1 {
 	display: none;
 }
 
-h1 {
-	font-size: 27px;
-	font-weight: 300;
-	margin: 0px;
-	padding: 45px 0px 45px 0px;
+
+span.add-on {
+    background-color: #DCEDDC !important;
 }
 
 /**
@@ -31,7 +29,7 @@ section.content.even, article.content.even {
 }
 
 section.content h2, article.content h2 {
-	color: #303030;	
+	color: #51A351;	
 	font-size: 24px;
 	font-weight: lighter;
     padding-bottom: 10px;
@@ -39,7 +37,7 @@ section.content h2, article.content h2 {
 }
 
 section.content h2::after, article.content h2::after {
-	border-top: 2px solid #303030;
+	border-top: 2px solid #51A351;
 	content: ' ';
 	display: block;
 	margin: 7px auto 0px 0px;

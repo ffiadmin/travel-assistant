@@ -28,7 +28,7 @@ class Destination_Manager {
 		
 	//Has this function already been called and make a local copy of the state codes?
 		if (empty(self::$stateCodes)) {
-			$states = $wpdb->get_results("SELECT * FROM `ffi_ta_states` ORDER BY `Name` ASC"); //Code order is the same as Name order
+			$states = $wpdb->get_results("SELECT * FROM `ffi_ta_states` ORDER BY `Code` ASC"); //Code order is the same as Name order
 			
 			foreach($states as $state) {
 				array_push(self::$stateCodes, $state->Code);
@@ -51,9 +51,9 @@ class Destination_Manager {
 		return self::$stateURLs;
 	}
 	
-	public static function buildStatesDropDown($selectedValue, $valueStyle = "URL") {
-		$names = self::getStateNames();
-		$values = $valueStyle == "URL" ? self::getStateURLs() : self::getStateCodes();
+	public static function buildStatesDropDown($selectedValue, $valueStyle = "name") {
+		$names = $valueStyle == "name" ? self::getStateNames() : self::getStateCodes();
+		$values = self::getStateCodes();
 		
 		if (empty(self::$stateMenu) || self::$previousSelectedOption != $selectedValue) {
 			self::$stateMenu = "";

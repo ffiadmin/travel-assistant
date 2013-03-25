@@ -23,6 +23,8 @@ License: MIT
 //Instantiate the Interception_Manager
 	if(!is_admin()) {
 		require_once(PATH . "includes/Interception_Manager.php");
-		new Interception_Manager();
+		$intercept = new Interception_Manager();
+		$intercept->addException("need-a-ride", "need-a-ride/index.php?id={1}", 2);
+		$intercept->go();
 	}
 ?>

@@ -35,7 +35,11 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	public function getWho() {
 		global $essentials;
 		
-		return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
+		if ($this->data) {
+			return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
+		} else {
+			return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
+		}
 	}
 	
 	public function getWhat() {
@@ -47,10 +51,10 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 	public function getWhere() {
-		return "<input id=\"where-city\" name=\"where-city\" placeholder=\"To which city are you going?\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->City : "") . "\">
+		return "<input class=\"rounded-left\" id=\"where-city\" name=\"where-city\" placeholder=\"Destination city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->City : "") . "\">
 
-<select class=\"rounded-right\" id=\"where-state\" name=\"where-state\">
-<option selected value=\"\">- Select a State -</option>
+<select class=\"input-small rounded-right\" id=\"where-state\" name=\"where-state\">
+<option selected value=\"\">State</option>
 " . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->State : "", "codes") . "
 </select>";
 	}
@@ -125,7 +129,8 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	
 	public function getRecurrenceDays() {
 		$class = "";
-		$daysText = array("monday", "tuesday", "wednesday", "thursday", "friday");
+		$daysID = array("monday", "tuesday", "wednesday", "thursday", "friday");
+        $daysText = array("M<span class=\"collapse\">onday</span>", "T<span class=\"collapse\">uesday</span>", "W<span class=\"collapse\">ednesday</span>", "T<span class=\"collapse\">hursday</span>", "F<span class=\"collapse\">riday</span>");
 		$daysVal = array($this->data[0]->Monday, $this->data[0]->Tuesday, $this->data[0]->Wednesday, $this->data[0]->Thursday, $this->data[0]->Friday);
 		$enabled = ($this->data && $this->data[0]->Recurring == "1") ? true : false;
 		$return = "<div class=\"btn-group\" data-toggle=\"buttons-checkbox\">
@@ -139,8 +144,8 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 			$state = $daysVal[$i] == "1" ? " checked" : "";
 			$state = !$enabled ? " disabled" : $state;
 			
-			$return .= "<input class=\"recurring-day\" data-toggle=\"button\"" . $state . " id=\"" . $daysText[$i] . "\" name=\"" . $daysText[$i] . "\" type=\"checkbox\">
-<label class=\"btn recurring-label" . $class . "\" for=\"" . $daysText[$i] . "\">" . ucfirst($daysText[$i]) . "</label>
+			$return .= "<input class=\"recurring-day\" data-toggle=\"button\"" . $state . " id=\"" . $daysID[$i] . "\" name=\"" . $daysID[$i] . "\" type=\"checkbox\">
+<label class=\"btn recurring-label" . $class . "\" for=\"" . $daysID[$i] . "\">" . $daysText[$i] . "</label>
 ";
 		}
 		
