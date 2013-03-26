@@ -10,6 +10,8 @@
  *  - importing necessary PHP scripts
  *  - setting the page title
  *  - including PHP, CSS, or JS files
+ *  - integrating with the Interception_Manager class to make
+ *    data avaliable from custom, SEO-friendly URLs
  * 
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
@@ -22,25 +24,6 @@
 namespace FFI\TA;
 
 class Essentials {
-/**
- * Hold the current user's information
- *
- * @access public
- * @type   object|boolean
-*/
-	
-	public $user = false;
-	
-/**
- * Hold a private reference to the title of the page for the filter
- * hook to grab.
- *
- * @access private
- * @type   string
-*/
-
-	private $title;
-	
 /**
  * Hold a private reference to the requests for the CSS stylesheets for 
  * the filter hook to grab.
@@ -62,17 +45,49 @@ class Essentials {
 	private $JS = array();
 	
 /**
+ * Hold a reference to the parameters from the URL fetched by 
+ * Interception_Manager::registerException()
+ *
+ * @access private
+ * @type   boolean|array<string>
+*/
+	
+	public $params = false;
+	
+/**
+ * Hold a private reference to the title of the page for the filter
+ * hook to grab.
+ *
+ * @access private
+ * @type   string
+*/
+
+	private $title;
+	
+/**
+ * Hold the current user's information
+ *
+ * @access public
+ * @type   boolean|object
+*/
+	
+	public $user = false;
+	
+/**
  * CONSTRUCTOR
  *
- * There is nothing to do here... just live!
+ * Share any parameters from the URL fetched by 
+ * Interception_Manager::registerException() with the rest of
+ * the class
  * 
  * @access public
+ * @param  boolean|array<string> $params An array of parameters from the URL fetched by Interception_Manager::registerException(), or false if none
  * @return void
  * @since  v1.0 Dev
 */
 
-	public function __construct() {
-		//Nothing to do!
+	public function __construct($params) {
+		$this->params = $params;
 	}
 
 /**

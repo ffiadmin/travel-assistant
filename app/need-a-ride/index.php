@@ -9,7 +9,9 @@
 	$essentials->includeCSS("styles/ride.superpackage.min.css");
 	
 //Instantiate necessary classes
-	$display = new FFI\TA\Ride_Request_Display(0);
+	$params = $essentials->params ? $essentials->params[0] : 0;
+	$failRedirect = $essentials->friendlyURL("need-a-ride");
+	$display = new FFI\TA\Ride_Request_Display($params, $failRedirect);
 	
 	echo "<h1>Ask for Ride</h1>
 	
@@ -18,7 +20,7 @@
 //Display the directions
 	echo "<section class=\"welcome\">
 <h2>Ask for a Ride</h2>
-<p>If you are in need of ride back home or back to college, use this page to post your request. If a willing individual finds your request, he or she will be in touch with you. This page can also be used if you are a commuter and would like to schedule a regular trip with a driver.</p>
+<p>If you are in need of ride back home or back to college, use this page to post your request. If a willing individual finds your request, he or she will be in touch with you. This page can also be used if you are a commuter and would like to schedule a recurring trip with a driver.</p>
 </section>
 
 ";

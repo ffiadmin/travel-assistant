@@ -24,22 +24,24 @@ require_once(dirname(dirname(__FILE__)) . "/processing/Ride_Data_Fetch.php");
 
 class Ride_Request_Display extends Ride_Data_Fetch {
 	private $rand = 0;
+	private $recurring = false;
 	private $whatValues = array("I need a lift", "I'm leaving and don't feel like driving", "I'm going somewhere", "Help! I need a ride!", "I'm leaving");
 	private $whyValues = array("We aren't that curious", "Don't worry, we won't ask", "We won't be nosy", "We won't make you tell us", "We'll leave that up to you");
 	
-	public function __construct($ID) {
+	public function __construct($ID, $failRedirect) {
 		parent::__construct("ffi_ta_need", $ID);
 		$this->rand = mt_rand(0, 4);
+		
+		if (is_null($this->data)) {
+			wp_redirect($failRedirect);
+			exit;
+		}
 	}
 	
 	public function getWho() {
 		global $essentials;
 		
-		if ($this->data) {
-			return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
-		} else {
-			return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
-		}
+		return "<input disabled id=\"who\" name=\"who\" type=\"text\" value=\"" . htmlentities($essentials->user->user_firstname . " " . $essentials->user->user_lastname) . "\">";
 	}
 	
 	public function getWhat() {
@@ -47,7 +49,13 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 	public function getWhen() {
-		return "<input id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->Leaving . " " . $this->data[0]->LeavingTimeZone : "") . "\">";
+		if ($this->data) {
+			$dateFormatter = new \DateTime($this->data[0]->Leaving);
+		
+			return "<input id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y h:i a") . " " . $this->data[0]->LeavingTimeZone) . "\">";
+		} else {
+			return "<input id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"\">";
+		}
 	}
 	
 	public function getWhere() {
@@ -110,11 +118,10 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		$checkedNo = false;
 		
 	//Determine which option should be checked
-		if (!$this->data || ($this->data && $this->data[0]->Recurring == "1")) {
+		if ($this->data && ($this->data[0]->Monday == "1" || $this->data[0]->Tuesday == "1" || $this->data[0]->Wednesday == "1" || $this->data[0]->Thursday == "1" || $this->data[0]->Friday == "1")) {
 			$checkedYes = true;
-		}
-		
-		if ($this->data && $this->data[0]->Recurring == "0") {
+			$this->recurring = true;
+		} else {
 			$checkedNo = true;
 		}
 	
@@ -132,7 +139,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		$daysID = array("monday", "tuesday", "wednesday", "thursday", "friday");
         $daysText = array("M<span class=\"collapse\">onday</span>", "T<span class=\"collapse\">uesday</span>", "W<span class=\"collapse\">ednesday</span>", "T<span class=\"collapse\">hursday</span>", "F<span class=\"collapse\">riday</span>");
 		$daysVal = array($this->data[0]->Monday, $this->data[0]->Tuesday, $this->data[0]->Wednesday, $this->data[0]->Thursday, $this->data[0]->Friday);
-		$enabled = ($this->data && $this->data[0]->Recurring == "1") ? true : false;
+		$enabled = $this->recurring ? true : false;
 		$return = "<div class=\"btn-group\" data-toggle=\"buttons-checkbox\">
 ";
 		$state = "";
@@ -154,7 +161,13 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 	public function getEndDate() {
-		return "<input " . ($this->data && $this->data[0]->Recurring == "1" ? "" : " disabled") . " id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->EndDate : "") . "\">";
+		if ($this->recurring) {
+			$dateFormatter = new \DateTime($this->data[0]->EndDate);
+			
+			return "<input id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
+		} else {
+			return "<input disabled id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"\">";
+		}
 	}
 	
 	public function getComments() {

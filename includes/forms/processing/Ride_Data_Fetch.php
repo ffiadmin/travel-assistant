@@ -27,7 +27,7 @@ abstract class Ride_Data_Fetch {
  * Hold the results of the SQL query.
  *
  * @access protected
- * @type   object<mixed>|bool
+ * @type   boolean|object<mixed>
 */
 	
 	protected $data;
@@ -52,7 +52,12 @@ abstract class Ride_Data_Fetch {
 		
 		if ($ID) {
 			$tableName = esc_sql($tableName);
-			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.ID, `Leaving`, `LeavingTimeZone`, ffi_ta_cities.City AS `City`, ffi_ta_cities.State AS `State`, `MalesPresent`, `FemalesPresent`, `DaysNotice`, `MinutesWithin`, `GasMoney`, `Luggage`, `Recurring`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `EndDate`, `Comments` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.City = ffi_ta_cities.ID WHERE ffi_ta_need.ID = %d LIMIT 1", $ID));
+			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.ID, `Leaving`, `LeavingTimeZone`, ffi_ta_cities.City AS `City`, ffi_ta_cities.State AS `State`, `MalesPresent`, `FemalesPresent`, `DaysNotice`, `MinutesWithin`, `GasMoney`, `Luggage`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `EndDate`, `Comments` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.City = ffi_ta_cities.ID WHERE ffi_ta_need.ID = %d LIMIT 1", $ID));
+			
+		//SQL returned 0 tuples
+			if (!count($this->data)) {
+				$this->data = NULL;
+			}
 		} else {
 			$this->data = false;
 		}
