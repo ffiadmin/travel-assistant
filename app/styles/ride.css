@@ -3,10 +3,6 @@
  * ----------------------------------
 */
 
-input {
-	color: #555555 !important;
-}
-
 textarea {
 	height: 125px;
 	width: 400px;
@@ -35,6 +31,23 @@ textarea {
 }
 
 /**
+ * Specific style enhancements
+ * ----------------------------------
+*/
+
+dd.ui_tpicker_timezone {
+	margin: 25px 0px 0px 0px !important;
+}
+
+dd.ui_tpicker_timezone select {
+	margin: 0px !important;
+}
+
+section#splash.ride div.ad-container {
+	background-image: url(splash/ride-request.jpg);
+}
+
+/**
  * Welcome container
  * ----------------------------------
 */
@@ -56,6 +69,10 @@ section.welcome h2 {
 section.step {
 	border-top: 1px solid #DDDDDD;
 	padding: 5px 10% 35px 10%;
+}
+
+section.step.stripe {
+	background-color: #FFFCF9;
 }
 
 section.step.no-border {

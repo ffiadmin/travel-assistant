@@ -16,6 +16,17 @@
 	echo "<h1>Ask for Ride</h1>
 	
 <form class=\"form-horizontal\">\n";
+
+//Display the splash section	
+	echo "<section class=\"ride\" id=\"splash\">
+<div class=\"ad-container\">
+<div class=\"ad-contents\">
+<h2>Ask for a Ride</h2>
+</div>
+</div>
+</section>
+
+";
 	
 //Display the directions
 	echo "<section class=\"welcome\">
@@ -26,7 +37,7 @@
 ";
 
 //Display the (2 of the) 5 W questions section
-	echo "<section class=\"step\">
+	echo "<section class=\"step stripe\">
 <header>
 <h2>The Five W Questions</h2>
 <h3>... but we really only care about two of them.</h3>
@@ -135,7 +146,7 @@
 ";
 
 //Display the trip recurrence section
-	echo "<section class=\"step\">
+	echo "<section class=\"step stripe\">
 <header>
 <h2>Trip Recurrence (Optional)</h2>
 <h3>This section is probably best for commuters. Do you make this trip often, and would like to arrange a regular pick up schedule?</h3>
@@ -185,7 +196,7 @@
 ";
 
 //Display the comments section
-	echo "<section class=\"step\">
+	echo "<section class=\"step stripe\">
 <header>
 <h2>The Fine Print</h2>
 <h3>... but we won't make ours so small that you can't read it.</h3>
@@ -198,8 +209,8 @@
 ";
 
 //Display the submit button
-	echo "<section class=\"no-border step\">
-<button class=\"btn btn-success\" type=\"submit\">Agree<span class=\"collapse\"> to Terms</span> &amp; Submit<span class=\"collapse\"> Request</span></button>
+	echo "<section class=\"no-border step stripe\">
+<button class=\"btn btn-warning\" type=\"submit\">Agree<span class=\"collapse\"> to Terms</span> &amp; Submit<span class=\"collapse\"> Request</span></button>
 <button class=\"btn\" type=\"button\">Cancel</button>
 </section>
 </form>";
