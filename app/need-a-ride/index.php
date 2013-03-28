@@ -1,21 +1,27 @@
 <?php
 //Include the necessary scripts
 	$essentials->requireLogin();
-	$essentials->setTitle("Ask for Ride");
+	$essentials->setTitle("Ask for a Ride");
 	$essentials->includePluginClass("forms/display/Ride_Request_Display");
+	$essentials->includePluginClass("forms/processing/Ride_Request_Process");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
 	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
 	$essentials->includeJS("scripts/ride.superpackage.min.js");
 	$essentials->includeCSS("styles/ride.superpackage.min.css");
 	
-//Instantiate necessary classes
+//Instantiate form element display class
 	$params = $essentials->params ? $essentials->params[0] : 0;
+	$successRedirect = $essentials->friendlyURL("");
 	$failRedirect = $essentials->friendlyURL("need-a-ride");
 	$display = new FFI\TA\Ride_Request_Display($params, $failRedirect);
 	
+//Instantiate the form processor class
+	new FFI\TA\Ride_Request_Process($params, $successRedirect, $failRedirect);
+	
+//Display the page
 	echo "<h1>Ask for Ride</h1>
 	
-<form class=\"form-horizontal\">\n";
+<form class=\"form-horizontal\" method=\"post\">\n";
 
 //Display the splash section	
 	echo "<section class=\"ride\" id=\"splash\">
@@ -211,7 +217,7 @@
 //Display the submit button
 	echo "<section class=\"no-border step stripe\">
 <button class=\"btn btn-warning\" type=\"submit\">Agree<span class=\"collapse\"> to Terms</span> &amp; Submit<span class=\"collapse\"> Request</span></button>
-<button class=\"btn\" type=\"button\">Cancel</button>
+<button class=\"btn cancel\" type=\"button\">Cancel</button>
 </section>
 </form>";
 ?>

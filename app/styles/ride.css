@@ -3,6 +3,10 @@
  * ----------------------------------
 */
 
+form {
+	margin-bottom: 0px !important;
+}
+
 textarea {
 	height: 125px;
 	width: 400px;
