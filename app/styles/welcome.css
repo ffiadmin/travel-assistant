@@ -13,7 +13,7 @@ article#map h2 {
 }
 
 article#map img {
-  max-width: none; /* Fixes a Google Maps/Twitter Bootstrap styling conflict */
+	max-width: none; /* Fixes a Google Maps/Twitter Bootstrap styling conflict */
 }
 
 /**
@@ -23,43 +23,64 @@ article#map img {
 
 article#welcome ul {
 	list-style: none;
-	margin-top: 60px;
+	margin: 60px 0px 0px 0px;
 	padding: 0px;
 	text-align: center;
 }
 
 article#welcome ul li {
-    -moz-transition: all .25s ease-in-out;
-	-ms-transition: all .25s ease-in-out;
-    -o-transition: all .25s ease-in-out;
-	-webkit-transition: all .25s ease-in-out;
-    transition: all .25s ease-in-out;
-    
-	background: #F5F5F5 url(sprites/welcome-icons.png) no-repeat;
-    border: 1px solid #E4E4E4;
+	background: #1F1F1F url(sprites/welcome-icons.png) no-repeat;
+	cursor: pointer;
     display: inline-block;
-    height: 200px;
+    height: 292px;
     margin: 7px;
-	padding: 20px;
+	padding: 0px;
     position: relative;
     vertical-align: top;
-    width: 280px;
+    width: 305px;
 }
 
-article#welcome ul li:hover {
-    border: 1px solid #51A351;
+article#welcome ul li.browse {
+	background-position: 90px 107px;
 }
 
-article#welcome ul li.need {
-	background-position: 200px -20px;
+
+article#welcome ul li.browse:hover {
+	background-position: 90px -282px;
+}
+
+article#welcome ul li.request {
+	background-position: -217px 130px;
+}
+
+
+article#welcome ul li.request:hover {
+	background-position: -217px -260px;
 }
 
 article#welcome ul li.share {
-	background-position: -10px 130px;
+	background-position: -502px 120px;
+}
+
+article#welcome ul li.share:hover {
+	background-position: -502px -270px;
 }
 
 article#welcome ul li h3 {
-    font-size: 20px;
-	font-weight: lighter;
-	padding-top: 0px;
+	color: #FFFFFF;
+    font-size: 18px;
+	font-weight: 600;
+	letter-spacing: 8px;
+	padding: 46px 0px 197px 0px;
+	margin: 0px;
+	text-transform: uppercase;
+}
+
+article#welcome ul li h3::after {
+	border-top: 2px solid #FFFFFF;
+	content: ' ';
+	display: block;
+	margin: 7px auto 0px auto;
+	padding: 0px;
+	width: 200px;
 }

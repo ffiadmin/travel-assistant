@@ -25,6 +25,7 @@ License: MIT
 		require_once(PATH . "includes/Interception_Manager.php");
 		$intercept = new Interception_Manager();
 		$intercept->registerException("need-a-ride", "need-a-ride/index.php", 2);
+		$intercept->registerException("share-a-ride", "share-a-ride/index.php", 2);
 		$intercept->go();
 	}
 ?>

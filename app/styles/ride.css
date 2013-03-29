@@ -47,8 +47,16 @@ dd.ui_tpicker_timezone select {
 	margin: 0px !important;
 }
 
-section#splash.ride div.ad-container {
+section#splash.request div.ad-container {
 	background-image: url(splash/ride-request.jpg);
+}
+
+section#splash.share-legacy div.ad-container {
+	background-image: url(splash/ride-share-legacy.jpg);
+}
+
+section#splash.share-color div.ad-container {
+	background-image: url(splash/ride-share-color.jpg);
 }
 
 /**

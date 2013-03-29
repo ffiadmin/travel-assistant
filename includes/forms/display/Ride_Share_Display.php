@@ -1,9 +1,9 @@
 <?php
 /**
- * Ride request form display class
+ * Ride share form display class
  *
  * This class is used to fetch data from the MySQL database for the 
- * ride request display form. If data is returned from the super class's
+ * ride share display form. If data is returned from the super class's
  * constructor, then the respective values are filled into their proper
  * locations in the form, then returned for display in the HTML form.
  * 
@@ -24,7 +24,7 @@ namespace FFI\TA;
 require_once(dirname(dirname(dirname(__FILE__))) . "/Destination_Manager.php");
 require_once(dirname(dirname(__FILE__)) . "/processing/Ride_Data_Fetch.php");
 
-class Ride_Request_Display extends Ride_Data_Fetch {
+class Ride_Share_Display extends Ride_Data_Fetch {
 /**
  * Hold a reference to the random number generated to fetch a value from
  * the $whatValues and $whyValues array.
@@ -54,7 +54,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
  * @type   array<string>
 */
 	
-	private $whatValues = array("I need a lift", "I'm leaving and don't feel like driving", "I'm going somewhere", "Help! I need a ride!", "I'm leaving");
+	private $whatValues = array("I can share a lift", "I'm leaving and can drive", "I'm driving somewhere", "Never fear! Your ride is here!", "I'm driving");
 	
 /**
  * An array of default values which will be chosen to the the "Who" form
@@ -74,7 +74,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
  * $failRedirect.
  * 
  * @access public
- * @param  int      $ID           The ID of the ride request to fetch from the database
+ * @param  int      $ID           The ID of the ride share to fetch from the database
  * @param  int      $userID       The ID of the user requesting this page
  * @param  string   $failRedirect The URL to redirect to if the SQL query returns zero tuples (i.e. an invalid $ID or $userID is given)
  * @return void
@@ -82,7 +82,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function __construct($ID, $userID, $failRedirect) {
-		parent::__construct("ffi_ta_need", $ID, $userID);
+		parent::__construct("ffi_ta_share", $ID, $userID);
 		$this->rand = mt_rand(0, 4);
 		
 	//"Leave me!" - http://johnnoble.net/img/photos/denethor_a.jpg
@@ -171,6 +171,19 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 /**
+ * Output a prefilled form element containing the "number of seats" form 
+ * element for section two of this form.
+ * 
+ * @access public
+ * @return string   A form item prefilled with a value from either the database or a default value
+ * @since  v1.0 Dev
+*/
+	
+	public function getSeats() {
+		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[1],max[10]]\" id=\"seats\" max=\"10\" min=\"1\" name=\"seats\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->Seats : "1") . "\">";
+	}
+	
+/**
  * Output a prefilled form element containing the "number of males" form 
  * element for section two of this form.
  * 
@@ -197,8 +210,8 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 /**
- * Output a prefilled form element containing the "number of days notice"
- * form element for section two of this form.
+ * Output a prefilled form element containing the "number of days before
+ * for a total head count" form element for section two of this form.
  * 
  * @access public
  * @return string   A form item prefilled with a value from either the database or a default value
@@ -210,8 +223,9 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	}
 	
 /**
- * Output a prefilled form element containing the "number of minutes within
- * destination" form element for section two of this form.
+ * Output a prefilled form element containing the "extra number of minutes
+ * the driver will drive to get passengers to their proper destination" 
+ * form element for section two of this form.
  * 
  * @access public
  * @return string   A form item prefilled with a value from either the database or a default value
@@ -224,7 +238,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	
 /**
  * Output a prefilled form element containing the "reimbursement gas money
- * total" form element for section two of this form.
+ * per person" form element for section two of this form.
  * 
  * @access public
  * @return string   A form item prefilled with a value from either the database or a default value
@@ -344,9 +358,9 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		if ($this->recurring) {
 			$dateFormatter = new \DateTime($this->data[0]->EndDate);
 			
-			return "<input autocomplete=\"off\" class=\"validate[required,custom[date]]\" id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
+			return "<input autocomplete=\"off\" class=\"validate[required,custom[date]]\" id=\"until\" name=\"until\" placeholder=\"How long can you share a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
 		} else {
-			return "<input autocomplete=\"off\" class=\"validate[required,custom[date],past[now]]\" disabled id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"\">";
+			return "<input autocomplete=\"off\" class=\"validate[required,custom[date],past[now]]\" disabled id=\"until\" name=\"until\" placeholder=\"How long can you share a ride?\" type=\"text\" value=\"\">";
 		}
 	}
 	

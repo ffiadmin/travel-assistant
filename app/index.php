@@ -31,26 +31,22 @@ $(function() {
 <p>Whether you are a commuter and are looking for someone with whom you can share a ride, or already thinking about planning your next trip home, the SGA Travel Assistant is here to help. If you are in need of a ride home, browse the listing of avaliable rides to your hometown or post your need and have someone help you out. If you have an extra seat or two to spare, you can post their avaliability here and help someone with their ride home.</p>
 
 <ul>
-<li class=\"need\">
-<h3>I Need a Ride</h3>
+<li class=\"browse\">
+<a href=\"" . $essentials->friendlyURL("browse") . "\">
+<h3>Browse</h3>
+</a>
+</li>
 
-<div class=\"control-group\">
-<label class=\"control-label\" for=\"states\">Browse by State:</label>
-<div class=\"input-append\">
-<select name=\"states\" id=\"states\">
-<option selected value=\"\">- Select a State -</option>
-" . FFI\TA\Destination_Manager::buildStatesDropDown("") . "
-</select>
-<button class=\"btn btn-success\" id=\"jumper\">Go!</button>
-</div>
-</div>
-
-<a class=\"btn btn-block btn-success\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Ask for a Ride</a>
+<li class=\"request\">
+<a href=\"" . $essentials->friendlyURL("need-a-ride") . "\">
+<h3>Request Ride</h3>
+</a>
 </li>
 
 <li class=\"share\">
-<h3>I Can Share a Ride</h3>
-<a class=\"btn btn-block btn-success\" href=\"" . $essentials->friendlyURL("share-a-ride") . "\">Share a Ride</a>
+<a href=\"" . $essentials->friendlyURL("share-a-ride") . "\">
+<h3>Share Ride</h3>
+</a>
 </li>
 </ul>
 </article>";

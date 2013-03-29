@@ -3,7 +3,7 @@
  * Form data processing class
  *
  * This class is used to:
- *  - Determine whether or not a user has sumbitted the ride request
+ *  - Determine whether or not a user has sumbitted the ride sharing
  *    form
  *  - Validate all incoming data
  *  - Either insert the data into a database or update existing data
@@ -18,7 +18,7 @@
 
 namespace FFI\TA;
 
-class Ride_Request_Process {
+class Ride_Share_Process {
 /**
  * Hold the DateTime objcet which will be used to format dates
  *
@@ -93,6 +93,15 @@ class Ride_Request_Process {
 	private $longitude;
 	
 /**
+ * Hold the total number of avaliable seats
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $seats;
+	
+/**
  * Hold the number of males present for the trip
  *
  * @access private
@@ -111,7 +120,8 @@ class Ride_Request_Process {
 	private $females;
 	
 /**
- * Hold the number of days the user will need if no one can help
+ * Hold the number of days the user will need before the trip to get a 
+ * total head count
  *
  * @access private
  * @type   int
@@ -120,8 +130,8 @@ class Ride_Request_Process {
 	private $days;
 	
 /**
- * Hold the number of minutes the driver should take this user within
- * their desired destination
+ * Hold the number of minutes the is willing to travel out of his or her
+ * way to take passengers to their proper destination
  *
  * @access private
  * @type   int
@@ -139,7 +149,7 @@ class Ride_Request_Process {
 	private $reimburse;
 	
 /**
- * Hold whether this user will bring luggage
+ * Hold whether there is room for luggage
  *
  * @access private
  * @type   int
@@ -157,7 +167,7 @@ class Ride_Request_Process {
 	private $recurring;
 	
 /**
- * Hold whether this user will need a regular trip on a 
+ * Hold whether this user can share a regular trip on a 
  * Monday
  *
  * @access private
@@ -167,7 +177,7 @@ class Ride_Request_Process {
 	private $monday;
 	
 /**
- * Hold whether this user will need a regular trip on a 
+ * Hold whether this user can share a regular trip on a 
  * Tuesday
  *
  * @access private
@@ -177,7 +187,7 @@ class Ride_Request_Process {
 	private $tuesday;
 	
 /**
- * Hold whether this user will need a regular trip on a 
+ * Hold whether this user can share a regular trip on a 
  * Wednesday
  *
  * @access private
@@ -187,7 +197,7 @@ class Ride_Request_Process {
 	private $wednesday;
 	
 /**
- * Hold whether this user will need a regular trip on a 
+ * Hold whether this user can share a regular trip on a 
  * Thursday
  *
  * @access private
@@ -197,7 +207,7 @@ class Ride_Request_Process {
 	private $thursday;
 	
 /**
- * Hold whether this user will need a regular trip on a 
+ * Hold whether this user can share a regular trip on a 
  * Friday
  *
  * @access private
@@ -228,7 +238,7 @@ class Ride_Request_Process {
  * CONSTRUCTOR
  *
  * This method will call helper methods to:
- *  - Determine whether or not a user has sumbitted the ride request
+ *  - Determine whether or not a user has sumbitted the ride sharing
  *    form
  *  - Validate all incoming data
  *  - Either insert the data into a database or update existing data
@@ -275,8 +285,8 @@ class Ride_Request_Process {
 	
 	private function userSubmittedForm() {
 		if (is_array($_POST) && count($_POST) && 
-			isset($_POST['when']) && isset($_POST['where-city']) && isset($_POST['where-state']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['days']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
-			!empty($_POST['when']) && !empty($_POST['where-city']) && !empty($_POST['where-state']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['days']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
+			isset($_POST['when']) && isset($_POST['where-city']) && isset($_POST['where-state']) && isset($_POST['seats']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['days']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
+			!empty($_POST['when']) && !empty($_POST['where-city']) && !empty($_POST['where-state']) && is_numeric($_POST['seats']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['days']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
 			return true;	
 		}
 		
@@ -327,6 +337,13 @@ class Ride_Request_Process {
 		
 		if (in_array($stateCode, $validStates) && $this->getCoords($cityName, $stateCode)) {
 			//getCords() already set the needed variables
+		} else {
+			return false;
+		}
+		
+	//Validate and retain the number of seats
+		if ($this->intBetween($_POST['seats'], 1, 10)) {
+			$this->seats = $_POST['seats'];
 		} else {
 			return false;
 		}
@@ -527,13 +544,14 @@ class Ride_Request_Process {
 	//Has this city ever been recorded before?
 		$cityID = $this->cityID();
 		
-	//Insert the request in the database
-		$wpdb->insert("ffi_ta_need", array(
+	//Insert the sharing information in the database
+		$wpdb->insert("ffi_ta_share", array(
 			"ID" => NULL,
 			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"City" => $cityID,
+			"Seats" => $this->seats,
 			"MalesPresent" => $this->males,
 			"FemalesPresent" => $this->females,
 			"DaysNotice" => $this->days,
@@ -548,7 +566,7 @@ class Ride_Request_Process {
 			"EndDate" => $this->until,
 			"Comments" => $this->comments
 		), array(
-			"%s", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%s", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 	}
 	
@@ -569,12 +587,13 @@ class Ride_Request_Process {
 	//Has this city ever been recorded before?
 		$cityID = $this->cityID();
 		
-	//Update the request in the database
-		$wpdb->update("ffi_ta_need", array(
+	//Update the sharing information in the database
+		$wpdb->update("ffi_ta_share", array(
 			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"City" => $cityID,
+			"Seats" => $this->seats,
 			"MalesPresent" => $this->males,
 			"FemalesPresent" => $this->females,
 			"DaysNotice" => $this->days,
@@ -591,7 +610,7 @@ class Ride_Request_Process {
 		), array (
 			"ID" => $ID
 		), array(
-			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));

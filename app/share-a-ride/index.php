@@ -1,9 +1,9 @@
 <?php
 //Include the necessary scripts
 	$essentials->requireLogin();
-	$essentials->setTitle("Ask for a Ride");
-	$essentials->includePluginClass("forms/display/Ride_Request_Display");
-	$essentials->includePluginClass("forms/processing/Ride_Request_Process");
+	$essentials->setTitle("Share a Ride");
+	$essentials->includePluginClass("forms/display/Ride_Share_Display");
+	$essentials->includePluginClass("forms/processing/Ride_Share_Process");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
 	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
 	$essentials->includeJS("scripts/ride.superpackage.min.js");
@@ -13,22 +13,25 @@
 	$params = $essentials->params ? $essentials->params[0] : 0;
 	$userID = $essentials->user-ID;
 	$successRedirect = $essentials->friendlyURL("");
-	$failRedirect = $essentials->friendlyURL("need-a-ride");
-	$display = new FFI\TA\Ride_Request_Display($params, $userID, $failRedirect);
+	$failRedirect = $essentials->friendlyURL("share-a-ride");
+	$display = new FFI\TA\Ride_Share_Display($params, $userID, $failRedirect);
 	
 //Instantiate the form processor class
-	new FFI\TA\Ride_Request_Process($params, $successRedirect, $failRedirect);
+	new FFI\TA\Ride_Share_Process($params, $successRedirect, $failRedirect);
 	
 //Display the page
-	echo "<h1>Ask for Ride</h1>
+	echo "<h1>Share a Ride</h1>
 	
 <form class=\"form-horizontal\" method=\"post\">\n";
 
-//Display the splash section	
-	echo "<section class=\"request\" id=\"splash\">
+//Display the splash section
+	$rand = mt_rand(0, 1);
+	$classes = array("share-legacy", "share-color");
+	
+	echo "<section class=\"" . $classes[$rand] . "\" id=\"splash\">
 <div class=\"ad-container\">
 <div class=\"ad-contents\">
-<h2>Ask for a Ride</h2>
+<h2>Share a Ride</h2>
 </div>
 </div>
 </section>
@@ -37,8 +40,8 @@
 	
 //Display the directions
 	echo "<section class=\"welcome\">
-<h2>Ask for a Ride</h2>
-<p>If you are in need of ride back home or back to college, use this page to post your request. If a willing individual finds your request, he or she will be in touch with you. This page can also be used if you are a commuter and would like to schedule a recurring trip with a driver.</p>
+<h2>Share a Ride</h2>
+<p>If you have few spare seats you could share during your back home or back to college, use this page to post this opening. If an individual in need of a ride finds your request, he or she will be in touch with you. This page can also be used if you are a commuter and could share a recurring trip with a few passengers.</p>
 </section>
 
 ";
@@ -100,6 +103,16 @@
 </header>
 
 <div class=\"control-group\">
+<label class=\"control-label\" for=\"seats\">I have room for:</label>
+<div class=\"controls\">
+<div class=\"input-append\">
+" . $display->getSeats() . "
+<span class=\"add-on\">individual(s)</span>
+</div>
+</div>
+</div>
+
+<div class=\"control-group\">
 <label class=\"control-label\" for=\"males\">Joining me will be:</label>
 <div class=\"controls\">
 <div class=\"input-append input-prepend\">
@@ -112,38 +125,38 @@
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"days\">If no one helps, I need:</label>
+<label class=\"control-label\" for=\"days\">I'll need a head count:</label>
 <div class=\"controls\">
 <div class=\"input-append\">
 " . $display->getDaysNotice() . "
-<span class=\"add-on\">day(s) notice before my trip</span>
+<span class=\"add-on\">day(s) before my trip</span>
 </div>
 </div>
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"time\">Please take me within:</label>
+<label class=\"control-label\" for=\"time\">I'll drive an extra:</label>
 <div class=\"controls\">
 <div class=\"input-append\">
 " . $display->getMinutesWithin() . "
-<span class=\"add-on\">minute(s) of my destination</span>
+<span class=\"add-on\">minute(s) to drop off passengers</span>
 </div>
 </div>
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"reimburse\">I can pay for:</label>
+<label class=\"control-label\" for=\"reimburse\">I want reimbursed for:</label>
 <div class=\"controls\">
 <div class=\"input-prepend input-append\">
 <span class=\"add-on\">\$</span>
 " . $display->getGasMoney() . "
-<span class=\"add-on\">.00 of gas</span>
+<span class=\"add-on\">.00 of gas per person</span>
 </div>
 </div>
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\">I'll be bringing luggage:</label>
+<label class=\"control-label\">Room for luggage:</label>
 <div class=\"controls\">
 " . $display->getLuggage() . "
 </div>
@@ -161,14 +174,14 @@
 </header>
 
 <div class=\"control-group\">
-<label class=\"control-label\">I need a ride regularly:</label>
+<label class=\"control-label\">I can share regularly:</label>
 <div class=\"controls\">
 " . $display->getRecurrence() . "
 </div>
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\">I need a ride every:</label>
+<label class=\"control-label\">I'll share a ride every:</label>
 <div class=\"controls\">
 " . $display->getRecurrenceDays() . "
 </div>
@@ -188,7 +201,7 @@
 	echo "<section class=\"step\">
 <header>
 <h2>Closing Thoughts (Optional)</h2>
-<h3>Is there anything you'd like to share with your driver?</h3>
+<h3>Is there anything you'd like to share with your passenger(s)?</h3>
 <h4 class=\"step\">4</h4>
 </header>
 

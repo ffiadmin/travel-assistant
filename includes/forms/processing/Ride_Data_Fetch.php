@@ -43,16 +43,17 @@ abstract class Ride_Data_Fetch {
  * @access public
  * @param  string   $tableName The name of the table from which data should be fetched
  * @param  int      $ID        The ID of the tuple to fetch from the database
+ * @param  int      $userID    The ID of the user requesting this information
  * @return void
  * @since  v1.0 Dev
 */
 
-	public function __construct($tableName, $ID) {
+	public function __construct($tableName, $ID, $userID) {
 		global $wpdb;
 		
 		if ($ID) {
 			$tableName = esc_sql($tableName);
-			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.ID, `Leaving`, `LeavingTimeZone`, ffi_ta_cities.City AS `City`, ffi_ta_cities.State AS `State`, `MalesPresent`, `FemalesPresent`, `DaysNotice`, `MinutesWithin`, `GasMoney`, `Luggage`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `EndDate`, `Comments` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.City = ffi_ta_cities.ID WHERE ffi_ta_need.ID = %d LIMIT 1", $ID));
+			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.*, ffi_ta_cities.City AS `CityName`, ffi_ta_cities.State AS `State` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.City = ffi_ta_cities.ID WHERE {$tableName}.ID = %d AND {$tableName}.Person = %d LIMIT 1", $ID, $userID));
 			
 		//SQL returned 0 tuples
 			if (!count($this->data)) {
