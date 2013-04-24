@@ -11,7 +11,7 @@
 	
 //Instantiate form element display class
 	$params = $essentials->params ? $essentials->params[0] : 0;
-	$userID = $essentials->user-ID;
+	$userID = $essentials->user->ID;
 	$successRedirect = $essentials->friendlyURL("");
 	$failRedirect = $essentials->friendlyURL("need-a-ride");
 	$display = new FFI\TA\Ride_Request_Display($params, $userID, $failRedirect);

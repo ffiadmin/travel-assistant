@@ -44,7 +44,6 @@ article#welcome ul li.browse {
 	background-position: 90px 107px;
 }
 
-
 article#welcome ul li.browse:hover {
 	background-position: 90px -282px;
 }
@@ -83,4 +82,126 @@ article#welcome ul li h3::after {
 	margin: 7px auto 0px auto;
 	padding: 0px;
 	width: 200px;
+}
+
+/**
+ * Browse quick reference styles
+ * ----------------------------------
+*/
+
+article#browse ul.quick-ref {
+	list-style: none;
+	margin: 0px;
+	text-align: center;
+}
+
+article#browse ul.quick-ref li {
+	background: #FDE2BB;
+	border-radius: 150px;
+	display: inline-block;
+	height: 220px;
+	margin: 30px;
+	vertical-align: top;
+	width: 220px;
+}
+
+article#browse ul.quick-ref li.college {
+	background: #A44D4C url(sprites/welcome-icons.png) no-repeat -738px -116px;
+}
+
+article#browse ul.quick-ref li.college:hover {
+	background-color: #BE807F;
+}
+
+article#browse ul.quick-ref li span, article#browse ul.quick-ref li a {
+	display: block;
+	font-size: 30px;
+	line-height: 1.2;
+	padding: 73px 15px 0px 15px;
+}
+
+article#browse ul.quick-ref li a {
+	color: #333333;
+	padding-bottom: 111px;
+}
+
+/**
+ * Browse states styles
+ * ----------------------------------
+*/
+
+article#browse ul.states {
+	list-style: none;
+	margin: 0px;
+	text-align: center;
+}
+
+article#browse ul.states > li {
+	display: inline-block;
+	margin: 7px;
+	vertical-align: top;
+	width: 30%;
+}
+
+article#browse ul.states li ul {
+	list-style: none;
+	margin: 0px;
+}
+
+article#browse ul.states li ul li {
+	background: #F7F7F7;
+	border-bottom: 1px solid #E9E9E9;
+	position: relative;
+}
+
+article#browse ul.states li ul li:first-child {
+	border-top: 4px solid #1F1F1F;
+}
+
+article#browse ul.states li ul li:hover {
+	background-color: #F0F0F0;
+}
+
+article#browse ul.states li ul li.college {
+	background: #F7F7F7 url(sprites/welcome-icons.png) no-repeat right -344px;
+}
+
+article#browse ul.states li ul li h3 {
+	color: #222222;
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0px;
+	padding: 0px 0px 0px 13px;
+	text-align: left;
+}
+
+article#browse ul.states li ul li p {
+	font-weight: bolder;
+	margin: 0px;
+	position: absolute;
+}
+
+article#browse ul.states li ul li p.highlight {
+	color: #FAA732;
+}
+
+article#browse ul.states li ul li p.needed {
+	right: 55px;
+	text-align: center;
+	top: 5px;
+}
+
+article#browse ul.states li ul li p.shares {
+	right: 15px;
+	text-align: center;
+	top: 5px;
+}
+
+article#browse ul.states li ul li p span {
+	color: #777777;
+	display: block;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 1;
+	margin-top: 0px;
 }

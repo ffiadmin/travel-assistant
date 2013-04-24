@@ -74,7 +74,7 @@ section.content, article.content {
 }
 
 section.content.even, article.content.even {
-	background: #F5F5F5;
+	background: #FFFCF9 !important;
 	border-bottom: 1px solid #DDDDDD;
 	border-top: 1px solid #DDDDDD;
 }
