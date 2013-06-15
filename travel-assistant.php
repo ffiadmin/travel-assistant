@@ -12,12 +12,14 @@ License: MIT
 	namespace FFI\TA;
 	
 //Create plugin-specific global definitions
+	define("FFI\TA\CDN", false);
 	define("FFI\TA\FAKE_ADDR", get_site_url() . "/travel-assistant/");
 	define("FFI\TA\PATH", plugin_dir_path(__FILE__));
 	define("FFI\TA\REAL_ADDR", get_site_url() . "/wp-content/plugins/travel-assistant/");
+	define("FFI\TA\RESOURCE_PATH", (CDN ? "//ffistatic.appspot.com/sga" : site_url()) . "/wp-content/plugins/travel-assistant/");
 	define("FFI\TA\URL_ACTIVATE", "travel-assistant");
 	
-	define("FFI\TA\ACTIVE", true);
+	define("FFI\TA\ENABLED", true);
 	define("FFI\TA\NAME", "Travel Assistant");
 	
 //Instantiate the Interception_Manager
@@ -26,6 +28,7 @@ License: MIT
 		$intercept = new Interception_Manager();
 		$intercept->registerException("need-a-ride", "need-a-ride/index.php", 2);
 		$intercept->registerException("share-a-ride", "share-a-ride/index.php", 2);
+		$intercept->highlightNavLink(URL_ACTIVATE);
 		$intercept->go();
 	}
 ?>

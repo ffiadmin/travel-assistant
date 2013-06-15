@@ -15,6 +15,12 @@
  * Much of this plugin will involve rewriting the content of 404
  * error pages into an application page, assuming the application
  * has a page which matches the URL.
+ *
+ * This class also has the ability to highlight specified link on 
+ * the main navigation bar, which can be useful for highlighting 
+ * active links for the plugin when Wordpress is unable to. This
+ * feature works only with themese designed by ForwardFour
+ * Innovations.
  * 
  * This class will also listen for any specially crafted URLs as
  * defined by the paramters given to the addException() method and will
@@ -27,7 +33,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   includes
- * @since     v1.0 Dev
+ * @since     3.0
 */
 
 namespace FFI\TA;
@@ -42,6 +48,16 @@ class Interception_Manager {
 */
 
 	private $content = "";
+	
+/**
+ * Hold a reference to the URL of the page which should be highlighted
+ * on the main navigation bar.
+ *
+ * @access private
+ * @type   string 
+*/
+
+	private $navLink = "";
 	
 /**
  * If a page URL exception is encountered, then store the parsed parameters
@@ -90,7 +106,7 @@ class Interception_Manager {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function __construct() {
@@ -151,7 +167,7 @@ class Interception_Manager {
  * @param  string   $redirectURL The URL of the file this class should request when this exception is encountered, with respect to the "app" folder
  * @param  int      ...$indexes  The index elements of the array holding the exploded page URL for which this method should store for later use
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function registerException() {
@@ -182,6 +198,13 @@ class Interception_Manager {
  *  - Parse the requested URL into an address which can be used to
  *    fetch correct script from the "app" directory
  *  - Include the "pluggable" function library from Wordpress
+ *  - Register the FFI\TA\ACTIVE and FFI\PLUGIN_PAGE constants
+ *    indicating that this specific plugin is active on the current
+ *    page and that a more general ForwardFour Innovations plugin
+ *    is active on the current page, respectively. The latter is 
+ *    useful in cases where ForwardFour Innovations themes may need
+ *    to adjust page rendering in the case that the current page 
+ *    is displaying content from an active plugin.
  *  - Include requests for the appropriate application files
  *  - Utilize the Essentials class to give the page an appropriate 
  *    title and load necessary stylesheets and scripts
@@ -190,7 +213,7 @@ class Interception_Manager {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function go() {
@@ -220,7 +243,11 @@ class Interception_Manager {
 		//We need several methods from this function library
 			require_once(ABSPATH . "wp-includes/pluggable.php");
 			
-		//Run the required script first, so if any modifications should be made to header
+		//Register several constants indicating the activated state of this plugin
+			define("FFI\TA\ACTIVE", true);
+			define("FFI\PLUGIN_PAGE", true);
+			
+		//Run the required script first, so the included file can make any modifications to the header
 			$path = PATH . "app" . $this->scriptURL;
 			
 			if (file_exists($path)) {
@@ -246,12 +273,31 @@ class Interception_Manager {
 	}
 	
 /**
+ * This method is intended to highlight the given URL on the main
+ * navigation bar. The URL should be given with respect to the "app"
+ * folder of this plugin. So, a parameter such as "my-plugin", will
+ * highlight the menu item with the URL of:
+ * http://<wordpress-site>/my-plugin
+ *
+ * NOTE: This feature will ONLY work with Wordpress themes designed by 
+ * ForwardFour Innovations
+ *
+ * @access public
+ * @param  string   $address The URL with respect to the "app" folder
+ * @since  3.0
+*/
+	
+	public function highlightNavLink($address) {
+		$this->navLink = get_site_url() . "/" . $address;
+	}
+	
+/**
  * Get the URL of the current page without the protocol and installation
  * address of Wordpress.
  *
  * @access private
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	private function URLNoRoot() {
@@ -266,7 +312,7 @@ class Interception_Manager {
  *
  * @access private
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	private function activatePlugin() {
@@ -281,7 +327,7 @@ class Interception_Manager {
  * @access private
  * @param  string   $exception The string the URL should START with in order to activate the exception, with respect to the "app" folder
  * @return boolean             Whether or not the requested exception should be activated
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	private function activateException($exception) {
@@ -297,7 +343,7 @@ class Interception_Manager {
  *
  * @access private
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	private function generateURL() {
@@ -334,7 +380,7 @@ class Interception_Manager {
  *
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	public function intercept() {
 		echo $this->content;
@@ -346,7 +392,7 @@ class Interception_Manager {
  *
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function intercept404() {
@@ -358,8 +404,12 @@ class Interception_Manager {
 			status_header(200);
 			$wp_query->is_404 = false;
 			
+		//Make the URL of the highlighted navigation link avaliable to the theme's header file
+			$GLOBALS['highlight'] = $this->navLink;
+			
 		//Build the page content
 			get_header();
+			unset($GLOBALS['highlight']); //Well... that was evil, DESTROY IT!
 			echo $this->content;
 			get_footer();
 			exit;

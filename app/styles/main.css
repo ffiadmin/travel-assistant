@@ -80,7 +80,7 @@ section.content.even, article.content.even {
 }
 
 section.content h2, article.content h2 {
-	color: #51A351;	
+	color: #303030;	
 	font-size: 24px;
 	font-weight: lighter;
     padding-bottom: 10px;
@@ -88,7 +88,7 @@ section.content h2, article.content h2 {
 }
 
 section.content h2::after, article.content h2::after {
-	border-top: 2px solid #51A351;
+	border-top: 2px solid #303030;
 	content: ' ';
 	display: block;
 	margin: 7px auto 0px 0px;

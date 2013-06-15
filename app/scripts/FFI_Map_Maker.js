@@ -34,109 +34,111 @@
 */
 
 (function($) {
-	$(function() {
-		$.fn.FFI_Map_Maker = function(options) {
-		//Allow the user to override default options
-			var opts = $.extend($.fn.FFI_Map_Maker.defaults, options);
+	$.fn.FFI_Map_Maker = function(options) {
+	//Allow the user to override default options
+		var opts = $.extend($.fn.FFI_Map_Maker.defaults, options);
+		
+	//Generate the URL where destination points can be fetched (used only in country mode)
+		var infoWindow = new google.maps.InfoWindow;
+		var dataURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/map_points.php';
+		
+	//Depending on the mode, the zoom will differ
+		var zoom;
+		
+		if ($.fn.FFI_Map_Maker.defaults.mode.toLowerCase() == 'city') {
+			zoom = $.fn.FFI_Map_Maker.defaults.cityModeZoom;
+		} else {
+			zoom = $.fn.FFI_Map_Maker.defaults.countryModeZoom;
+		}
+		
+		return this.each(function() {
+		//Google Maps instantiation and configuration
+			var map = new google.maps.Map($(this).get(0), {
+				center : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
+				mapTypeControl : false,
+				mapTypeId : google.maps.MapTypeId.TERRAIN,
+				scrollwheel : false,
+				streetViewControl : false,
+				zoom : zoom
+			});
 			
-		//Generate the URL where destination points can be fetched (used only in country mode)
-			var infoWindow = new google.maps.InfoWindow;
-			var dataURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/map_points.php';
-			
-		//Depending on the mode, the zoom will differ
-			var zoom;
-			
+		//If the map mode is set to city, then the marker will be placed at the latitude and longitude given in the options...
 			if ($.fn.FFI_Map_Maker.defaults.mode.toLowerCase() == 'city') {
-				zoom = $.fn.FFI_Map_Maker.defaults.cityModeZoom;
-			} else {
-				zoom = $.fn.FFI_Map_Maker.defaults.countryModeZoom;
-			}
-			
-			return this.each(function() {
-			//Google Maps instantiation and configuration
-				var map = new google.maps.Map($(this).get(0), {
-					center : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
-					mapTypeControl : false,
-					mapTypeId : google.maps.MapTypeId.TERRAIN,
-					scrollwheel : false,
-					streetViewControl : false,
-					zoom : zoom
+				var point = new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude);
+				var marker = new google.maps.Marker({
+					'animation' : google.maps.Animation.DROP,
+					'map' : map,
+					'position' : point
 				});
+		//... otherwise fetch the list of coordinates from the server
+			} else {
+				var documentURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'travel-assistant/';
 				
-			//If the map mode is set to city, then the marker will be placed at the latitude and longitude given in the options...
-				if ($.fn.FFI_Map_Maker.defaults.mode.toLowerCase() == 'city') {
-					var point = new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude);
-					var marker = new google.maps.Marker({
-						'animation' : google.maps.Animation.DROP,
-						'map' : map,
-						'position' : point
-					});
-			//... otherwise fetch the list of coordinates from the server
-				} else {
-					var documentURL = document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'travel-assistant/';
-					
-				//Make the AJAX request to the server
-					$.ajax({
-						'dataType' : 'json',
-						'url' : dataURL,
-						'type' : 'GET',
-						'success' : function(data) {
-						//Build each of the markers
-							for (var i = 0; i < data.length; ++i) {
-								var cleanState = data[i].state.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
-								var cleanCity = data[i].city.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
-								
-								var html = '<b>' + data[i].name + '</b><br><br><a href=\'' + documentURL + cleanState + '/' + cleanCity + '\'>Avaliable Trips</a>';
-								var point = new google.maps.LatLng(parseFloat(data[i].latitude), parseFloat(data[i].longitude));
-								var marker = new google.maps.Marker({
-									'animation' : google.maps.Animation.DROP,
-									'map' : map,
-									'position' : point
-								});
-								
-							//Add a custom marker balloon
-								$.fn.FFI_Map_Maker.markerClick(map, marker, infoWindow, html)
-							}
+			//Make the AJAX request to the server
+				$.ajax({
+					'dataType' : 'json',
+					'url' : dataURL,
+					'type' : 'GET',
+					'success' : function(data) {
+					//Build each of the markers
+						for (var i = 0; i < data.length; ++i) {
+							var cleanState = data[i].state.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
+							var cleanCity = data[i].city.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
+							
+							var html = '<b>' + data[i].name + '</b><br>';
+							html += data[i].needs + ' ' + (data[i].needs == 1 ? 'ride' : 'rides') + ' needed<br>';
+							html += data[i].shares + ' ' + (data[i].shares == 1 ? 'ride' : 'rides') + ' avaliable<br>';
+							html += '<br><a href=\'' + documentURL + 'browse/' + cleanState + '/' + cleanCity + '\'>Browse Trips</a>';
+							
+							var point = new google.maps.LatLng(parseFloat(data[i].latitude), parseFloat(data[i].longitude));
+							var marker = new google.maps.Marker({
+								'animation' : google.maps.Animation.DROP,
+								'map' : map,
+								'position' : point
+							});
+							
+						//Add a custom marker balloon
+							$.fn.FFI_Map_Maker.markerClick(map, marker, infoWindow, html)
 						}
-					});
-				}
-			});
-		}
-		
+					}
+				});
+			}
+		});
+	}
+	
 /**
- * The plugin settings
- *
- * @access public
- * @since  v1.0 Dev
- * @type   object 
+* The plugin settings
+*
+* @access public
+* @since  v1.0 Dev
+* @type   object 
 */
-		
-		$.fn.FFI_Map_Maker.defaults = {
-			'cityModeZoom' : 8,
-			'countryModeZoom' : 4,
-			'latitude' : 37.0902400,
-			'longitude' : -95.7128910,
-			'mode' : 'country'
-		};
-		
+	
+	$.fn.FFI_Map_Maker.defaults = {
+		'cityModeZoom' : 8,
+		'countryModeZoom' : 4,
+		'latitude' : 37.0902400,
+		'longitude' : -95.7128910,
+		'mode' : 'country'
+	};
+	
 /**
- * Add an information balloon when a marker is clicked
- *
- * @access public
- * @param  Map        map        A reference to the Google Map object
- * @param  Marker     marker     A reference to the marker which was clicked
- * @param  InfoWindow infoWindow A reference to the balloon which will display the content
- * @param  string     html       The content to display inside of the balloon
- * @return void
- * @since  v1.0 Dev
+* Add an information balloon when a marker is clicked
+*
+* @access public
+* @param  Map        map        A reference to the Google Map object
+* @param  Marker     marker     A reference to the marker which was clicked
+* @param  InfoWindow infoWindow A reference to the balloon which will display the content
+* @param  string     html       The content to display inside of the balloon
+* @return void
+* @since  v1.0 Dev
 */
-		
-	//Callback function when a marker is clicked
-		$.fn.FFI_Map_Maker.markerClick = function(map, marker, infoWindow, html) {
-			google.maps.event.addListener(marker, 'click', function() {
-				infoWindow.setContent(html);
-				infoWindow.open(map, marker);
-			});
-		}
-	});
+	
+//Callback function when a marker is clicked
+	$.fn.FFI_Map_Maker.markerClick = function(map, marker, infoWindow, html) {
+		google.maps.event.addListener(marker, 'click', function() {
+			infoWindow.setContent(html);
+			infoWindow.open(map, marker);
+		});
+	}
 })(jQuery)

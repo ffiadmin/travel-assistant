@@ -105,7 +105,7 @@ class Destination_Manager {
 			$return .= "<li>
 <a href=\"" . $essentials->friendlyURL("browse/" . self::URLPurify($state->Name)) . "\">
 <h3>" . $state->Name . "</h3>
-<p class=\"needed" . ($state->Needs > 0 ? " highlight" : "") . "\">" . $state->Needs . "  <span>" . ($state->Needs == 1 ? "Need" : "Needs") . "</span></p>
+<p class=\"needed" . ($state->Needs > 0 ? " highlight" : "") . "\">" . $state->Needs . " <span>" . ($state->Needs == 1 ? "Need" : "Needs") . "</span></p>
 <p class=\"shares" . ($state->Shares > 0 ? " highlight" : "") . "\">" . $state->Shares . " <span>" . ($state->Shares == 1 ? "Ride" : "Rides") . "</span></p>
 </a>
 </li>

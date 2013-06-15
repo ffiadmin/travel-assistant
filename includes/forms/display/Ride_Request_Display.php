@@ -260,9 +260,9 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	//Return the generated output
 		return "<div class=\"btn-group\" data-toggle=\"buttons-radio\">
 <input autocomplete=\"off\"" . ($checkedYes ? " checked" : "") . " data-toggle=\"button\" id=\"luggage-yes\" name=\"luggage\" type=\"radio\" value=\"1\">
-<label class=\"btn" . ($checkedYes ? " active" : "") . "\" for=\"luggage-yes\">Yes</label>
+<label class=\"btn\" for=\"luggage-yes\">Yes</label>
 <input autocomplete=\"off\"" . ($checkedNo ? " checked" : "") . " data-toggle=\"button\" id=\"luggage-no\" name=\"luggage\" type=\"radio\" value=\"0\">
-<label class=\"btn" . ($checkedNo ? " active" : "") . "\" for=\"luggage-no\">No</label>
+<label class=\"btn\" for=\"luggage-no\">No</label>
 </div>";
 	}
 	
@@ -290,9 +290,9 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	//Return the generated output
 		return "<div class=\"btn-group\" data-toggle=\"buttons-radio\">
 <input autocomplete=\"off\"" . ($checkedYes ? " checked" : "") . " data-toggle=\"button\" id=\"recurring-yes\" name=\"recurring\" type=\"radio\" value=\"1\">
-<label class=\"btn" . ($checkedYes ? " active" : "") . "\" for=\"recurring-yes\" id=\"recurring-yes-label\">Yes</label>
+<label class=\"btn\" for=\"recurring-yes\" id=\"recurring-yes-label\">Yes</label>
 <input autocomplete=\"off\"" . ($checkedNo ? " checked" : "") . " data-toggle=\"button\" id=\"recurring-no\" name=\"recurring\" type=\"radio\" value=\"0\">
-<label class=\"btn" . ($checkedNo ? " active" : "") . "\" for=\"recurring-no\" id=\"recurring-no-label\">No</label>
+<label class=\"btn\" for=\"recurring-no\" id=\"recurring-no-label\">No</label>
 </div>";
 	}
 	
@@ -317,7 +317,6 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		
 	//Since the list is long and the values to check are many, construct the list of days in a loop
 		for ($i = 0; $i < 5; ++$i) {
-			$class = $daysVal[$i] == "1" ? " active" : "";
 			$class = !$enabled ? " disabled" : $class;
 			$state = $daysVal[$i] == "1" ? " checked" : "";
 			$state = !$enabled ? " disabled" : $state;

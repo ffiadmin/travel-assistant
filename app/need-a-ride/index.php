@@ -5,7 +5,7 @@
 	$essentials->includePluginClass("forms/display/Ride_Request_Display");
 	$essentials->includePluginClass("forms/processing/Ride_Request_Process");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
-	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
+	$essentials->includeJS("//tinymce.cachefly.net/4/tinymce.min.js");
 	$essentials->includeJS("scripts/ride.superpackage.min.js");
 	$essentials->includeCSS("styles/ride.superpackage.min.css");
 	

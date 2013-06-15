@@ -10,6 +10,7 @@
  *  - importing necessary PHP scripts
  *  - setting the page title
  *  - including PHP, CSS, or JS files
+ *  - adding HTML to the <head> section of a page
  *  - integrating with the Interception_Manager class to make
  *    data avaliable from custom, SEO-friendly URLs
  * 
@@ -18,7 +19,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   includes
- * @since     v1.0 Dev
+ * @since     3.0
 */
 
 namespace FFI\TA;
@@ -43,6 +44,16 @@ class Essentials {
 */
 
 	private $JS = array();
+	
+/**
+ * Hold a private reference to the HTML to add to the <head> section of a
+ * page.
+ *
+ * @access private
+ * @type   array<string>
+*/
+
+	private $HTML = "";
 	
 /**
  * Hold a reference to the parameters from the URL fetched by 
@@ -78,16 +89,18 @@ class Essentials {
  *
  * Share any parameters from the URL fetched by 
  * Interception_Manager::registerException() with the rest of
- * the class
+ * the class. Also, register an action hook with wp_head() to
+ * allow HTML to be added to the <head> section of a webpage.
  * 
  * @access public
  * @param  boolean|array<string> $params An array of parameters from the URL fetched by Interception_Manager::registerException(), or false if none
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function __construct($params) {
 		$this->params = $params;
+		add_action("wp_head", array($this, "actionHookIncludeHTML"));
 	}
 
 /**
@@ -99,7 +112,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function requireLogin() {
@@ -120,7 +133,7 @@ class Essentials {
  * 
  * @access public
  * @return boolean  Whether or not the user's information could be obtained, based on their login status
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function storeUserInfo() {
@@ -136,12 +149,39 @@ class Essentials {
 	}
 	
 /**
+ * Add HTML to the <head> section of a page. This could be most useful
+ * for including content such as custom <meta> tags in the head section
+ * of a page.
+ *
+ * @access public
+ * @return void
+ * @since  3.0
+*/
+	
+	public function includeHeadHTML($HTML) {
+		$this->HTML .= $HTML;
+	}
+	
+/**
+ * The method called by Wordpress to include the HTML in the <head> 
+ * section of a page.
+ * 
+ * @access public
+ * @return void
+ * @since  3.0
+*/
+	
+	public function actionHookIncludeHTML() {
+		echo $this->HTML . "\n";
+	}
+	
+/**
  * Set the <title> of the HTML page.
  * 
  * @access public
  * @param  string   $title The title of the HTML page
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function setTitle($title) {
@@ -155,7 +195,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function actionHookSetTitle($title) {
@@ -174,7 +214,7 @@ class Essentials {
  * @access public
  * @param  string   $address The of the PHP script URL with respect to the "app" folder
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function includePHP($address) {
@@ -193,7 +233,7 @@ class Essentials {
  * @access public
  * @param  string   $class The name of of the PHP plugin class to import
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function includePluginClass($class) {
@@ -219,7 +259,7 @@ class Essentials {
  * @access public
  * @param  string   $address The URL of the external stylesheet or the URL with respect to the "app" folder
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function includeCSS($address) {
@@ -234,7 +274,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function actionHookIncludeCSS($CSS) {		
@@ -261,6 +301,7 @@ class Essentials {
  *
  * External scripts must be prefixed with a "//" for this class to 
  * know the request is for an external JS file.
+
  * 
  * Since this method may be called multiple times, each address must be 
  * stored in the $this->JS variable, since the script isn't added 
@@ -271,7 +312,7 @@ class Essentials {
  * @access public
  * @param  string   $address The URL of the external script or the URL with respect to the "app" folder
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function includeJS($address) {
@@ -286,7 +327,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function actionHookIncludeJS() {
@@ -310,14 +351,24 @@ class Essentials {
  * So a request such as "system/images/bkg.jpg" would rewrite
  * the URL like so: .../<plugin-name>/app/system/images/bkg.jpg.
  *
+ * If this plugin is configured to use a CDN, the appended URL
+ * will point to a CDN. A request such as "system/images/bkg.jpg"
+ * would rewrite the URL like so:
+ * //<wordpress-site or CDN>/.../<plugin-name>/app/system/images/
+ * bkg.jpg
+ *
+ * This function is probably best used for URLs pointing to items
+ * such as images, downloadable file, or other content which would
+ * typically be stored on a CDN
+ *
  * @access public
  * @param  string   $address The URL with respect to the "app" folder
  * @return string   $address The normalized version of the given URL
- * @since  v1.0 Dev
+ * @since  3.0
 */
 	
 	public function normalizeURL($address) {
-		return REAL_ADDR . "app/" . $address;
+		return (CDN ? RESOURCE_PATH : REAL_ADDR) . "app/" . $address;
 	}
 	
 /**
@@ -325,12 +376,12 @@ class Essentials {
  * folder and give it an absolute URL with respect to the friendly 
  * URL of this plugin. So a request such as "subpage/details.php" 
  * would rewrite the URL like so: 
- * http://<wordpress-site/<plugin-name>/listings/details.php
+ * //<wordpress-site>/<plugin-name>/listings/details.php
  *
  * @access public
  * @param  string   $address The URL with respect to the "app" folder
  * @return string   $address The friendly version of the given URL
- * @since  v1.0 Dev
+ * @since  3.0
 */
 
 	public function friendlyURL($address) {
