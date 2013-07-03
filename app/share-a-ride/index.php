@@ -5,7 +5,7 @@
 	$essentials->includePluginClass("forms/display/Ride_Share_Display");
 	$essentials->includePluginClass("forms/processing/Ride_Share_Process");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
-	$essentials->includeJS("//cdnjs.cloudflare.com/ajax/libs/tinymce/3.5.8/tiny_mce.js");
+	$essentials->includeJS("//tinymce.cachefly.net/4/tinymce.min.js");
 	$essentials->includeJS("scripts/ride.superpackage.min.js");
 	$essentials->includeCSS("styles/ride.superpackage.min.css");
 	
@@ -76,10 +76,19 @@
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"where-city\">Where:</label>
+<label class=\"control-label\" for=\"from-where-city\">From Where:</label>
 <div class=\"controls\">
 <div class=\"input-append input-prepend\">
-" . $display->getWhere() . "
+" . $display->getFromWhere() . "
+</div>
+</div>
+</div>
+
+<div class=\"control-group\">
+<label class=\"control-label\" for=\"to-where-city\">To Where:</label>
+<div class=\"controls\">
+<div class=\"input-append input-prepend\">
+" . $display->getToWhere() . "
 </div>
 </div>
 </div>

@@ -53,7 +53,7 @@ abstract class Ride_Data_Fetch {
 		
 		if ($ID) {
 			$tableName = esc_sql($tableName);
-			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.*, ffi_ta_cities.City AS `CityName`, ffi_ta_cities.State AS `State` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.City = ffi_ta_cities.ID WHERE {$tableName}.ID = %d AND {$tableName}.Person = %d LIMIT 1", $ID, $userID));
+			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.*, ffi_ta_cities.City AS `FromCityName`, ffi_ta_cities.State AS `FromState`, cities.City AS `ToCityName`, cities.State AS `ToState` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.FromCity = ffi_ta_cities.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `cities` ON {$tableName}.ToCity = cities.ID WHERE {$tableName}.ID = %d AND {$tableName}.Person = %d LIMIT 1", $ID, $userID));
 			
 		//SQL returned 0 tuples
 			if (!count($this->data)) {

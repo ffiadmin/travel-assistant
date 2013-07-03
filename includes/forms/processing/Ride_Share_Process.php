@@ -20,6 +20,28 @@ namespace FFI\TA;
 
 class Ride_Share_Process {
 /**
+ * Hold a constant which will be used when processing the "From 
+ * Where" form item
+ *
+ * @access private
+ * @const
+ * @type   string
+*/
+
+	const FROM = "from";
+
+/**
+ * Hold a constant which will be used when processing the "To 
+ * Where" form item
+ *
+ * @access private
+ * @const
+ * @type   string
+*/
+
+	const TO = "to";
+
+/**
  * Hold the DateTime objcet which will be used to format dates
  *
  * @access private
@@ -57,13 +79,49 @@ class Ride_Share_Process {
 	private $leavingTimeZone;
 	
 /**
+ * Hold the city from which the user will be traveling
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $fromCity;
+	
+/**
+ * Hold the state from which the user will be traveling
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $fromStateCode;
+	
+/**
+ * Hold the latitude of the user's origin city
+ *
+ * @access private
+ * @type   float
+*/
+	
+	private $fromLatitude;
+	
+/**
+ * Hold the longitude of the user's origin city
+ *
+ * @access private
+ * @type   float
+*/
+	
+	private $fromLongitude;
+	
+/**
  * Hold the city to which the user will be traveling
  *
  * @access private
  * @type   string
 */
 	
-	private $city;
+	private $toCity;
 	
 /**
  * Hold the state to which the user will be traveling
@@ -72,7 +130,7 @@ class Ride_Share_Process {
  * @type   string
 */
 	
-	private $stateCode;
+	private $toStateCode;
 	
 /**
  * Hold the latitude of the user's destination city
@@ -81,7 +139,7 @@ class Ride_Share_Process {
  * @type   float
 */
 	
-	private $latitude;
+	private $toLatitude;
 	
 /**
  * Hold the longitude of the user's destination city
@@ -90,7 +148,7 @@ class Ride_Share_Process {
  * @type   float
 */
 	
-	private $longitude;
+	private $toLongitude;
 	
 /**
  * Hold the total number of avaliable seats
@@ -285,8 +343,8 @@ class Ride_Share_Process {
 	
 	private function userSubmittedForm() {
 		if (is_array($_POST) && count($_POST) && 
-			isset($_POST['when']) && isset($_POST['where-city']) && isset($_POST['where-state']) && isset($_POST['seats']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['days']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
-			!empty($_POST['when']) && !empty($_POST['where-city']) && !empty($_POST['where-state']) && is_numeric($_POST['seats']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['days']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
+			isset($_POST['when']) && isset($_POST['from-where-city']) && isset($_POST['from-where-state'])  && isset($_POST['to-where-city']) && isset($_POST['to-where-state']) && isset($_POST['seats']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['days']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
+			!empty($_POST['when']) && !empty($_POST['from-where-city']) && !empty($_POST['from-where-state']) && !empty($_POST['to-where-city']) && !empty($_POST['to-where-state']) && is_numeric($_POST['seats']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['days']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
 			return true;	
 		}
 		
@@ -330,12 +388,16 @@ class Ride_Share_Process {
 			return false;
 		}
 		
-	//Validate and retain the city name and state code	
-		$cityName = $_POST['where-city'];
-		$stateCode = strtoupper($_POST['where-state']);
+	//Validate and retain the origin and destination city names and state codes
+		$fromCityName = $_POST['from-where-city'];
+		$fromStateCode = strtoupper($_POST['from-where-state']);	
+		$toCityName = $_POST['to-where-city'];
+		$toStateCode = strtoupper($_POST['to-where-state']);
 		$validStates = array("AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DC", "DE", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY");
 		
-		if (in_array($stateCode, $validStates) && $this->getCoords($cityName, $stateCode)) {
+		if (in_array($fromStateCode, $validStates) && in_array($toStateCode, $validStates) &&
+			$this->getCoords($fromCityName, $fromStateCode, self::FROM) && $this->getCoords($toCityName, $toStateCode, self::TO) &&
+			($this->fromCity != $this->toCity || ($this->fromCity == $this->toCity && $this->fromStateCode != $this->toStateCode))) {
 			//getCords() already set the needed variables
 		} else {
 			return false;
@@ -436,11 +498,12 @@ class Ride_Share_Process {
  * @access private
  * @param  string   $city  The name of the city to locate
  * @param  string   $state The state in which the city is located
+ * @param  string   $type  Whether to store the results in the "From Where" or "To Where" variables
  * @return boolean         Whether or not the latitude and longitude of the city could be determined
  * @since  v1.0 Dev
 */
 	
-	private function getCoords($city, $state) {
+	private function getCoords($city, $state, $type) {
 		$URL = "http://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($city . ", " . $state) . "&components=country:US&sensor=false";
 		$data = file_get_contents($URL);
 		
@@ -460,10 +523,17 @@ class Ride_Share_Process {
 		}
 		
 	//All information past this point is considered valid; share this data with the class
-		$this->city = $data->results[0]->address_components[0]->long_name;
-		$this->stateCode = $state;
-		$this->latitude = $data->results[0]->geometry->location->lat;
-		$this->longitude = $data->results[0]->geometry->location->lng;
+		if ($type == self::FROM) {
+			$this->fromCity = $data->results[0]->address_components[0]->long_name;
+			$this->fromStateCode = $state;
+			$this->fromLatitude = $data->results[0]->geometry->location->lat;
+			$this->fromLongitude = $data->results[0]->geometry->location->lng;
+		} else {
+			$this->toCity = $data->results[0]->address_components[0]->long_name;
+			$this->toStateCode = $state;
+			$this->toLatitude = $data->results[0]->geometry->location->lat;
+			$this->toLongitude = $data->results[0]->geometry->location->lng;
+		}
 		
 		return true;
 	}
@@ -502,14 +572,18 @@ class Ride_Share_Process {
  * the table and get the city ID.
  * 
  * @access private
+ * @param  string   $city      The name of the city
+ * @param  string   $stateCode The state code where the city resides
+ * @param  int      $latitude  The latitude of the city
+ * @param  int      $longitude The longitude of the city
  * @return int      The ID of the city of interest
  * @since  v1.0 Dev
 */
 	
-	private function cityID() {
+	private function cityID($city, $stateCode, $latitude, $longitude) {
 		global $wpdb;
 		
-		$cityData = $wpdb->get_results($wpdb->prepare("SELECT ID FROM `ffi_ta_cities` WHERE `City` = %s AND `State` = %s", $this->city, $this->stateCode));
+		$cityData = $wpdb->get_results($wpdb->prepare("SELECT ID FROM `ffi_ta_cities` WHERE `City` = %s AND `State` = %s", $city, $stateCode));
 		
 	//Has this city already been entered into the table?
 		if (count($cityData)) {
@@ -517,10 +591,10 @@ class Ride_Share_Process {
 		} else {
 			$wpdb->insert("ffi_ta_cities", array(
 				"ID" => NULL,
-				"City" => $this->city,
-				"State" => $this->stateCode,
-				"Latitude" => $this->latitude,
-				"Longitude" => $this->longitude
+				"City" => $city,
+				"State" => $stateCode,
+				"Latitude" => $latitude,
+				"Longitude" => $longitude
 			), array(
 				"%s", "%s", "%s", "%s", "%s"
 			));
@@ -541,8 +615,9 @@ class Ride_Share_Process {
 	private function insert() {
 		global $wpdb;
 		
-	//Has this city ever been recorded before?
-		$cityID = $this->cityID();
+	//Have these cities ever been recorded before?
+		$fromCityID = $this->cityID($this->fromCity, $this->fromStateCode, $this->fromLatitude, $this->fromLongitude);
+		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
 	//Insert the sharing information in the database
 		$wpdb->insert("ffi_ta_share", array(
@@ -550,7 +625,8 @@ class Ride_Share_Process {
 			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
-			"City" => $cityID,
+			"FromCity" => $fromCityID,
+			"ToCity" => $toCityID,
 			"Seats" => $this->seats,
 			"MalesPresent" => $this->males,
 			"FemalesPresent" => $this->females,
@@ -566,7 +642,7 @@ class Ride_Share_Process {
 			"EndDate" => $this->until,
 			"Comments" => $this->comments
 		), array(
-			"%s", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 	}
 	
@@ -584,15 +660,17 @@ class Ride_Share_Process {
 	private function update($ID) {
 		global $wpdb;
 		
-	//Has this city ever been recorded before?
-		$cityID = $this->cityID();
+	//Have these cities ever been recorded before?
+		$fromCityID = $this->cityID($this->fromCity, $this->fromStateCode, $this->fromLatitude, $this->fromLongitude);
+		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
 	//Update the sharing information in the database
 		$wpdb->update("ffi_ta_share", array(
 			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
-			"City" => $cityID,
+			"FromCity" => $fromCityID,
+			"ToCity" => $toCityID,
 			"Seats" => $this->seats,
 			"MalesPresent" => $this->males,
 			"FemalesPresent" => $this->females,
@@ -610,7 +688,7 @@ class Ride_Share_Process {
 		), array (
 			"ID" => $ID
 		), array(
-			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));

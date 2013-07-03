@@ -73,10 +73,19 @@
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"where-city\">Where:</label>
+<label class=\"control-label\" for=\"from-where-city\">From Where:</label>
 <div class=\"controls\">
 <div class=\"input-append input-prepend\">
-" . $display->getWhere() . "
+" . $display->getFromWhere() . "
+</div>
+</div>
+</div>
+
+<div class=\"control-group\">
+<label class=\"control-label\" for=\"to-where-city\">To Where:</label>
+<div class=\"controls\">
+<div class=\"input-append input-prepend\">
+" . $display->getToWhere() . "
 </div>
 </div>
 </div>

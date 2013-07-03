@@ -58,3 +58,15 @@
 		});
 	});
 })(jQuery)
+
+//Custom function for validating that the cities are not the same
+	function locDifferent(field, rules, i, options) {
+		var fromCity = $('input#from-where-city').val();
+		var fromState = $('input#from-where-state').val();
+		var toCity = $('input#to-where-city').val();
+		var toState = $('input#to-where-state').val();
+
+		if (fromCity == toCity && fromState == toState) {
+			return "The origin and destination locations must be different";
+		}
+	}

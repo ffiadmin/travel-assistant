@@ -140,7 +140,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	}
 	
 /**
- * Output a prefilled form element containing the "Where" city text 
+ * Output a prefilled form element containing the "From Where" city text 
  * input and state drop down menu for section one of this form.
  * 
  * @access public
@@ -148,12 +148,30 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * @since  v1.0 Dev
 */
 	
-	public function getWhere() {
-		return "<input autocomplete=\"off\" class=\"rounded-left validate[required]\" id=\"where-city\" name=\"where-city\" placeholder=\"Destination city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->CityName : "") . "\">
+	public function getFromWhere() {
+		return "<input autocomplete=\"off\" class=\"rounded-left validate[required,funcCall[locDifferent]]\" id=\"from-where-city\" name=\"from-where-city\" placeholder=\"Origin city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->FromCityName : "") . "\">
 
-<select class=\"input-small rounded-right validate[required]\" id=\"where-state\" name=\"where-state\">
+<select class=\"input-small rounded-right validate[required]\" id=\"from-where-state\" name=\"from-where-state\">
 <option selected value=\"\">State</option>
-" . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->State : "", "codes") . "
+" . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->FromState : "", "codes") . "
+</select>";
+	}
+	
+/**
+ * Output a prefilled form element containing the "To Where" city text 
+ * input and state drop down menu for section one of this form.
+ * 
+ * @access public
+ * @return string   A form item prefilled with a value from either the database or a default value
+ * @since  v1.0 Dev
+*/
+	
+	public function getToWhere() {
+		return "<input autocomplete=\"off\" class=\"rounded-left validate[required]\" id=\"to-where-city\" name=\"to-where-city\" placeholder=\"Destination city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->ToCityName : "") . "\">
+
+<select class=\"input-small rounded-right validate[required]\" id=\"to-where-state\" name=\"to-where-state\">
+<option selected value=\"\">State</option>
+" . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->ToState : "", "codes") . "
 </select>";
 	}
 	

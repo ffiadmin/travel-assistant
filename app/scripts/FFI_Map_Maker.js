@@ -82,14 +82,32 @@
 					'success' : function(data) {
 					//Build each of the markers
 						for (var i = 0; i < data.length; ++i) {
+						//Clean up the state and city name for URL formatting
 							var cleanState = data[i].state.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
 							var cleanCity = data[i].city.replace(/[^A-Za-z0-9\s]/g, '').replace(/[\s]/g, '-').toLowerCase();
 							
 							var html = '<b>' + data[i].name + '</b><br>';
-							html += data[i].needs + ' ' + (data[i].needs == 1 ? 'ride' : 'rides') + ' needed<br>';
-							html += data[i].shares + ' ' + (data[i].shares == 1 ? 'ride' : 'rides') + ' avaliable<br>';
+
+						//Don't show any information that has "0" rides needed/available
+							if (data[i].fromNeeds > 0) {
+								html += data[i].fromNeeds + ' ' + (data[i].fromNeeds == 1 ? 'ride' : 'rides') + ' leaving here needed<br>';
+							}
+
+							if (data[i].fromShares > 0) {
+								html += data[i].fromShares + ' ' + (data[i].fromShares == 1 ? 'ride' : 'rides') + ' leaving here avaliable<br>';
+							}
+
+							if (data[i].toNeeds > 0) {
+								html += data[i].toNeeds + ' ' + (data[i].toNeeds == 1 ? 'ride' : 'rides') + ' going here needed<br>';
+							}
+
+							if (data[i].toShares > 0) {
+								html += data[i].toShares + ' ' + (data[i].toShares == 1 ? 'ride' : 'rides') + ' going here avaliable<br>';
+							}
+
 							html += '<br><a href=\'' + documentURL + 'browse/' + cleanState + '/' + cleanCity + '\'>Browse Trips</a>';
 							
+						//Build the marker
 							var point = new google.maps.LatLng(parseFloat(data[i].latitude), parseFloat(data[i].longitude));
 							var marker = new google.maps.Marker({
 								'animation' : google.maps.Animation.DROP,

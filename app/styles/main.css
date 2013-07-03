@@ -68,66 +68,60 @@ section#splash div.ad-container div.ad-contents > h2::before {
  * ----------------------------------
 */
 
-section.content, article.content {
+article.content, section.content {
 	background: #FFFFFF;
+	border-top: 1px solid #DDDDDD;
 	padding: 65px 10% 65px 10%;
 }
 
-section.content.even, article.content.even {
-	background: #FFFCF9 !important;
+article.content.even, section.content.even {
+	background: #FFFCF9;
 	border-bottom: 1px solid #DDDDDD;
-	border-top: 1px solid #DDDDDD;
 }
 
-section.content h2, article.content h2 {
-	color: #303030;	
-	font-size: 24px;
+article.content > h1, section.content > h1, article.content > h2, section.content > h2, article.content header h1, section.content header h1, article.content header h2, section.content header h2 {
+	color: #303030;
+	font-size: 24px !important;
 	font-weight: lighter;
-    padding-bottom: 10px;
+	line-height: normal !important;
+	margin: 0px 0px 20px 0px;
+ 	padding-bottom: 10px;
+	text-align: center;
 	text-transform: uppercase;
 }
 
-section.content h2::after, article.content h2::after {
+article.content > h1::after, section.content > h1::after, article.content > h2::after, section.content > h2::after, article.content header h1::after, section.content header h1::after, article.content header h2::after, section.content header h2::after {
 	border-top: 2px solid #303030;
 	content: ' ';
 	display: block;
-	margin: 7px auto 0px 0px;
+	margin: 7px auto 0px auto;
 	padding: 0px;
+	text-align: center;
 	width: 300px;
 }
 
-section.content p, article.content p {
+article.content p, section.content p {
 	color: #777777;
 	font-size: 15px;
 	margin: 10px 0px 10px 0px;
-	max-width: 650px;
 }
 
-section.content h3, article.content h3 {
+article.content > h3, section.content > h3 {
 	padding-top: 40px;
 }
 
-section.content.center h2, article.content.center h2 {
-	text-align: center;
-}
-
-section.content.center h2::after, article.content.center h2::after {
-	margin: 7px auto 0px auto;
-	text-align: center;
-}
-
-section.content.center p, article.content.center p {
+article.content.center p, section.content.center p {
 	margin: 15px auto 15px auto;
 	max-width: 850px;
 	text-align: center;
 }
 
 @media screen and (max-width: 650px) {
-    article.content {
-        padding: 15px 10% 15px 10%;
-    }
+	article.content, section.content {
+		padding: 15px 10% 15px 10%;
+	}
     
-    article.content h2::after {
-        content: none;
-    }
+	article.content > h1::after, section.content > h1::after, article.content > h2::after, section.content > h2::after, article.content header h1::after, section.content header h1::after, article.content header h2::after, section.content header h2::after {
+		content: none;
+	}
 }
