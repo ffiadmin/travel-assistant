@@ -209,3 +209,13 @@ ul.cities li a h3 {
 		top: 25px;
 	}
 }
+
+/**
+ * Nothing available section
+ * ----------------------------------
+*/
+
+button.request, button.share {
+	margin: 30px 20px;
+}
+

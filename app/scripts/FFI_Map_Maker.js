@@ -105,7 +105,7 @@
 								html += data[i].toShares + ' ' + (data[i].toShares == 1 ? 'ride' : 'rides') + ' going here avaliable<br>';
 							}
 
-							html += '<br><a href=\'' + documentURL + 'browse/' + cleanState + '/' + cleanCity + '\'>Browse Trips</a>';
+							html += '<br><a href=\'' + documentURL + 'browse/' + cleanState + '/' + cleanCity + '/\'>Browse Trips</a>';
 							
 						//Build the marker
 							var point = new google.maps.LatLng(parseFloat(data[i].latitude), parseFloat(data[i].longitude));

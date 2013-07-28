@@ -9,30 +9,7 @@
 	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=" . $API . "&sensor=false");
 	$essentials->includeJS("scripts/FFI_Map_Maker.js");
 	$essentials->includeCSS("styles/welcome.css");
-	$essentials->includeHeadHTML("<script>\$(function(){\$('article.map').FFI_Map_Maker(); \$('li.browse').click(function(){\$('html, body').animate({scrollTop: \$('article.browse').offset().top + 1}, 500)});});</script>");
-
-//Display an alert message, if necessary
-	if (isset($_GET['action'])) {
-		switch($_GET['action']) {
-			case "inserted" : 
-				echo "<div class=\"alert alert-success\">
-<button class=\"close\" data-dismiss=\"alert\" type=\"button\">&times;</button>
-<strong>Success!</strong> Your posting has been successfully submitted.
-</div>
-
-";
-				break;
-				
-			case "updated" : 
-				echo "<div class=\"alert alert-success\">
-<button class=\"close\" data-dismiss=\"alert\" type=\"button\">&times;</button>
-<strong>Success!</strong> Your posting has been successfully updated.
-</div>
-
-";
-				break;
-		}
-	}
+	$essentials->includeHeadHTML("<script>\$(function(){\$('article.map').FFI_Map_Maker(); \$('li.browse').click(function(){\$('html, body').animate({scrollTop: \$('article.browse').offset().top + 1}, 500)})})</script>");
 
 //Display the a Google Maps of the United States with all avaliable or needed trip locations
 	echo "<article class=\"map\"><h2>Map of Avaliable or Needed Trip Locations</h2></article>

@@ -19,7 +19,7 @@
 
 namespace FFI\TA;
 
-require_once(dirname(dirname(__FILE__)) . "/exceptions/Base_Exception.php");
+require_once(dirname(dirname(__FILE__)) . "/exceptions/Invalid_State_Exception.php");
 
 class State {
 /**
@@ -62,45 +62,25 @@ class State {
 		global $wpdb;
 
 	//Fetch the data
-		$data = $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_states.Code, `Name`, `Image`, `District`, `URL` FROM `ffi_ta_states` LEFT JOIN (SELECT `Code`, LOWER(REPLACE(`Name`, ' ', '-')) AS `URL` FROM `ffi_ta_states`) `q` ON ffi_ta_states.Code = q.Code WHERE `URL` = %s"), $stateURL);
+		$data = $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_states.Code, `Name`, `Image`, `District`, `URL` FROM `ffi_ta_states` LEFT JOIN (SELECT `Code`, LOWER(REPLACE(`Name`, ' ', '-')) AS `URL` FROM `ffi_ta_states`) `q` ON ffi_ta_states.Code = q.Code WHERE `URL` = %s", $stateURL));
 
 	//Was a state returned?
 		if (count($data)) {
-			return $data;
+			return $data[0];
 		}
 
 		throw new Invalid_State_Exception("The state URL &quot;" . $stateURL . "&quot; does not exist.");
 	}
 
 /**
- * This function will return a listing of origin cities (cities in the 
- * given state that a user will be leaving, but not necessarily travelling
- * out of state) sorted alphabetically with the number of rides needed or 
- * available, when given the URL of the desired state.
- *
- * @access public
- * @param  string                $stateURL     The URL of the state in which to fetch the listing of cities
- * @return array<object<string>>               The Wordpress array of objects returned from the database query
- * @since  1.0
- * @static
-*/
-
-	public static function getOriginCitiesByState($stateURL) {
-		global $wpdb;
-
-		return $wpdb->get_results($wpdb->prepare("SELECT `City`, `StateName`, `Code`, REPLACE(LOWER(`StateName`), ' ', '-') AS `URL`, `Image`, `District`, `Latitude`, `Longitude`, `Needs`, `Shares` FROM (SELECT ffi_ta_cities.*, ffi_ta_states.Name AS `StateName`, ffi_ta_states.Code, ffi_ta_states.Image, ffi_ta_states.District, COALESCE(q1.Needs, 0) AS `Needs`, COALESCE(q2.Shares, 0) AS `Shares` FROM `ffi_ta_cities` LEFT JOIN `ffi_ta_states` ON ffi_ta_cities.State = ffi_ta_states.Code LEFT JOIN (SELECT `FromCity`, COUNT(`FromCity`) AS `Needs` FROM `ffi_ta_need` GROUP BY `FromCity`) `q1` ON ffi_ta_cities.ID = q1.FromCity LEFT JOIN (SELECT `FromCity`, COUNT(`FromCity`) AS `Shares` FROM `ffi_ta_share` GROUP BY `FromCity`) `q2` ON ffi_ta_cities.ID = q2.FromCity) `query` WHERE `Needs` > 0 OR `Shares` > 0 HAVING `URL` = %s ORDER BY `City` ASC", $stateURL));
-	}
-
-/**
- * This function will take either the name of a state or city and prepare
- * it for use in a URL by removing any spaces and special characters, and
- * then making all characters lower case, which is this plugin's convention
- * when placing names of cities and states in a URL.
- *
+ * This function will take either the name of a state and prepare it
+ * for use in a URL by removing any spaces and special characters, and
+ * then making all characters lower case, which is this plugin's
+ * convention when placing names of cities and states in a URL.
  * 
  * @access public
- * @param  string $name The name of a city or state
- * @return string       The URL purified version of the city or state name
+ * @param  string $name The name of a state
+ * @return string       The URL purified version of the state name
  * @since  1.0
  * @static
 */

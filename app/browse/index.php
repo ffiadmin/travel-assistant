@@ -11,43 +11,52 @@
 
 //Include the necessary scripts
 	$essentials->includeCSS("styles/browse.css");
-	$essentials->includePluginClass("display/Trip_Info");
+	$essentials->includePluginClass("display/City");
+	$essentials->includePluginClass("display/State");
+	$essentials->includeHeadHTML("<script>\$(function(){\$('button.request').click(function(){document.location='" . $essentials->friendlyURL("need-a-ride") . "'});\$('button.share').click(function(){document.location='" . $essentials->friendlyURL("share-a-ride") . "'})})</script>");
 
-//Fetch the information for the state
-	$params = $essentials->params ? $essentials->params[0] : "DNE";
-	$failRedirect = $essentials->friendlyURL("");
-	$info = FFI\BE\Trip_Info::getOriginCitiesByState($params);
+//Check to see if this state exists
+	$params = $essentials->params[0];
+	$state = FFI\TA\State::exists($params);
+
+	if ($state) {
+		$info = FFI\TA\City::getOriginCities($params);
+	} else {
+		wp_redirect($essentials->friendlyURL(""));
+		exit;
+	}
 
 //Set the page title
-	$essentials->setTitle($info[0]->StateName);
+	$essentials->setTitle($state->Name);
 
 //Display the page
-	echo "<h1>" . $info[0]->StateName . "</h1>
+	echo "<h1>" . $state->Name . "</h1>
 
 ";
 
 //Display the welcome splash section
 	echo "<section id=\"splash\">
-<div class=\"ad-container\" style=\"background-image:url(" . $essentials->normalizeURL("styles/splash/state-backgrounds/" . $info[0]->Image) . ".jpg)\">
+<div class=\"ad-container\" style=\"background-image:url(" . $essentials->normalizeURL("styles/splash/state-backgrounds/" . $state->Image) . ".jpg)\">
 <div class=\"ad-contents\">
-<h2>" . $info[0]->StateName . "</h2>
+<h2>" . $state->Name . "</h2>
 </div>
 </div>
 </section>
 
 ";
 
-//Display all trips into Pennsylvania
-	echo "<section class=\"center content\">
-<h2>" . $info[0]->StateName . " Cities</h2>
-<p>Below is a listing of cities within " . $info[0]->StateName . " which have at least one ride requested or available. Click on one of the cities below to see a listing of rides which will be leaving that city, and where they are all headed to!</p>
+//Display all origin state cities
+	if (count($info)) {
+		echo "<section class=\"center content\">
+<h2>" . $state->Name . " Cities</h2>
+<p>Below is a listing of cities within " . $state->Name . " which have at least one ride requested or available. Click on one of the cities below to see a listing of rides which will be leaving that city, and where they are all headed to!</p>
 
 <ul class=\"cities\">";
 
-	foreach($info as $city) {
-		echo "
+		foreach($info as $city) {
+			echo "
 <li>
-<a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\BE\Trip_Info::URLPurify($city->City)) . "\">
+<a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\TA\State::URLPurify($city->City)) . "\">
 <div style=\"background-image: url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->City) . ",+" . urlencode($city->Code) . "&zoom=13&size=180x180&markers=color:red%7C" . $city->Latitude . "," . $city->Longitude . "&key=" . $API . "&sensor=false')\">
 <p class=\"needed" . ($city->Needs > 0 ? " highlight" : "") . "\">" . $city->Needs . " <span>" . ($city->Needs == 1 ? "Need" : "Needs") . "</span></p>
 <p class=\"shares" . ($city->Shares > 0 ? " highlight" : "") . "\">" . $city->Shares . " <span>" . ($city->Shares == 1 ? "Ride" : "Rides") . "</span></p>
@@ -56,8 +65,19 @@
 </a>
 </li>
 ";
-	}
+		}
 
-	echo "</ul>
+		echo "</ul>
 </section>";
+//Display a comment if no cities are availabke for a particular state
+	} else {
+		echo "<section class=\"center content\">
+<h2>Nothing Available</h2>
+<p>We do not currently have anyone who needs or can share a ride in the state of " . $state->Name . ". Sorry about that. :-(</p>
+<p class=\"center\">
+<button class=\"btn btn-warning request\">Request Ride</button>
+<button class=\"btn btn-warning share\">Share Ride</button>
+</p>
+</section>";
+	}
 ?>
