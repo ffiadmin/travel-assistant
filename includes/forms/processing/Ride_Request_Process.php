@@ -355,7 +355,7 @@ class Ride_Request_Process {
 		global $essentials;
 		
 	//Retain the user ID, an earlier script will already have ensured the user is logged in
-		$this->person = $essentials->user-ID;
+		$this->person = $essentials->user->ID;
 		
 	//Validate and retain the leaving date
 		$date = trim(mb_substr($_POST['when'], 0, -3)); //Will handle trimming " ET" and "AKT"
