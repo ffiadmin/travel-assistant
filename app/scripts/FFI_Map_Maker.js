@@ -56,7 +56,7 @@
 			var map = new google.maps.Map($(this).get(0), {
 				center : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
 				mapTypeControl : false,
-				mapTypeId : google.maps.MapTypeId.TERRAIN,
+				mapTypeId : google.maps.MapTypeId.ROADMAP,
 				scrollwheel : false,
 				streetViewControl : false,
 				zoom : zoom

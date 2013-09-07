@@ -1,4 +1,19 @@
 /**
+ * Splash display
+ * ----------------------------------
+*/
+
+section#splash div.ad-container {
+	height: 281px;
+	max-height: 281px;
+	min-height: 281px;
+}
+
+section#splash div.ad-container div.ad-contents h2 {
+	display: none;
+}
+
+/**
  * City disks
  * ----------------------------------
 */
@@ -219,3 +234,140 @@ button.request, button.share {
 	margin: 30px 20px;
 }
 
+/**
+ * Destination city list
+ * ----------------------------------
+*/
+
+ul.destinations {
+	margin: 40px 0px 0px 0px;
+	text-align: center;
+}
+
+ul.destinations > li {
+	box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.35);
+	display: inline-block;
+	list-style: none;
+	margin: 14px 7px;
+	max-width: 230px;
+	width: 30%;
+}
+
+ul.destinations > li:hover {
+	box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.65);
+}
+
+ul.destinations li img.mobile {
+	display: none;
+}
+
+ul.destinations li h3 {
+	color: #222;
+	font-size: 14px;
+	height: 33px;
+	font-weight: bolder;
+	line-height: normal;
+	margin: 7px;
+}
+
+ul.destinations li ul {
+	background: #F5F5F5;
+	border-top: 1px solid #E7E7E7;
+	font-size: 12px;
+	height: 21px;
+	margin: 7px 0px 0px 0px;
+	padding: 7px 8px;
+}
+
+ul.destinations li ul li {
+	background: url(sprites/browse.png) no-repeat;
+	color: #76736E;
+	display: inline-block;
+	list-style: none;
+	padding-left: 23px;
+	text-align: left;
+}
+
+ul.destinations li ul li.departure {
+	background-position: 0px 4px;
+	float: left;
+}
+
+ul.destinations li ul li.occupants {
+	background-position: 6px -29px;
+	float: right;
+	text-align: center;
+	width: 15px;	
+}
+
+ul.destinations li ul li span.mobile {
+	display: none;
+}
+
+@media screen and (max-width: 890px) {  
+	ul.destinations li ul li.departure span.desktop {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 675px) {
+	ul.destinations > li {
+		box-shadow: none;
+		display: block;
+		height: 100px;
+		margin: 14px 0px;
+		max-width: none;
+		padding: 15px 0px;
+		text-align: left;
+		width: 100%;
+	}
+	
+	ul.destinations > li:hover {
+		box-shadow: none;
+	}
+	
+	ul.destinations li img.desktop {
+		display: none;
+	}
+	
+	ul.destinations li img.mobile {
+		border-radius: 100%;
+		display: inline;
+		float: left;
+	}
+	
+	ul.destinations li h3 {
+		font-size: 18px;
+		font-weight: lighter;
+		margin: 0px;
+		padding: 10px 0px 0px 115px;
+	}
+	
+	ul.destinations li ul {
+		background: none;
+		border-top: none;
+		height: auto;
+		margin-top: 0px;
+		padding: 0px 0px 12px 115px;
+	}
+	
+	ul.destinations li ul li {
+		display: block;
+		float: none !important;
+		text-align: left !important;
+	}
+	
+	ul.destinations li ul li.departure {
+		background-position: 1px 4px;
+	}
+	
+	ul.destinations li ul li.occupants {
+		background-position: 1px -29px;
+		margin-top: 5px;
+		width: auto;
+	}
+	
+	ul.destinations li ul li span.mobile {
+		display: inline;
+	}
+}

@@ -16,7 +16,7 @@
 
 ";
 	
-//Description and "I Have or Need a Ride" section
+//Display the plugin description and navigation tiles section
 	echo "<article class=\"center content welcome\">
 <h2>SGA Travel Assistant</h2>
 <p>Whether you are a commuter and are looking for someone with whom you can share a ride, or already thinking about planning your next trip home, the SGA Travel Assistant is here to help. If you are in need of a ride home, browse the listing of avaliable rides to your hometown or post your need and have someone help you out. If you have an extra seat or two to spare, you can post their avaliability here and help someone with their ride home.</p>

@@ -85,7 +85,7 @@ class State {
  * @static
 */
 	public static function URLPurify($name) {
-		$name = preg_replace("/[^a-zA-Z0-9\s]/", "", $name); //Remove all non-alphanumeric characters, except for spaces
+		$name = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $name); //Remove all non-alphanumeric characters, except for spaces
 		$name = preg_replace("/[\s]/", "-", $name);          //Replace remaining spaces with a "-"
 		$name = str_replace("--", "-", $name);               //Replace "--" with "-", will occur if a something like " & " is removed
 		return strtolower($name);

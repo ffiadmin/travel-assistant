@@ -101,7 +101,7 @@ article.welcome ul li h3::after {
 	width: 200px;
 }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 981px) {
 	article.welcome ul li {
 		height: 100px
 	}
@@ -120,10 +120,6 @@ article.welcome ul li h3::after {
 }
 
 @media screen and (max-width: 650px) {
-	article.welcome {
-		border-top: none;
-	}
-	
 	article.welcome ul {
 		margin: 35px 0px 0px 5%;
 		width: 90%;
@@ -166,6 +162,7 @@ article.browse ul.quick-ref li {
 	background: #FDE2BB;
 	border-radius: 150px;
 	display: inline-block;
+	font-weight: 300;
 	height: 220px;
 	margin: 30px;
 	vertical-align: top;
