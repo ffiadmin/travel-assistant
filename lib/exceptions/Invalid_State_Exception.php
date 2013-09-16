@@ -11,7 +11,7 @@
  * @extends   FFI\TA\Base_Exception
  * @license   MIT
  * @namespace FFI\TA
- * @package   includes.exceptions
+ * @package   lib.exceptions
  * @since     1.0
 */
 

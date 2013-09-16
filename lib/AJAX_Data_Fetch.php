@@ -17,7 +17,7 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI\TA
- * @package   includes
+ * @package   lib
  * @since     v1.0 Dev
 */
 

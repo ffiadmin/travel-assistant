@@ -15,7 +15,7 @@
  * @extends   Ride_Data_Fetch
  * @license   MIT
  * @namespace FFI\TA
- * @package   includes.form.display
+ * @package   lib.form.display
  * @since     v1.0 Dev
 */
 

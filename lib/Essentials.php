@@ -18,8 +18,8 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI\TA
- * @package   includes
- * @since     3.0
+ * @package   lib
+ * @since     1.0
 */
 
 namespace FFI\TA;
@@ -95,7 +95,7 @@ class Essentials {
  * @access public
  * @param  boolean|array<string> $params An array of parameters from the URL fetched by Interception_Manager::registerException(), or false if none
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function __construct($params) {
@@ -112,7 +112,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function requireLogin() {
@@ -133,7 +133,7 @@ class Essentials {
  * 
  * @access public
  * @return boolean  Whether or not the user's information could be obtained, based on their login status
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function storeUserInfo() {
@@ -155,7 +155,7 @@ class Essentials {
  *
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function includeHeadHTML($HTML) {
@@ -168,7 +168,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function actionHookIncludeHTML() {
@@ -181,7 +181,7 @@ class Essentials {
  * @access public
  * @param  string   $title The title of the HTML page
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function setTitle($title) {
@@ -195,7 +195,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function actionHookSetTitle($title) {
@@ -214,7 +214,7 @@ class Essentials {
  * @access public
  * @param  string   $address The of the PHP script URL with respect to the "app" folder
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function includePHP($address) {
@@ -233,11 +233,11 @@ class Essentials {
  * @access public
  * @param  string   $class The name of of the PHP plugin class to import
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function includePluginClass($class) {
-		require_once(PATH . "includes/" . $class . ".php");
+		require_once(PATH . "lib/" . $class . ".php");
 	}
 	
 /**
@@ -259,7 +259,7 @@ class Essentials {
  * @access public
  * @param  string   $address The URL of the external stylesheet or the URL with respect to the "app" folder
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function includeCSS($address) {
@@ -274,7 +274,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function actionHookIncludeCSS($CSS) {		
@@ -301,8 +301,8 @@ class Essentials {
  *
  * External scripts must be prefixed with a "//" for this class to 
  * know the request is for an external JS file.
-
  * 
+ *
  * Since this method may be called multiple times, each address must be 
  * stored in the $this->JS variable, since the script isn't added 
  * right away, but during the construction of the <head> section of the 
@@ -312,7 +312,7 @@ class Essentials {
  * @access public
  * @param  string   $address The URL of the external script or the URL with respect to the "app" folder
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 
 	public function includeJS($address) {
@@ -327,7 +327,7 @@ class Essentials {
  * 
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function actionHookIncludeJS() {
@@ -364,11 +364,11 @@ class Essentials {
  * @access public
  * @param  string   $address The URL with respect to the "app" folder
  * @return string   $address The normalized version of the given URL
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function normalizeURL($address) {
-		return (CDN ? RESOURCE_PATH : REAL_ADDR) . "app/" . $address;
+		 return (CDN ? RESOURCE_PATH : REAL_ADDR) . "app/" . $address;
 	}
 	
 /**
@@ -381,11 +381,27 @@ class Essentials {
  * @access public
  * @param  string   $address The URL with respect to the "app" folder
  * @return string   $address The friendly version of the given URL
- * @since  3.0
+ * @since  1.0
 */
 
 	public function friendlyURL($address) {
 		return FAKE_ADDR . $address;
+	}
+
+/**
+ * This method will take a URL relative to the plugin's "data"
+ * folder and append the actual physical address to this file.
+ * So a request such as "info/images/bkg.jpg" would rewrite
+ * the URL like so: .../<plugin-name>/data/info/images/bkg.jpg.
+ *
+ * @access public
+ * @param  string   $address The URL with respect to the "data" folder
+ * @return string   $address The normalized version of the given URL
+ * @since  1.0
+*/
+
+	public function dataURL($address) {
+		return REAL_ADDR . "data/" . $address;
 	}
 }
 ?>
