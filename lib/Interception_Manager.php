@@ -388,7 +388,10 @@ class Interception_Manager {
 	
 /**
  * Replace the 404 error page with the appropriate page from the 
- * application.
+ * application. If there isn't any plugin page available, then
+ * include the 404.php page from the site template.
+ *
+ * The plugin template MUST include a 404.php page.
  *
  * @access public
  * @return void
@@ -414,7 +417,8 @@ class Interception_Manager {
 			get_footer();
 			exit;
 		} else {
-			//No, really, show a 404
+		//No, really, show a 404
+			require_once(get_template_directory() . "/404.php");
 		}
 	}
 }

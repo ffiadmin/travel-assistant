@@ -54,21 +54,21 @@
 		return this.each(function() {
 		//Google Maps instantiation and configuration
 			var map = new google.maps.Map($(this).get(0), {
-				center : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
-				mapTypeControl : false,
-				mapTypeId : google.maps.MapTypeId.ROADMAP,
-				scrollwheel : false,
+				center            : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
+				mapTypeControl    : false,
+				mapTypeId         : google.maps.MapTypeId.ROADMAP,
+				scrollwheel       : false,
 				streetViewControl : false,
-				zoom : zoom
+				zoom              : zoom
 			});
 			
 		//If the map mode is set to city, then the marker will be placed at the latitude and longitude given in the options...
 			if ($.fn.FFI_Map_Maker.defaults.mode.toLowerCase() == 'city') {
 				var point = new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude);
 				var marker = new google.maps.Marker({
-					'animation' : google.maps.Animation.DROP,
-					'map' : map,
-					'position' : point
+					animation : google.maps.Animation.DROP,
+					map       : map,
+					position  : point
 				});
 		//... otherwise fetch the list of coordinates from the server
 			} else {
@@ -76,10 +76,10 @@
 				
 			//Make the AJAX request to the server
 				$.ajax({
-					'dataType' : 'json',
-					'url' : dataURL,
-					'type' : 'GET',
-					'success' : function(data) {
+					dataTyp : 'json',
+					url     : dataURL,
+					type    : 'GET',
+					success : function(data) {
 					//Build each of the markers
 						for (var i = 0; i < data.length; ++i) {
 						//Clean up the state and city name for URL formatting
@@ -109,11 +109,23 @@
 							
 						//Build the marker
 							var point = new google.maps.LatLng(parseFloat(data[i].latitude), parseFloat(data[i].longitude));
-							var marker = new google.maps.Marker({
-								'animation' : google.maps.Animation.DROP,
-								'map' : map,
-								'position' : point
-							});
+							var marker;
+							
+						//Make a custom marker icon for GCC
+							if (cleanState == 'pennsylvania' && cleanCity == 'grove-city') {
+								marker = new google.maps.Marker({
+									animation : google.maps.Animation.DROP,
+									map       : map,
+									icon      : '//mt.google.com/vt/icon?name=icons/spotlight/university_search_v_L_8x.png&scale=1.5',
+									position  : point
+								});
+							} else {
+								marker = new google.maps.Marker({
+									animation : google.maps.Animation.DROP,
+									map       : map,
+									position  : point
+								});
+							}
 							
 						//Add a custom marker balloon
 							$.fn.FFI_Map_Maker.markerClick(map, marker, infoWindow, html)

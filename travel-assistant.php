@@ -30,6 +30,8 @@ License: MIT
 		$intercept->registerException("browse", "browse/index.php", 2, 3);
 		$intercept->registerException("need-a-ride", "need-a-ride/index.php", 2);
 		$intercept->registerException("share-a-ride", "share-a-ride/index.php", 2);
+		$intercept->registerException("trips/available", "trips/available/index.php", 3);
+		$intercept->registerException("trips/needed", "trips/needed/index.php", 3);
 		$intercept->highlightNavLink(URL_ACTIVATE);
 		$intercept->go();
 	}

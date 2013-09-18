@@ -1,7 +1,7 @@
 <?php
 namespace FFI\TA;
 
-require_once(dirname(dirname(__FILE__)) . "/includes/AJAX_Data_Fetch.php");
+require_once(dirname(dirname(__FILE__)) . "/lib/AJAX_Data_Fetch.php");
 
 class Google_Maps_POI extends AJAX_Data_Fetch {
 	public function __construct() {

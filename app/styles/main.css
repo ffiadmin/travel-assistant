@@ -76,7 +76,6 @@ article.content, section.content {
 
 article.content.even, section.content.even {
 	background: #FFFCF9;
-	border-bottom: 1px solid #DDDDDD;
 }
 
 article.content > h1, section.content > h1, article.content > h2, section.content > h2, article.content header h1, section.content header h1, article.content header h2, section.content header h2 {

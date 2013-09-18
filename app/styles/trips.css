@@ -1,0 +1,245 @@
+/**
+ * General styles
+ * ----------------------------------
+*/
+
+
+section.content h2 {
+	display: none;
+}
+
+/**
+ * Splash display
+ * ----------------------------------
+*/
+
+section#splash {
+	height: 305px;
+	max-height: 305px;
+	min-height: 305px;
+}
+
+section#splash h2 {
+	display: none;
+}
+
+section#splash section.leaving {
+	background-color: rgba(51, 51, 51, 0.9);
+	color: #FFFFFF;
+	height: 304px;
+	padding-bottom: 1px;
+	position: absolute;
+	text-align: center;
+	top: 1px;
+	width: 350px;
+}
+
+section#splash section.leaving div {
+	background: url(sprites/rides.png) no-repeat top center;
+	height: 239px;
+}
+
+section#splash section.leaving div h3 {
+	padding-top: 63px;
+}
+
+section#splash section.leaving div h4 {
+	font-size: 96px;
+	font-weight: 300;
+	padding-top: 27px;
+}
+
+section#splash section.leaving h5 {
+	font-size: 25px;
+	font-weight: 300;
+	padding-top: 10px;
+}
+
+section#splash section.directions {
+	height: 304px;
+	left: 350px;
+	padding-bottom: 1px;
+	position: absolute;
+	right: 0px;
+	text-align: center;
+	top: 1px;
+}
+
+/**
+ * Trip overview section
+ * ----------------------------------
+*/
+
+section.content.overview h3 {
+	font-size: 36px;
+	font-weight: 300;
+	margin: 0px;
+	padding: 0px 0px 60px 0px;
+	text-align: center;
+}
+
+section.content.overview ul {
+	font-weight: 300;
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+	vertical-align: top;
+	width: 100%;
+}
+
+section.content.overview ul li {
+	background-position: top center;
+	background-repeat: no-repeat;
+	display: inline-block;
+	font-size: 24px;
+	list-style: none;
+	padding-top: 180px;
+	width: 30%;
+}
+
+section.content.overview ul li.from {
+	background-image: url(//mt.google.com/vt/icon?psize=16&font=fonts/Roboto-Regular.ttf&color=ff330000&name=icons/spotlight/spotlight-waypoint-a.png&ax=44&ay=48&scale=4&text=A);
+}
+
+section.content.overview ul li.text {
+	font-size: 48px;
+	padding-top: 85px;
+	vertical-align: top;
+}
+
+section.content.overview ul li.to {
+	background-image: url(//mt.google.com/vt/icon?psize=16&font=fonts/Roboto-Regular.ttf&color=ff330000&name=icons/spotlight/spotlight-waypoint-b.png&ax=44&ay=48&scale=4&text=B);
+}
+
+/**
+ * Trip details section
+ * ----------------------------------
+*/
+
+section.content.details ul {
+	font-weight: 300;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px;
+	text-align: justify;
+	vertical-align: top;
+	width: 100%;
+}
+
+section.content.details ul:after {
+	content: '';
+	display: inline-block;
+	width: 100%;
+}
+
+section.content.details ul li {
+	background-image: url(sprites/rides.png);
+	background-repeat: no-repeat;
+	display: inline-block;
+	font-size: 24px;
+	line-height: 1.3;
+	list-style: none;
+	padding-top: 160px;
+	vertical-align: top;
+	width: 155px;
+}
+
+section.content.details ul li.men {
+	background-position: 57px -926px;
+}
+
+section.content.details ul li.no-men {
+	background-position: 57px -1202px;
+}
+
+section.content.details ul li.women {
+	background-position: -192px -926px;
+}
+
+section.content.details ul li.no-women {
+	background-position: -192px -1202px;
+}
+
+section.content.details ul li.minutes {
+	background-position: -442px -926px;
+}
+
+section.content.details ul li.no-minutes {
+	background-position: -442px -1202px;
+}
+
+section.content.details ul li.reimbursement {
+	background-position: -688px -926px;
+}
+
+section.content.details ul li.no-reimbursement {
+	background-position: -688px -1202px;
+}
+
+section.content.details ul li.luggage {
+	background-position: -939px -926px
+}
+
+section.content.details ul li.no-luggage {
+	background-position: -939px -1202px
+}
+
+section.content.details ul li span {
+	display: block;
+	text-align: center;
+	width: 100%;
+}
+
+/**
+ * Trip recurrence section
+ * ----------------------------------
+*/
+
+section.content.recurrence {
+	height: 385px;
+}
+
+section.content.recurrence figure.icon {
+	background: url(sprites/rides.png) no-repeat -195px -371px;
+	display: inline-block;
+	float: left;
+	height: 385px;
+	margin: 0px;
+	width: 280px;
+}
+
+section.content.recurrence div {
+	margin-left: 375px;
+}
+
+section.content.recurrence div ul {
+	display: block;
+	font-weight: 300;
+	margin: 0px;
+	overflow: hidden;
+	padding: 0px;
+	text-align: justify;
+	vertical-align: top;
+	width: 100%;
+}
+
+section.content.recurrence div ul:after {
+	content: '';
+	display: inline-block;
+	width: 100%;
+}
+
+section.content.recurrence div ul li {
+	background-repeat: no-repeat;
+	display: inline-block;
+	font-size: 96px;
+	line-height: 1.3;
+	list-style: none;
+	text-align: center;
+	vertical-align: top;
+	width: 100px;
+}
+
+section.content.recurrence div ul li.no {
+	color: #EDEDED;
+}
