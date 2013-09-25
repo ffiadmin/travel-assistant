@@ -6,7 +6,7 @@
  *
  * This plugin will leverage the Google Maps JavaScript API v3 to create 
  * a Google Maps widget in the targeted object with directions between
- * two points of interest
+ * two points of interest.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
@@ -41,7 +41,7 @@
 				if (status == google.maps.DirectionsStatus.OK) {
 					directionsRenderer.setDirections(response);
 				} else {
-					alert('An error was encountered while creating a map of trip route.\n\nIf this is the first time you have seen this error, wait one minute and try reloading this page before performing another search. If this error continues to occur, contact the site administrator for assistance and include the details listed below.\n\n-----------------------\n\nPage URL:\n' + window.location.href);
+					alert('An error was encountered while creating a map of the trip route.\n\nIf this is the first time you have seen this error, wait one minute and try reloading this page. If this error continues to occur, contact the site administrator for assistance and include the details listed below.\n\n-----------------------\n\nPage URL:\n' + window.location.href + '\n\nFrom POI:\n' + fromPOI + '\n\To POI:\n' + toPOI + '\n\nGoogle API Status:\n' + status);
 				}
 			});
 		});
