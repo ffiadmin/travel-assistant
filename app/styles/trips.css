@@ -3,6 +3,31 @@
  * ----------------------------------
 */
 
+span.success{
+	-moz-box-shadow: 0px 0px 15px #003300;
+	-ms-box-shadow: 0px 0px 15px #003300;
+	-o-box-shadow: 0px 0px 15px #003300;
+	-webkit-box-shadow: 0px 0px 15px #003300;
+	box-shadow: 0px 0px 15px #003300;
+	
+	background: #00FF66;
+	border: 1px solid #003300;
+	border-radius: 5px;
+	color: #000000;
+	display: inline-block;
+	font-size: 13px;
+	font-weight: bolder;
+	left: 50%;
+	margin: 0px 0px 0px -150px;
+	padding: 5px 25px 5px 25px;
+	position: fixed;
+	right: 50%;
+	text-align: center;
+	top: 45px;
+	width: 250px;
+	z-index: 45;
+}
+
 section.content h2 {
 	display: none;
 }
@@ -78,9 +103,20 @@ section#splash section.leaving span.assist {
 	width: 273px;
 }
 
+section#splash section.leaving span.assist.disabled {
+	background: #CCCCCC;
+	color: #000000;
+	cursor: default;
+}
+
 section#splash section.leaving span.assist:hover {
 	background: #FCD398;
 	color: #666666;
+}
+
+section#splash section.leaving span.assist.disabled:hover {
+	background: #CCCCCC;
+	color: #000000;
 }
 
 section#splash section.directions {
@@ -247,6 +283,10 @@ section.content.overview ul.details li figure {
 	position: absolute;
 	top: 20px;
 	width: 93px;
+}
+
+section.content.overview ul.details li.seats figure {
+	background-position: 0px -258px;
 }
 
 section.content.overview ul.details li.men figure {
@@ -661,6 +701,97 @@ section.content.printable-directions ol li span.duration {
 	}
 	
 	section.content.printable-directions ol li span {
+		display: none;
+	}
+}
+
+/**
+ * Trip dialog
+ * ----------------------------------
+*/
+
+div.trip-dialog div.modal-header h3 {
+	font-weight: lighter;
+}
+
+div.trip-dialog div.trip-details {
+	padding: 15px 45px;
+}
+
+div.trip-dialog div.login {
+	height: 30px;
+	text-align: center;
+}
+
+div.trip-dialog div.login.fallback {
+	height: auto;
+}
+
+div.trip-dialog div.login.fallback h4.placeholder {
+	font-size: 15px;
+	margin: 0px 0px 10px 0px;
+}
+
+div.trip-dialog div.login input.username {
+	margin-right: 5px;
+}
+
+div.trip-dialog div.login input.password {
+	margin-left: 5px;
+}
+
+div.trip-dialog div.modal-footer {
+	position: relative;
+}
+
+div.trip-dialog div.modal-footer span.validate {
+	color: #FF0000;
+	left: 15px;
+	position: absolute;
+	top: 19px;
+}
+
+@media screen and (max-width: 650px) {
+	div.trip-dialog div.login {
+		height: 60px;
+		padding: 0px;
+	}
+
+	div.trip-dialog div.login.fallback h4.placeholder {
+		margin: 5px 0px;
+	}
+	
+	div.trip-dialog div.login input {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	
+		border-radius: 0px;
+		display: block;
+		height: 30px;
+		margin: 0px !important;
+		width: 100%;		
+	}
+	
+	div.trip-dialog div.login input.password {
+		border-top: none;
+	}
+	
+	div.trip-dialog div.modal-footer {
+		border-top: none;
+		padding: 0px;
+	}
+	
+	div.trip-dialog div.modal-footer span.validate {
+		display: none;
+	}
+	
+	div.trip-dialog div.modal-footer button.confirm {
+		border-radius: 0px 0px 5px 5px;
+		width: 100%;
+	}
+	
+	div.trip-dialog div.modal-footer button.close-dialog {
 		display: none;
 	}
 }

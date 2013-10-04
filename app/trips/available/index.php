@@ -13,7 +13,7 @@
 
 //Fetch the trip information
 	$params = $essentials->params ? $essentials->params[0] : 0;
-	$info = FFI\TA\Trip_Info::getNeeded($params);
+	$info = FFI\TA\Trip_Info::getAvailable($params);
 	$formatter = DateTime::createFromFormat("Y-m-d H:i:s", $info[0]->Leaving, new DateTimeZone($info[0]->LeavingTimeZone));
 	$timezones = array(
 		"Pacific/Honolulu"    => "HAT",
@@ -42,7 +42,7 @@
 </div>
 
 <h5>" . $formatter->format("g:i A") . " " . $timezones[$info[0]->LeavingTimeZone] . "</h5>
-<span class=\"assist\" data-id=\"" . $params . "\" data-mode=\"assist\" data-name=\"" . htmlentities($info[0]->Requestee) . "\" data-total=\"" . $info[0]->Total . "\">I Can Help!</span>
+<span class=\"assist\" data-id=\"" . $params . "\" data-mode=\"request\" data-name=\"" . htmlentities($info[0]->Sharer) . "\" data-total=\"" . $info[0]->Total . "\">I Need This Ride!</span>
 </section>
 
 <section class=\"directions\"></section>
@@ -51,28 +51,9 @@
 ";
 
 //Display the trip overview section
-	$date = new DateTime("now");
-	$header = $info[0]->Requestee . " ";
-	
-	if ($info[0]->Total > 1) { //Total includes the person who asked for the ride
-		$header .= "and " . ($info[0]->Total - 1) . " " . ($info[0]->Total - 1 == 1 ? "other person" : "others") . " need a ride from";		
-	} else {
-		$header .= "needs a ride from";
-	}
-	
-	$messages = array(
-		"It's the Weekend!",
-		"Only 4 Days till Friday!",
-		"Only 3 Days till Friday!",
-		"Only 2 Days till Friday!",
-		"Tomorrow is Friday!",
-		"It's Friday!!!",
-		"It's the Weekend!"
-	);
-
 	echo "<section class=\"center content overview\">
 <h2>Trip Overview</h2>
-<h3>" . $header . "</h3>
+<h3>" . $info[0]->Sharer . " has a ride for " .  $info[0]->Seats . " " . ($info[0]->Seats == 1 ? "person" : "people") . " from</h3>
 
 <ul class=\"trip\">
 <li class=\"from\"><span>" . $info[0]->FromCity . ", " . $info[0]->FromState . "</span></li>
@@ -81,40 +62,40 @@
 </ul>
 
 <ul class=\"details\">
+<li class=\"seats\">
+<figure></figure>
+<h3>" . $info[0]->Seats . " " . ($info[0]->Seats == 1 ? "Seat" : "Seats") . " Available</h3>
+<p>" . $info[0]->Seats . " " . ($info[0]->Seats == 1 ? "seat is" : "seats are") . " available for this ride.</p>
+</li>
+
 <li class=\"men\">
 <figure></figure>
 <h3>" . $info[0]->MalesPresent . " " . ($info[0]->MalesPresent == 1 ? "Man" : "Men") . "</h3>
-<p>In addition to " . $info[0]->Requestee . ", " . ($info[0]->MalesPresent == 0 ? "no men" : $info[0]->MalesPresent . " " . ($info[0]->MalesPresent == 1 ? "man" : "men")) . " will be joining this ride.</p>
+<p>In addition to " . $info[0]->Sharer . ", " . ($info[0]->MalesPresent == 0 ? "no men" : $info[0]->MalesPresent . " " . ($info[0]->MalesPresent == 1 ? "man" : "men")) . " will be joining this ride.</p>
 </li>
 
 <li class=\"women\">
 <figure></figure>
 <h3>" . $info[0]->FemalesPresent . " " . ($info[0]->FemalesPresent == 1 ? "Woman" : "Women") . "</h3>
-<p>In addition to " . $info[0]->Requestee . ", " . ($info[0]->FemalesPresent == 0 ? "no women" : $info[0]->FemalesPresent . " " . ($info[0]->FemalesPresent == 1 ? "woman" : "women")) . " will be joining this ride.</p>
+<p>In addition to " . $info[0]->Sharer . ", " . ($info[0]->FemalesPresent == 0 ? "no women" : $info[0]->FemalesPresent . " " . ($info[0]->FemalesPresent == 1 ? "woman" : "women")) . " will be joining this ride.</p>
 </li>
 
 <li class=\"minutes\">
 <figure></figure>
-<h3>" . $info[0]->MinutesWithin . " " . ($info[0]->MinutesWithin == 1 ? "Minute" : "Minutes") . " from Destination</h3>
-<p>" . ($info[0]->MinutesWithin == 0 ? "You will need to drive " . ($info[0]->Total == 1 ? $info[0]->Requestee : "everyone") . " right to the final destination, even if it is out of your way." : "As long as your destination is within " . $info[0]->MinutesWithin . " " . ($info[0]->MinutesWithin == 1 ? "minute" : "minutes") . " of " . ($info[0]->Total == 1 ? $info[0]->Requestee : "everyone") . "'s final destination, " . ($info[0]->Total == 1 ? "this person" : "everyone") . " is able go the rest of the way from there. This will save you from having to drive out of your way to drop " . ($info[0]->Total == 1 ? $info[0]->Requestee : "everyone") . " off.") . "</p>
+<h3>" . $info[0]->MinutesWithin . " " . ($info[0]->MinutesWithin == 1 ? "Minute" : "Minutes") . " of Extra Driving</h3>
+<p>" . ($info[0]->MinutesWithin == 0 ? $info[0]->Sharer . " will not drive any extra distance to get you to your final destination. You may need to make additional arrangements to get you to your final destination." : $info[0]->Sharer . " is willing to drive an extra " . $info[0]->MinutesWithin . " " . ($info[0]->MinutesWithin == 1 ? "minute" : "minutes") . " out of the way to get you to your final destination.") . "</p>
 </li>
 
 <li class=\"reimbursement\">
 <figure></figure>
 <h3>\$" . $info[0]->GasMoney . ".00 for Fuel</h3>
-<p>" . ($info[0]->GasMoney == 0 ? ($info[0]->Total == 1 ? $info[0]->Requestee : "No one in this group") . " is able to contribute gas money for fuel expenses." : ($info[0]->Total == 1 ? $info[0]->Requestee : "Everyone in this group") . " is able to contribute \$" . $info[0]->GasMoney . ".00 for fuel expenses.") . "</p>
+<p>" . $info[0]->Sharer . " " . ($info[0]->GasMoney == 0 ? "is not requesting any" : "is requesting a \$" . $info[0]->GasMoney . ".00") . " reimbursement for fuel expenses.</p>
 </li>
 
 <li class=\"luggage\">
 <figure></figure>
-<h3>" . ($info[0]->Luggage == 1 ? "Bringing" : "Not bringing") . " Luggage</h3>
-<p>" . ($info[0]->Luggage == 1 ? ($info[0]->Total == 1 ? $info[0]->Requestee . " will need" : "Everyone in this group will need") : ($info[0]->Total == 1 ? $info[0]->Requestee . " does not" : "No one in this group will need")) . " room for luggage.</p>
-</li>
-
-<li class=\"friday-o-meter\">
-<figure></figure>
-<h3>" . $messages[$date->format("w")] . "</h3>
-<p>Just in case you forgot how close Friday really is...</p>
+<h3>Luggage Room " . ($info[0]->Luggage == 1 ? "Available" : "Unvailable") . "</h3>
+<p>" . $info[0]->Sharer . ($info[0]->Luggage == 1 ? " can" : " cannot") . " provide room for luggage.</p>
 </li>
 </ul>
 </section>
@@ -129,7 +110,7 @@
 
 		echo "<section class=\"center content even recurrence\">
 <h2>Trip Recurrence</h2>
-<p><strong>" . $info[0]->Requestee . "</strong> is requesting this ride from <strong>" . $formatter->format("m/d/Y") . "</strong> until <strong>" . $endFormatter->format("m/d/Y") . "</strong> every&hellip;</p>
+<p><strong>" . $info[0]->Sharer . "</strong> can provide this ride from <strong>" . $formatter->format("m/d/Y") . "</strong> until <strong>" . $endFormatter->format("m/d/Y") . "</strong> every&hellip;</p>
 
 <ul>
 <li" . ($info[0]->Monday == 0 ? " class=\"no\"" : "") . ">M</li>

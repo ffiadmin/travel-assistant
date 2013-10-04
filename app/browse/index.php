@@ -63,7 +63,7 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\TA\State::URLPurify($city->City)) . "\">
-<div style=\"background-image: url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->City) . ",+" . urlencode($city->Code) . "&zoom=13&size=180x180&markers=color:red%7C" . $city->Latitude . "," . $city->Longitude . "&key=" . $API . "&sensor=false&visual_refresh=true')\">
+<div style=\"background-image: url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->City) . ",+" . urlencode($city->Code) . "&zoom=13&size=180x180&markers=color:red%7C" . $city->Latitude . "," . $city->Longitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off')\">
 <p class=\"needed" . ($city->Needs > 0 ? " highlight" : "") . "\">" . $city->Needs . " <span>" . ($city->Needs == 1 ? "Need" : "Needs") . "</span></p>
 <p class=\"shares" . ($city->Shares > 0 ? " highlight" : "") . "\">" . $city->Shares . " <span>" . ($city->Shares == 1 ? "Ride" : "Rides") . "</span></p>
 </div>
@@ -102,7 +102,7 @@
 
 	//Display the welcome splash section
 		echo "<section id=\"splash\">
-<div class=\"ad-container\" style=\"background-image:url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($needs[0]->FromCity) . ",+" . urlencode($needs[0]->FromState) . "&zoom=13&size=1000x141&scale=2&markers=color:red%7C" . $needs[0]->FromLatitude . "," . $needs[0]->FromLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true')\">
+<div class=\"ad-container\" style=\"background-image:url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($needs[0]->FromCity) . ",+" . urlencode($needs[0]->FromState) . "&zoom=13&size=1000x141&scale=2&markers=color:red%7C" . $needs[0]->FromLatitude . "," . $needs[0]->FromLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off')\">
 <div class=\"ad-contents\">
 <h2>" . $title . "</h2>
 </div>
@@ -129,8 +129,8 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/needed/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>
@@ -163,8 +163,8 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/available/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>
