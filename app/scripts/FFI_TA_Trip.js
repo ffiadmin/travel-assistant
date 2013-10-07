@@ -31,6 +31,7 @@
 				$.fn.FFI_TA_Trip.user = $.fn.FFI_TA_Trip.htmlEntitiesDecode($.fn.FFI_TA_Trip.button.attr('data-name'));
 				
 			//The modal dialog and some of its components
+				$.fn.FFI_TA_Trip.comments = null;
 				$.fn.FFI_TA_Trip.modal = null;
 				$.fn.FFI_TA_Trip.password = null;
 				$.fn.FFI_TA_Trip.submit = null;
@@ -69,6 +70,13 @@
 		
 		HTML += '</div>';
 		
+		if ($.fn.FFI_TA_Trip.defaults.showComments) {
+			HTML += '<div class="modal-body comments">';
+			HTML += '<h4>Share comments with ' + $.fn.FFI_TA_Trip.user + ' (optional):</h4>';
+			HTML += '<textarea name="content" />';
+			HTML += '</div>';
+		}
+		
 		if ($.fn.FFI_TA_Trip.defaults.showLogin) {
 			if ($.fn.FFI_TA_Trip.placeholderSupported()) {
 				HTML += '<div class="modal-footer login">';
@@ -91,7 +99,26 @@
 
 	//Create the Twitter Bootstrap dialog
 		$.fn.FFI_TA_Trip.modal = $(HTML);
-		$.fn.FFI_TA_Trip.modal.modal();
+		
+		$.fn.FFI_TA_Trip.modal.on('shown', function() {
+			if ($.fn.FFI_TA_Trip.defaults.showComments) {
+				$.fn.FFI_TA_Trip.comments = $.fn.FFI_TA_Trip.modal.find('textarea');
+
+				if ($.fn.FFI_TA_Trip.comments.parent().is(':visible')) {
+					tinymce.init({
+						selector: 'textarea',
+						plugins: [
+						     'autolink contextmenu image link table'
+					    ],
+						menubar: false,
+						statusbar: false,
+						toolbar: false
+					});
+			
+					tinymce.activeEditor.focus();
+				}
+			}
+		}).modal();
 		
 	//Share a few components of the dialog with the plugin
 		if ($.fn.FFI_TA_Trip.defaults.showLogin) {
@@ -141,11 +168,18 @@
 		//Disable the submit button
 			$.fn.FFI_TA_Trip.submit.attr('disabled', 'disabled').addClass('disabled').html('Please wait...');
 			
+		//Save the TinyMCE content to the textarea
+			tinymce.activeEditor.save();
+			
 		//Generate the POST data object for the purchase request
 			var POST = {
 				'id'   : $.fn.FFI_TA_Trip.ID,
 				'mode' : $.fn.FFI_TA_Trip.mode
 			};
+			
+			if ($.fn.FFI_TA_Trip.defaults.showComments) {
+				POST.comments = $.fn.FFI_TA_Trip.comments.val();
+			}
 			
 			if ($.fn.FFI_TA_Trip.defaults.showLogin) {
 				POST.username = $.fn.FFI_TA_Trip.username.val();
@@ -258,7 +292,8 @@
 */
 
 	$.fn.FFI_TA_Trip.defaults = {
-		processURL : document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/trip.php',
-		showLogin  : true   //Whether or not to show the login section
+		processURL   : document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/trip.php',
+		showComments : true,  //Whether or not to show the comments section
+		showLogin    : true   //Whether or not to show the login section
 	};
 })(jQuery)

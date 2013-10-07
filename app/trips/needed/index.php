@@ -7,6 +7,7 @@
 	$essentials->includeCSS("styles/trips.css");
 	$essentials->includePluginClass("display/Trip_Info");
 	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=" . $API . "&sensor=false");
+	$essentials->includeJS("//tinymce.cachefly.net/4/tinymce.min.js");
 	$essentials->includeJS("scripts/FFI_TA_Directions.js");
 	$essentials->includeJS("scripts/FFI_TA_Steps.js");
 	$essentials->includeJS("scripts/FFI_TA_Trip.js");

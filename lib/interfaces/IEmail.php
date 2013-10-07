@@ -11,12 +11,12 @@
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
- * @namespace FFI\BE
+ * @namespace FFI\TA
  * @package   includes.interfaces
  * @since     3.0
 */
 
-namespace FFI\BE;
+namespace FFI\TA;
 
 interface IEmail {
 /**

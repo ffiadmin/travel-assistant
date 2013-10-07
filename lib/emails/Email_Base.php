@@ -16,7 +16,7 @@
  * @since      1.0
 */
 
-namespace FFI\BE;
+namespace FFI\TA;
 
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
 require_once(dirname(dirname(__FILE__)) . "/exceptions/Network_Connection_Error.php");
@@ -141,8 +141,12 @@ abstract class Email_Base implements IEmail {
 		}
 		
 	//Ensure Mandrill has sent the email
-		if ($response[0]->status != "sent") {
+		if (is_array($response) && $response[0]->status != "sent") {
 			throw new Mandrill_Send_Failed("Mandrill could not send an email to " . $response[0]->email . ". Status: " . $response[0]->status . " Reason: " . $response[0]->reject_reason);
+		}
+		
+		if (!is_array($response) && $response->status != "sent") {
+			throw new Mandrill_Send_Failed("Mandrill could not send an email to " . $this->toEmail . ". Status: " . $response->name . " Reason: " . $response->message);
 		}
 	}
 }

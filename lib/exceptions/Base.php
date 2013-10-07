@@ -20,7 +20,7 @@
 
 namespace FFI\TA;
 
-abstract class Base_Exception extends \Exception {
+abstract class Base extends \Exception {
 /**
  * CONSTRUCTOR
  *

@@ -718,6 +718,28 @@ div.trip-dialog div.trip-details {
 	padding: 15px 45px;
 }
 
+div.trip-dialog div.comments {
+	height: 135px;
+	max-height: 135px;
+	overflow: hidden;
+	padding: 0px;
+}
+
+div.trip-dialog div.comments h4 {
+	font-size: 15px;
+	font-weight: lighter;
+	margin: 7px 15px;
+	text-transform: none;
+}
+
+div.trip-dialog div.comments > div { /* Remove the TinyMCE editor border */
+	border: none !important;
+}
+
+div.trip-dialog div.comments textarea {
+	width: 100%;
+}
+
 div.trip-dialog div.login {
 	height: 30px;
 	text-align: center;
@@ -752,6 +774,10 @@ div.trip-dialog div.modal-footer span.validate {
 }
 
 @media screen and (max-width: 650px) {
+	div.trip-dialog div.comments {
+		display: none;
+	}
+	
 	div.trip-dialog div.login {
 		height: 60px;
 		padding: 0px;

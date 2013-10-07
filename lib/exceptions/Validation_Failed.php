@@ -1,23 +1,23 @@
 <?php
 /**
- * Invalid State Exception class
+ * Validation Failed Exception class
  *
  * This is a custom exception class intended to be thrown
- * when the user attempts to access information about a
- * non-existant US state.
+ * when validating incoming form data for processing is 
+ * invalid.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   FFI\TA\Base
+ * @extends   FFI\BE\Base
  * @license   MIT
  * @namespace FFI\TA
- * @package   lib.exceptions
- * @since     1.0
+ * @package   includes.exceptions
+ * @since     3.0
 */
 
 namespace FFI\TA;
 
 require_once(dirname(__FILE__) . "/Base.php");
 
-final class Invalid_State_Exception extends Base {}
+final class Validation_Failed extends Base {}
 ?>

@@ -1,10 +1,16 @@
 <?php
 /**
- * Buyer Purchase Request Emailer class
+ * Trip Initiator Emailer class
  *
  * This class is designed to build an email to be sent to a
  * person who presses either the "I Can Help" or "I Need This 
  * Ride" button.
+ *
+ * DEFINITIONS:
+ *  - Initiator: The person who triggered this action by pressing either
+ *               the "I Need This Ride" or "I Can Help" buttons.
+ *  - Poster:    The person who posted this information online, hoping
+ *               that someone else will find his or her posting.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
@@ -21,62 +27,93 @@ require_once(dirname(__FILE__) . "/Email_Base.php");
 
 class Email_Initiator extends Email_Base {
 /**
- * Hold the title of the book
+ * Hold the name of the city and state, in a format such as this:
+ * 
+ *     Orlando, FL
  *
  * @access public
  * @type   string
 */
 
-	public $title;
-
-/**
- * Hold the price of the book
- *
- * @access public
- * @type   int
-*/
-
-	public $price;
-
-/**
- * Hold the URL of the cover to the book
- *
- * @access public
- * @type   string
-*/
-
-	public $imageURL;
+	public $cityAndState;
 	
 /**
- * Hold the name of the merchant
+ * Hold the PREFORMATTED departure date and time.
  *
  * @access public
  * @type   string
 */
 
-	public $merchant;
+	public $departureTime;
+	
+/**
+ * Hold the Google API key for generating the city map.
+ *
+ * @access public
+ * @type   string
+*/
+
+	public $googleAPI;
+	
+/**
+ * Hold the latitude of the city.
+ *
+ * @access public
+ * @type   float
+*/
+
+	public $latitude;
+	
+/**
+ * Hold the longitude of the city.
+ *
+ * @access public
+ * @type   float
+*/
+
+	public $longitude;
+	
+/**
+ * Hold the mode of the email, whether this is being sent to someone
+ * who requested a seat for an existing ride, or if it is being sent
+ * to someone who has just fulfilled a request for a ride.
+ *
+ * @access public
+ * @type   string
+*/
+
+	public $mode;
+	
+/**
+ * Hold the name of the poster.
+ *
+ * @access public
+ * @type   string
+*/
+
+	public $poster;
 
 /**
- * Hold the first name of the merchant
+ * Hold the first name of the poster.
  *
  * @access public
  * @type   string
 */
 
-	public $merchantFirstName;
+	public $posterFirstName;
 
 /**
  * Build the HTML and plain-text versions of the email body 
- * from the information gathered previously
+ * from the information gathered previously.
  *
  * @access public
  * @return void
- * @since  3.0
+ * @since  1.0
 */
 	
 	public function buildBody() {
 	//Generate the absolute URL to the directory where the images in the email can be found
-		$directory = "http://" . $_SERVER['HTTP_HOST'] . str_replace("includes/ajax/purchase.php", "", $_SERVER['PHP_SELF']) . "images/email-assets/";
+		$directory = "http://" . $_SERVER['HTTP_HOST'] . str_replace("includes/ajax/trip.php", "", $_SERVER['PHP_SELF']) . "images/email-assets/";
 		
 	//Generate the HTML version of the email
 		$this->HTMLBody = "<!DOCTYPE html>
@@ -90,9 +127,14 @@ class Email_Initiator extends Email_Base {
 <table cellpadding=\"none\" style=\"border-collapse:collapse; border-top: 5px solid #000000;\" width=\"660\">
 <tbody>
 <tr>
-<td align=\"center\" background=\"" . $directory . "header-buyer.jpg\" height=\"647\" valign=\"top\" style=\"border-left: 1px solid #000000; border-right: 1px solid #000000;\" width=\"660\">
-<img alt=\"" . htmlentities($this->title) . " Book Cover\" height=\"355\" src=\"http:" . $this->imageURL . "\" style=\"padding-top: 212px;\" width=\"275\" />
-<p style=\"color: #FFFFFF; font-family: Arial,sans-serif; font-size: 16px; margin: 0px; padding-top: 16px;\">\$" . $this->price . ".00</p>
+<td align=\"center\" height=\"144\" style=\"border-left: 1px solid #000000; border-right: 1px solid #000000;\" valign=\"top\" width=\"660\">
+<img alt=\"SGA Email Header\" height=\"144\" src=\"" . $directory . "header.jpg\" width=\"660\" />
+</td>
+</tr>
+
+<tr>
+<td align=\"center\" height=\"376\" style=\"border: 1px solid #000000;\" valign=\"top\" width=\"660\">
+<img alt=\"Map of " . htmlentities($this->cityAndState) . "\" height=\"376\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($this->cityAndState) . "&zoom=13&size=331x188&scale=2&markers=color:red%7C" . urlencode($this->latitude) . "," . urlencode($this->longitude) . "&key=" . urlencode($this->googleAPI) . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\" width=\"660\" />
 </td>
 </tr>
 
@@ -100,10 +142,14 @@ class Email_Initiator extends Email_Base {
 <td style=\"border-left: 1px solid #000000; border-right: 1px solid #000000;\">
 <table>
 <tbody>
+<tr height=\"30\">
+<td colspan=\"3\"></td>
+</tr>
+
 <tr>
 <td width=\"25\"></td>
 <td align=\"center\">
-<p align=\"center\" style=\"font-family: Arial,sans-serif; font-size: 16px;\">Congratulations! You've just requested <strong>" . $this->title . "</strong> from <strong>" . $this->merchant . "</strong>. You're only three steps away from obtaining your book!</p>
+<p align=\"center\" style=\"font-family: Arial,sans-serif; font-size: 16px;\">Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which states that you are willing to provide the transportation for a trip to <strong>" . $this->cityAndState . " on " . $this->departureTime . "</strong>." : "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which requests transportation for your trip to <strong>" . $this->cityAndState . " on " . $this->departureTime . "</strong>.") . "</p>
 </td>
 <td width=\"25\"></td>
 </tr>
@@ -146,15 +192,15 @@ class Email_Initiator extends Email_Base {
 <table height=\"245\">
 <tbody>
 <tr>
-<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\">Ensure that you <strong>have \$" . $this->price . ".00</strong> on hand.</p></td>
+<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\">" . ($this->mode == "assist" ? "<strong>Reply to this email to send an email to " : "<strong>Wait for an email from ") . $this->poster . "</strong> indicating the best <strong>location to meet</strong> just prior to the trip.</p></td>
 </tr>
 
 <tr>
-<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\">Wait for an <strong>email from " . $this->merchant . "</strong> with a propsed <strong>time and location</strong> to meet in person to exchange the book and funds.</p></td>
+<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\"><strong>Meet " . $this->posterFirstName . "</strong> at the agreed upon location on <strong>" . $this->departureTime . "</strong>.</p></td>
 </tr>
 
 <tr>
-<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\"><strong>Meet " . $this->merchantFirstName . "</strong> at the agreed-upon time and location to obtain your book!</p></td>
+<td height=\"80\" valign=\"middle\"><p style=\"font-family: Arial,sans-serif; font-size: 16px;\">" . ($this->mode == "assist" ? "Drive safely!" : "Ride safely!") . "</p></td>
 </tr>
 </tbody>
 </table>
@@ -179,24 +225,31 @@ class Email_Initiator extends Email_Base {
 <tr>
 <td><img alt=\"Shadow\" height=\"28\" src=\"" . $directory . "shadow.jpg\" width=\"660\" /></td>
 </tr>
+
+<tr height=\"30\">
+<td colspan=\"5\"></td>
+</tr>
+
+<tr>
+<td><p style=\"font-family: Arial,sans-serif; font-size: 10px; margin: 0px;\"><strong>Disclaimer:</strong> This service provided by the Student Government Association at Grove City College is strictly intended to serve as a convenient service to Grove City College attendees. Neither the Student Government Association nor Grove City College can be responsible for any property damage, personal injury, or further inconveniences which may result from sharing a ride with another student or faculty member. It is solely your responsiblity to take any necessary steps before and during the trip to prevent property damage and/or personal injury.</p></td>
+</tr>
 </tbody>
 </table>
 </body>
 </html>";
 
 	//Generate the plain-text version of the email
-		$this->textBody = "Congratulations! You've just requested " . $this->title . " from " . $this->merchant . ". You're only three steps away from obtaining your book!
-	
-*** Book Information ***
-
-   Title:    " . $this->title . "
-   Price:     \$" . $this->price . "
+		$this->textBody = "Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to " . $this->poster . " which states that you are willing to provide the transportation for a trip to " . $this->cityAndState . " on " . $this->departureTime . "." : "You've successfully sent a notification to " . $this->poster . " which requests transportation for your trip to " . $this->cityAndState . " on " . $this->departureTime . ".") . "
 
 *** Next Steps ***
  
-   1. Ensure that you have \$" . $this->price . ".00 on hand.
-   2. Wait for an email from " . $this->merchant . " with a propsed time and location to meet in person to exchange the book and funds.
-   3. Meet " . $this->merchantFirstName . " at the agreed-upon time and location to obtain your book!
+   1. " . ($this->mode == "assist" ? "Reply to this email to send an email to " : "Wait for an email from ") . $this->poster . " indicating the best location to meet just prior to the trip.
+   2. Meet " . $this->posterFirstName . " at the agreed upon location on " . $this->departureTime . ".
+   3. " . ($this->mode == "assist" ? "Drive safely!" : "Ride safely!") . "
+   
+*** Disclaimer ***
+
+   This service provided by the Student Government Association at Grove City College is strictly intended to serve as a convenient service to Grove City College attendees. Neither the Student Government Association nor Grove City College can be responsible for any property damage, personal injury, or further inconveniences which may result from sharing a ride with another student or faculty member. It is solely your responsiblity to take any necessary steps before and during the trip to prevent property damage and/or personal injury.
 
 ~ The Student Government Association";
 	}
