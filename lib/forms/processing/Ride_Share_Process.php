@@ -505,7 +505,11 @@ class Ride_Share_Process {
 	
 	private function getCoords($city, $state, $type) {
 		$URL = "http://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($city . ", " . $state) . "&components=country:US&sensor=false";
-		$data = file_get_contents($URL);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, $URL);
+		$data = curl_exec($ch);
+		curl_close($ch);
 		
 	//Check if data was returned from the Google API
 		if ($data === FALSE) {
