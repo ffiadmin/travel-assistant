@@ -48,5 +48,23 @@ class City {
 		
 		return $wpdb->get_results($wpdb->prepare("SELECT q.ID, `Requestee`, `Leaving`, `LeavingTimeZone`, `Seats`, `FromCity`, `FromState`, `FromLatitude`, `FromLongitude`, `City` AS `ToCity`, `State` AS `ToState`, `Latitude` AS `ToLatitude`, `Longitude` AS `ToLongitude` FROM (SELECT ffi_ta_share.ID, `Requestee`, `Leaving`, `LeavingTimeZone`, `Seats`, `City` AS `FromCity`, `State` AS `FromState`, `Latitude` AS `FromLatitude`, `Longitude` AS `FromLongitude`, `ToCity` FROM  `ffi_ta_share` LEFT JOIN `ffi_ta_cities` ON ffi_ta_share.FromCity = ffi_ta_cities.ID LEFT JOIN (SELECT wp_usermeta.user_id AS `ID`, CONCAT(wp_usermeta.meta_value, ' ', last.meta_value) AS `Requestee` FROM `wp_usermeta` LEFT JOIN (SELECT `meta_value`, `user_id` FROM `wp_usermeta` WHERE `meta_key` = 'last_name') AS `last` ON wp_usermeta.user_id = last.user_id  WHERE `meta_key` = 'first_name') AS `users` ON ffi_ta_share.Person = users.ID WHERE REPLACE(LOWER(ffi_ta_cities.City), ' ', '-') = %s AND ffi_ta_cities.State = %s ORDER BY `Leaving` ASC) `q` LEFT JOIN `ffi_ta_cities` ON q.ToCity = ffi_ta_cities.ID ORDER BY `ToCity` ASC, `ToState` ASC, `Leaving` ASC", $cityURL, $stateCode));
 	}
+	
+	public static function getMyTrips($userID) {
+		global $wpdb;
+		
+		return $wpdb->get_results($wpdb->prepare("(SELECT ffi_ta_cities.*, 'Share' AS `Type` FROM `ffi_ta_share` LEFT JOIN `ffi_ta_cities` ON ffi_ta_share.FromCity = ffi_ta_cities.ID WHERE `Person` = %d GROUP BY ffi_ta_cities.ID) UNION (SELECT ffi_ta_cities.*, 'Need' AS `Type` FROM `ffi_ta_need` LEFT JOIN `ffi_ta_cities` ON ffi_ta_need.FromCity = ffi_ta_cities.ID WHERE `Person` = %d GROUP BY ffi_ta_cities.ID)", $userID));
+	}
+	
+	public static function getMyNeeds($userID) {
+		global $wpdb;
+		
+		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_need.ID, ffi_ta_need.Leaving, ffi_ta_need.LeavingTimeZone, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_need` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_need.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_need.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
+	}
+	
+	public static function getMyShares($userID) {
+		global $wpdb;
+		
+		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_share.ID, ffi_ta_share.Leaving, ffi_ta_share.LeavingTimeZone, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_share` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_share.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_share.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
+	}
 }
 ?>

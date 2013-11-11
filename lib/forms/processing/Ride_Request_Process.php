@@ -370,10 +370,17 @@ class Ride_Request_Process {
 		
 	//Validate and retain the leaving time zone
 		$timeZone = strtoupper(trim(mb_substr($_POST['when'], -3, 3))); //Will handle getting " ET" and "AKT"
-		$validZones = array("ET", "CT", "MT", "PT", "AKT", "HAT");
+		$validZones = array (
+			"HAT" => "Pacific/Honolulu",
+			"AKT" => "America/Anchorage",
+			"PT"  => "America/Los_Angeles",
+			"MT"  => "America/Denver",
+			"CT"  => "America/Chicago",
+			"ET"  => "America/New_York"
+		);
 		
-		if (in_array($timeZone, $validZones)) {
-			$this->leavingTimeZone = $timeZone;
+		if (array_key_exists($timeZone, $validZones)) {
+			$this->leavingTimeZone = $validZones[$timeZone];
 		} else {
 			return false;
 		}

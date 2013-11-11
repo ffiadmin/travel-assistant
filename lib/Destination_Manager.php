@@ -83,7 +83,7 @@ class Destination_Manager {
 		global $essentials;
 			
 	//Fetch the data from the database
-		$states = $wpdb->get_results("SELECT ffi_ta_states.Name, COALESCE(q1.Needs, 0) AS `Needs`, COALESCE(q2.Shares, 0) AS `Shares` FROM `ffi_ta_states` LEFT JOIN (SELECT ffi_ta_cities.State, COUNT(ffi_ta_cities.State) AS `Needs` FROM `ffi_ta_need` LEFT JOIN `ffi_ta_cities` ON ffi_ta_need.FromCity = ffi_ta_cities.ID GROUP BY ffi_ta_cities.State) `q1` ON ffi_ta_states.Code = q1.State LEFT JOIN (SELECT DISTINCT ffi_ta_cities.State, COUNT(ffi_ta_cities.State) AS `Shares` FROM `ffi_ta_share` LEFT JOIN `ffi_ta_cities` ON ffi_ta_share.FromCity = ffi_ta_cities.ID GROUP BY ffi_ta_cities.State) `q2` ON ffi_ta_states.Code = q2.State ORDER BY ffi_ta_states.Name ASC");
+		$states = $wpdb->get_results("SELECT ffi_ta_states.Name, COALESCE(q1.Needs, 0) AS `Needs`, COALESCE(q2.Shares, 0) AS `Shares` FROM `ffi_ta_states` LEFT JOIN (SELECT ffi_ta_cities.State, COUNT(ffi_ta_cities.State) AS `Needs` FROM `ffi_ta_need` LEFT JOIN `ffi_ta_cities` ON ffi_ta_need.FromCity = ffi_ta_cities.ID WHERE ffi_ta_need.Leaving > NOW() GROUP BY ffi_ta_cities.State) `q1` ON ffi_ta_states.Code = q1.State LEFT JOIN (SELECT DISTINCT ffi_ta_cities.State, COUNT(ffi_ta_cities.State) AS `Shares` FROM `ffi_ta_share` LEFT JOIN `ffi_ta_cities` ON ffi_ta_share.FromCity = ffi_ta_cities.ID WHERE ffi_ta_share.Leaving > NOW() GROUP BY ffi_ta_cities.State) `q2` ON ffi_ta_states.Code = q2.State ORDER BY ffi_ta_states.Name ASC");
 		$count = 0;
 		$return = "<ul class=\"states\">
 <li>
@@ -125,9 +125,9 @@ class Destination_Manager {
 		global $wpdb;
 			
 	//Fetch the data from the database
-		$totals = $wpdb->get_results("SELECT COUNT(ffi_ta_need.ID) AS Need, (SELECT COUNT(ffi_ta_share.ID) FROM ffi_ta_share) AS Shares FROM ffi_ta_need");
+		$totals = $wpdb->get_results("SELECT COUNT(ffi_ta_need.ID) AS Need, (SELECT COUNT(ffi_ta_share.ID) FROM ffi_ta_share WHERE ffi_ta_share.Leaving > NOW()) AS Shares FROM ffi_ta_need WHERE ffi_ta_need.Leaving > NOW()");
 		
-		return array("needs" => $totals[0]->Need + $totals[0]->ToNeed, "shares" => $totals[0]->Shares);
+		return array("needs" => $totals[0]->Need, "shares" => $totals[0]->Shares);
 	}
 }
 ?>

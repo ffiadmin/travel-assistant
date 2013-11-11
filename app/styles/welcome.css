@@ -57,18 +57,9 @@ article.welcome ul li {
     width: 305px;
 }
 
-article.welcome ul li.browse {
-	background-position: 90px 107px;
-}
-
-article.welcome ul li.browse:hover {
-	background-position: 90px -282px;
-}
-
 article.welcome ul li.request {
 	background-position: -217px 130px;
 }
-
 
 article.welcome ul li.request:hover {
 	background-position: -217px -260px;
@@ -80,6 +71,14 @@ article.welcome ul li.share {
 
 article.welcome ul li.share:hover {
 	background-position: -502px -270px;
+}
+
+article.welcome ul li.my-trips {
+	background-position: 87px 112px;
+}
+
+article.welcome ul li.my-trips:hover {
+	background-position: 87px -282px;
 }
 
 article.welcome ul li h3 {
@@ -104,10 +103,6 @@ article.welcome ul li h3::after {
 @media screen and (max-width: 981px) {
 	article.welcome ul li {
 		height: 100px
-	}
-	
-	article.welcome ul li.browse {
-		display: none;
 	}
 	
 	article.welcome ul li h3 {

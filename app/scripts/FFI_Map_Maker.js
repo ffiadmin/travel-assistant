@@ -51,7 +51,59 @@
 			zoom = $.fn.FFI_Map_Maker.defaults.countryModeZoom;
 		}
 		
-		return this.each(function() {
+		return this.each(function () {
+        //Create map styles
+		    var styles = [
+                {
+                    'featureType'    : 'road',
+                    'stylers'        : [{
+                        'color'      : '#FFFFFF'
+                    }]
+                }, {
+                    'featureType'    : 'road.arterial',
+                    'stylers'        : [{
+                        'color'      : '#F1C40F'
+                    }]
+                }, {
+                    'featureType'    : 'road.highway',
+                    'stylers'        : [{
+                        'color'      : '#F1C40F'
+                    }]
+                }, {
+                    'featureType'    : 'landscape',
+                    'stylers'        : [{
+                        'color'      : '#ECF0F1'
+                    }]
+                }, {
+                    'featureType'    : 'water',
+                    'stylers'        : [{
+                        'color'      : '#73BFC1'
+                    }]
+                }, {
+                    'featureType'    : 'road',
+                    'elementType'    : 'labels',
+                    'stylers'        : [{
+                        'visibility' : 'off'
+                    }]
+                }, {
+                    'featureType'    : 'poi.park',
+                    'elementType'    : 'geometry.fill',
+                    'stylers'        : [{
+                        'color'      : '#2ECC71'
+                    }]
+                }, {
+                    'featureType'    : 'landscape.man_made',
+                    'elementType'    : 'geometry',
+                    'stylers'        : [{
+                        'visibility' : 'off'
+                    }]
+                }
+		    ];
+
+		    var styledMap = new google.maps.StyledMapType(styles, {
+		        'name' : 'Splash Map'
+		    });
+
 		//Google Maps instantiation and configuration
 			var map = new google.maps.Map($(this).get(0), {
 				center            : new google.maps.LatLng($.fn.FFI_Map_Maker.defaults.latitude, $.fn.FFI_Map_Maker.defaults.longitude),
@@ -61,6 +113,9 @@
 				streetViewControl : false,
 				zoom              : zoom
 			});
+
+			map.mapTypes.set('map_style', styledMap);
+			map.setMapTypeId('map_style');
 			
 		//If the map mode is set to city, then the marker will be placed at the latitude and longitude given in the options...
 			if ($.fn.FFI_Map_Maker.defaults.mode.toLowerCase() == 'city') {
