@@ -635,7 +635,7 @@ class Ride_Request_Process {
 			"EndDate" => $this->until,
 			"Comments" => $this->comments
 		), array(
-			"%s", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 	}
 	
@@ -659,7 +659,6 @@ class Ride_Request_Process {
 		
 	//Update the request in the database
 		$wpdb->update("ffi_ta_need", array(
-			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"FromCity" => $fromCityID,
@@ -680,7 +679,7 @@ class Ride_Request_Process {
 		), array (
 			"ID" => $ID
 		), array(
-			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));

@@ -365,7 +365,7 @@ class Ride_Share_Process {
 		global $essentials;
 		
 	//Retain the user ID, an earlier script will already have ensured the user is logged in
-		$this->person = $essentials->user-ID;
+		$this->person = $essentials->user->ID;
 		
 	//Validate and retain the leaving date
 		$date = trim(mb_substr($_POST['when'], 0, -3)); //Will handle trimming " ET" and "AKT"
@@ -653,7 +653,7 @@ class Ride_Share_Process {
 			"EndDate" => $this->until,
 			"Comments" => $this->comments
 		), array(
-			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 	}
 	
@@ -677,7 +677,6 @@ class Ride_Share_Process {
 		
 	//Update the sharing information in the database
 		$wpdb->update("ffi_ta_share", array(
-			"Person" => $this->person,
 			"Leaving" => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"FromCity" => $fromCityID,
@@ -699,7 +698,7 @@ class Ride_Share_Process {
 		), array (
 			"ID" => $ID
 		), array(
-			"%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));

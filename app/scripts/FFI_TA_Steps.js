@@ -19,12 +19,13 @@
 			var container = $(this);
 			
 			$.ajax({
-				type : 'GET',
-				url : '//maps.googleapis.com/maps/api/directions/json?origin=' + encodeURIComponent(fromPOI) + '&destination=' + encodeURIComponent(toPOI) + '&sensor=false&mode=driving',
-				error : function(jqXHR, textStatus) {
+			    dataType    : 'jsonp',
+				type        : 'GET',
+				url         : '//maps.googleapis.com/maps/api/directions/json?origin=' + encodeURIComponent(fromPOI) + '&destination=' + encodeURIComponent(toPOI) + '&sensor=false&mode=driving',
+				error       : function(jqXHR, textStatus) {
 					alert('An error was encountered while creating a list of directions for this trip.\n\nIf this is the first time you have seen this error, wait one minute and try reloading this page. If this error continues to occur, contact the site administrator for assistance and include the details listed below.\n\n-----------------------\n\nPage URL:\n' + window.location.href + '\n\nAJAX Status:\n' + textStatus);
 				},
-				success : function(data) {
+				success     : function(data) {
 					var leg = data.routes[0].legs[0];
 					var steps = leg.steps;
 					

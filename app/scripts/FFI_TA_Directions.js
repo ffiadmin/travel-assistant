@@ -20,6 +20,58 @@
 		return this.each(function() {
 			var directionsRenderer = new google.maps.DirectionsRenderer();
 			var directionsService = new google.maps.DirectionsService();
+
+		//Create map styles
+			var styles = [
+                {
+                    'featureType': 'road',
+                    'stylers': [{
+                        'color': '#FFFFFF'
+                    }]
+                }, {
+                    'featureType': 'road.arterial',
+                    'stylers': [{
+                        'color': '#F1C40F'
+                    }]
+                }, {
+                    'featureType': 'road.highway',
+                    'stylers': [{
+                        'color': '#F1C40F'
+                    }]
+                }, {
+                    'featureType': 'landscape',
+                    'stylers': [{
+                        'color': '#ECF0F1'
+                    }]
+                }, {
+                    'featureType': 'water',
+                    'stylers': [{
+                        'color': '#73BFC1'
+                    }]
+                }, {
+                    'featureType': 'road',
+                    'elementType': 'labels',
+                    'stylers': [{
+                        'visibility': 'off'
+                    }]
+                }, {
+                    'featureType': 'poi.park',
+                    'elementType': 'geometry.fill',
+                    'stylers': [{
+                        'color': '#2ECC71'
+                    }]
+                }, {
+                    'featureType': 'landscape.man_made',
+                    'elementType': 'geometry',
+                    'stylers': [{
+                        'visibility': 'off'
+                    }]
+                }
+			];
+
+			var styledMap = new google.maps.StyledMapType(styles, {
+			    'name': 'Splash Map'
+			});
 			
 		//Google Maps instantiation and configuration
 			var map = new google.maps.Map($(this).get(0), {
@@ -30,6 +82,8 @@
 				zoom              : 4
 			});
 			
+			map.mapTypes.set('map_style', styledMap);
+			map.setMapTypeId('map_style');
 			directionsRenderer.setMap(map);
 			
 		//Render the directions from POI A to B
