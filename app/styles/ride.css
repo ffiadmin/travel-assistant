@@ -28,24 +28,20 @@ textarea {
 	border-radius: 0px 4px 4px 0px !important;
 }
 
-@media screen and (max-width: 650px) {
+a.btn {
+	color: #333333;
+}
+
+@media screen and (max-width: 720px) {
     span.collapse {
         display: none;
     }
 }
 
 /**
- * Specific style enhancements
+ * Splash image
  * ----------------------------------
 */
-
-dd.ui_tpicker_timezone {
-	margin: 25px 0px 0px 0px !important;
-}
-
-dd.ui_tpicker_timezone select {
-	margin: 0px !important;
-}
 
 section#splash.request div.ad-container {
 	background-image: url(splash/ride-request.jpg);
@@ -71,6 +67,12 @@ section.welcome {
 section.welcome h2 {
 	font-size: 27px;
 	font-weight: 300;
+}
+
+@media screen and (max-width: 650px) {
+    section.welcome {
+		border-top: 1px solid #DDDDDD;
+	}
 }
 
 /**
@@ -117,4 +119,17 @@ section.step header h4.step {
 	left: 12.5px;
 	position: absolute;
 	top: 27.5px;
+}
+
+/**
+ * Time picker
+ * ----------------------------------
+*/
+
+dd.ui_tpicker_timezone {
+	margin: 25px 0px 0px 0px !important;
+}
+
+dd.ui_tpicker_timezone select {
+	margin: 0px !important;
 }

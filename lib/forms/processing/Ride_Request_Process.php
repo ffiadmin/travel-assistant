@@ -1,12 +1,12 @@
 <?php
 /**
- * Form data processing class
+ * Form Data Processing class
  *
  * This class is used to:
  *  - Determine whether or not a user has sumbitted the ride request
- *    form
- *  - Validate all incoming data
- *  - Either insert the data into a database or update existing data
+ *    form.
+ *  - Validate all incoming data.
+ *  - Either insert the data into a database or update existing data.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations

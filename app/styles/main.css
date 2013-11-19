@@ -7,6 +7,31 @@ h1 {
 	display: none;
 }
 
+span.success{
+        -moz-box-shadow: 0px 0px 15px #003300;
+        -ms-box-shadow: 0px 0px 15px #003300;
+        -o-box-shadow: 0px 0px 15px #003300;
+        -webkit-box-shadow: 0px 0px 15px #003300;
+        box-shadow: 0px 0px 15px #003300;
+        
+        background: #00FF66;
+        border: 1px solid #003300;
+        border-radius: 5px;
+        color: #000000;
+        display: inline-block;
+        font-size: 13px;
+        font-weight: bolder;
+        left: 50%;
+        margin: 0px 0px 0px -150px;
+        padding: 5px 25px 5px 25px;
+        position: fixed;
+        right: 50%;
+        text-align: center;
+        top: 45px;
+        width: 250px;
+        z-index: 45;
+}
+
 /**
  * Splash display
  * ----------------------------------
@@ -44,7 +69,7 @@ section#splash div.ad-container div.ad-contents > h2 {
 	font-size: 60px;
 	font-weight: lighter;
 	margin: 0px;
-	padding-top: 190px;
+	padding-top: 210px;
 	text-transform: uppercase;
 }
 
@@ -55,6 +80,12 @@ section#splash div.ad-container div.ad-contents > h2::before {
 	margin: 7px auto 20px auto;
 	padding: 0px;
 	width: 300px;
+}
+
+@media screen and (min-width: 2000px) {
+	section#splash div.ad-container {
+		background-size: 100% auto;
+	}
 }
 
 @media screen and (max-width: 650px) {    

@@ -6,7 +6,7 @@
 	require_once("../../../lib/exceptions/Validation_Failed.php");
 	require_once("../../../lib/processing/Trip.php");
 
-//Perform the purchase operation
+//Perform the request operation
 	try {
 		new FFI\TA\Trip();
 		echo "success";

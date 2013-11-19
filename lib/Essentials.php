@@ -242,10 +242,10 @@ class Essentials {
 	
 /**
  * Include the requested stylesheet in the <head> section of the page.
- * Local stylesheets are requested with respect to the "app" folder.
- * So a request such as "system/stylesheet/style.css" would include the 
- * stylesheet like so: .../<plugin-name>/app/system/stylesheet/style.css,
- * regardless of the address of the PHP file which requested the script.
+ * Local stylesheets are requested with respect to the "app/styles" folder.
+ * So a request such as "style.css" would include the stylesheet like so:
+ * .../<plugin-name>/app/system/styles/style.css,regardless of the address
+ * of the PHP file which requested the script.
  *
  * External stylesheets must be prefixed with a "//" for this class to 
  * know the request is for an external CSS stylesheet.
@@ -257,7 +257,7 @@ class Essentials {
  * to the template in the order they were requested.
  *
  * @access public
- * @param  string   $address The URL of the external stylesheet or the URL with respect to the "app" folder
+ * @param  string   $address The URL of the external stylesheet or the URL with respect to the "app/styles" folder
  * @return void
  * @since  1.0
 */
@@ -284,7 +284,7 @@ class Essentials {
 		//Local stylesheets will need their address modified
 		//The address for external stylesheets begin with "//"
 			if (substr($this->CSS[$i], 0, 2) != "//") {
-				$this->CSS[$i] = REAL_ADDR . "app/" . $this->CSS[$i];
+				$this->CSS[$i] = REAL_ADDR . "app/styles/" . $this->CSS[$i];
 			}
 			
 			wp_register_style($styleName, $this->CSS[$i], array(), NULL); //NULL removes the ?ver from the URL
@@ -294,15 +294,14 @@ class Essentials {
 	
 /**
  * Include the requested script in the <head> section of the page. Local 
- * scripts are requested with respect to the "app" folder. So a request 
- * such as "system/javascripts/script.js" would includethe script like so:
- * .../<plugin-name>/app/system/javascripts/script.js, regardless of the 
+ * scripts are requested with respect to the "app/scripts" folder. So a
+ * request such as "script.js" would includethe script like so:
+ * .../<plugin-name>/app/system/scripts/script.js, regardless of the 
  * address of the PHP file which requested the script.
  *
  * External scripts must be prefixed with a "//" for this class to 
  * know the request is for an external JS file.
  * 
- *
  * Since this method may be called multiple times, each address must be 
  * stored in the $this->JS variable, since the script isn't added 
  * right away, but during the construction of the <head> section of the 
@@ -310,7 +309,7 @@ class Essentials {
  * to the template in the order they were requested.
  *
  * @access public
- * @param  string   $address The URL of the external script or the URL with respect to the "app" folder
+ * @param  string   $address The URL of the external script or the URL with respect to the "app/scripts" folder
  * @return void
  * @since  1.0
 */
@@ -337,7 +336,7 @@ class Essentials {
 		//Local scripts will need their address modified
 		//The address for external scripts begin with "//"
 			if (substr($this->JS[$i], 0, 2) != "//") {
-				$this->JS[$i] = REAL_ADDR . "app/" . $this->JS[$i];
+				$this->JS[$i] = REAL_ADDR . "app/scripts/" . $this->JS[$i];
 			}
 			
 			wp_register_script($styleName, $this->JS[$i], array(), NULL); //NULL removes the ?ver from the URL

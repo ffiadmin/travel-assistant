@@ -1,4 +1,91 @@
 ﻿/**
+ * Welcome section
+ * ----------------------------------
+*/
+
+section.welcome {
+	width: 100%;
+}
+
+section.welcome article.map {
+	height: 365px;
+	width: 100%;
+}
+
+section.welcome article.map h2 {
+	display: none;
+}
+
+section.welcome article.map img {
+	max-width: none; /* Fixes a Google Maps/Twitter Bootstrap styling conflict */
+}
+
+section.welcome div#chart {
+	min-width: 310px;
+	height: 300px; 
+	margin: 0px;
+	width: 100%
+}
+
+section.welcome ul.stats {
+	background-color: rgba(51, 51, 51, 0.9);
+	height: 74px;
+	margin: 0px;
+	text-align: center;
+	width: 100%;
+}
+
+section.welcome ul.stats li {
+	border-left: 1px solid #DDDDDD;
+	color: #FFFFFF;
+	display: inline-block;
+	font-size: 36px;
+	font-weight: 300;
+	height: 74px;
+	list-style: none;
+	padding: 0px 10px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+section.welcome ul.stats li:last-child {
+	border-right: 1px solid #DDDDDD;
+}
+
+section.welcome ul.stats li p {
+	margin: 0px;
+	padding: 17px 15px 0px 15px;
+}
+
+section.welcome ul.stats li p span {
+	display: block;
+	font-size: 14px;
+	padding: 10px 0px 0px 0px;
+}
+
+@media screen and (max-width: 750px) {
+	section.welcome ul.stats li.needed, section.welcome ul.stats li.shared {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 650px) {
+	section.welcome article.map {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 450px) {
+	section.welcome ul.stats li.recurring {
+		display: none;
+	}
+
+	section.welcome ul.stats li.next {
+		border-right: 1px solid #DDDDDD;
+	}
+}
+
+/**
  * List of trips
  * ----------------------------------
 */
@@ -43,20 +130,7 @@ section.content ul li h3 {
 	text-transform: uppercase;
 }
 
-section.content ul li h4 {
-	color: #222222;
-	font-size: 11px;
-	margin: 0px 0px 20px 210px;
-	padding-top: 5px;
-}
-
-section.content ul li p.left {
-	color: #222222;
-	font-size: 11px;
-	margin: 0px 0px 20px 210px;
-}
-
-section.content ul li span.notice {
+section.content ul li h3 span.notice {
 	border-radius: 3px;
 	font-size: 10px;
 	margin-left: 7px;
@@ -65,30 +139,37 @@ section.content ul li span.notice {
 	white-space: nowrap;
 }
 
-section.content ul li.expired span.notice {
+section.content ul li h3 span.notice.fulfilled {
+	background: #7AD03A;
+	border: 1px solid #339900;
+}
+
+section.content ul li h3 span.notice.recurring {
+	background: #FFFF66;
+	border: 1px solid #FFCC00;
+}
+
+section.content ul li h3 span.notice.warning {
 	background: #FF3366;
 	border: 1px solid #990000;
 	color: #FFFFFF;
 }
 
-section.content ul li.expiring span.notice {
-	background: #FFFF66;
-	border: 1px solid #FFCC00;
+section.content ul li h4 {
+	color: #222222;
+	font-size: 11px;
+	margin: 0px 0px 20px 210px;
+	padding-top: 5px;
 }
 
-section.content ul li.sold span.notice {
-	background: #7AD03A;
-	border: 1px solid #339900;
+section.content ul li p {
+	color: #222222;
+	font-size: 11px;
+	margin: 0px 0px 0px 210px;
 }
 
 section.content ul li a.btn {
 	color: #FFFFFF;
-}
-
-section.content ul li button.btn.restore {
-	bottom: 15px;
-	position: absolute;
-	right: 185px;
 }
 
 section.content ul li a.btn.edit {
@@ -108,7 +189,7 @@ section.content ul li button.btn.delete {
         min-height: 140px;
     }
 
-    section.content ul li h3, section.content ul li h4, section.content ul li p.left {
+    section.content ul li h3, section.content ul li h4, section.content ul li p {
 	    margin-left: 130px;
     }
 
@@ -124,17 +205,13 @@ section.content ul li button.btn.delete {
 		right: 55px;
 	}
 	
-	section.content ul li button.btn.restore {
-		right: 100px;
-	}
-	
-	section.content ul li button.btn.restore span, section.content ul li a.btn.edit span, section.content ul li button.btn.delete span {
+	section.content ul li a.btn.edit span, section.content ul li button.btn.delete span {
 		display: none;
 	}
 }
 
 @media screen and (max-width: 450px) {
-	section.content ul li p.left {
+	section.content ul li p {
 		display: none;
 	}
 }
@@ -170,4 +247,46 @@ section.content div.none a {
 
 section.content div.none a:hover {
 	background-position: top left;
+}
+
+/**
+ * Modal dialogs
+ * ----------------------------------
+*/
+
+div.confirm-dialog div.modal-header h3 {
+        font-weight: lighter;
+}
+
+div.confirm-dialog div.modal-footer {
+        position: relative;
+}
+
+div.confirm-dialog div.modal-footer span.validate {
+        color: #FF0000;
+        left: 15px;
+        position: absolute;
+        top: 19px;
+}
+
+@media screen and (max-width: 650px) {
+        div.confirm-dialog div.modal-footer {
+                border-top: none;
+                padding: 0px;
+        }
+        
+        div.confirm-dialog div.modal-footer span.validate {
+                display: none;
+        }
+        
+        div.confirm-dialog div.modal-footer button.confirm {
+                border-radius: 0px;
+                width: 100%;
+        }
+        
+        div.confirm-dialog div.modal-footer button.close-dialog {
+                border-radius: 0px 0px 5px 5px;
+                margin-left: 0px;
+                width: 100%;
+        }
 }

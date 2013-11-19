@@ -1,9 +1,9 @@
 <?php
 /**
- * Ride Share Display class
+ * Ride Request Display class
  *
  * This class is used to fetch data from the MySQL database for the 
- * ride share display form. If data is returned from the super class's
+ * ride request display form. If data is returned from the super class's
  * constructor, then the respective values are filled into their proper
  * locations in the form, then returned for display in the HTML form.
  * 
@@ -24,7 +24,7 @@ namespace FFI\TA;
 require_once(dirname(__FILE__) . "/Ride_Data_Fetch.php");
 require_once(dirname(__FILE__) . "/State.php");
 
-class Ride_Share_Display extends Ride_Data_Fetch {
+class Ride_Request_Display extends Ride_Data_Fetch {
 /**
  * Hold a reference to the random number generated to fetch a value from
  * the $whatValues and $whyValues array.
@@ -41,20 +41,20 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * multiple times.
  *
  * @access private
- * @type   boolean
+ * @type   bool
 */
 	
 	private $recurring = false;
 	
 /**
  * An array of default values which will be chosen to the the "What" form
- * input elemein section one of the form.
+ * input element in section one of the form.
  *
  * @access private
  * @type   array<string>
 */
 	
-	private $whatValues = array("I can share a lift", "I'm leaving and can drive", "I'm driving somewhere", "Never fear! Your ride is here!", "I'm driving");
+	private $whatValues = array("I need a lift", "I'm leaving and don't feel like driving", "I'm going somewhere", "Help! I need a ride!", "I'm leaving");
 	
 /**
  * An array of default values which will be chosen to the the "Who" form
@@ -74,14 +74,14 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * $failRedirect.
  * 
  * @access public
- * @param  int    $ID     The ID of the ride share to fetch from the database
+ * @param  int    $ID     The ID of the ride request to fetch from the database
  * @param  int    $userID The ID of the user requesting this page
  * @return void
  * @since  1.0
 */
 	
-	public function __construct($ID, $userID, $failRedirect) {
-		parent::__construct("ffi_ta_share", $ID, $userID);
+	public function __construct($ID, $userID) {
+		parent::__construct("ffi_ta_need", $ID, $userID);
 		$this->rand = mt_rand(0, 4);
 	}
 	
@@ -139,7 +139,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 			return "<input autocomplete=\"off\" class=\"validate[required,custom[dateTimeFormat],past[now]]\" id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"\">";
 		}
 	}
-	
+
 /**
  * Output a prefilled form element containing the "From Where" city text 
  * input and state drop down menu for section one of this form.
@@ -190,19 +190,6 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	}
 	
 /**
- * Output a prefilled form element containing the "number of seats" form 
- * element for section two of this form.
- * 
- * @access public
- * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
-*/
-	
-	public function getSeats() {
-		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[1],max[10]]\" id=\"seats\" max=\"10\" min=\"1\" name=\"seats\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->Seats : "1") . "\">";
-	}
-	
-/**
  * Output a prefilled form element containing the "number of males" form 
  * element for section two of this form.
  * 
@@ -229,9 +216,8 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	}
 	
 /**
- * Output a prefilled form element containing the "extra number of minutes
- * the driver will drive to get passengers to their proper destination" 
- * form element for section two of this form.
+ * Output a prefilled form element containing the "number of minutes within
+ * destination" form element for section two of this form.
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
@@ -244,7 +230,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	
 /**
  * Output a prefilled form element containing the "reimbursement gas money
- * per person" form element for section two of this form.
+ * total" form element for section two of this form.
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
@@ -280,9 +266,9 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	//Return the generated output
 		return "<div class=\"btn-group\" data-toggle=\"buttons-radio\">
 <input autocomplete=\"off\"" . ($checkedYes ? " checked" : "") . " data-toggle=\"button\" id=\"luggage-yes\" name=\"luggage\" type=\"radio\" value=\"1\">
-<label class=\"btn" . ($checkedYes ? " active" : "") . "\" for=\"luggage-yes\">Yes</label>
+<label class=\"btn\" for=\"luggage-yes\">Yes</label>
 <input autocomplete=\"off\"" . ($checkedNo ? " checked" : "") . " data-toggle=\"button\" id=\"luggage-no\" name=\"luggage\" type=\"radio\" value=\"0\">
-<label class=\"btn" . ($checkedNo ? " active" : "") . "\" for=\"luggage-no\">No</label>
+<label class=\"btn\" for=\"luggage-no\">No</label>
 </div>";
 	}
 	
@@ -291,7 +277,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * for section three of this form.
  * 
  * @access public
- * @return string   A form item prefilled with a value from either the database or a default value
+ * @return string A form item prefilled with a value from either the database or a default value
  * @since  1.0
 */
 	
@@ -310,9 +296,9 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 	//Return the generated output
 		return "<div class=\"btn-group\" data-toggle=\"buttons-radio\">
 <input autocomplete=\"off\"" . ($checkedYes ? " checked" : "") . " data-toggle=\"button\" id=\"recurring-yes\" name=\"recurring\" type=\"radio\" value=\"1\">
-<label class=\"btn" . ($checkedYes ? " active" : "") . "\" for=\"recurring-yes\" id=\"recurring-yes-label\">Yes</label>
+<label class=\"btn\" for=\"recurring-yes\" id=\"recurring-yes-label\">Yes</label>
 <input autocomplete=\"off\"" . ($checkedNo ? " checked" : "") . " data-toggle=\"button\" id=\"recurring-no\" name=\"recurring\" type=\"radio\" value=\"0\">
-<label class=\"btn" . ($checkedNo ? " active" : "") . "\" for=\"recurring-no\" id=\"recurring-no-label\">No</label>
+<label class=\"btn\" for=\"recurring-no\" id=\"recurring-no-label\">No</label>
 </div>";
 	}
 	
@@ -337,7 +323,6 @@ class Ride_Share_Display extends Ride_Data_Fetch {
 		
 	//Since the list is long and the values to check are many, construct the list of days in a loop
 		for ($i = 0; $i < 5; ++$i) {
-			$class = $daysVal[$i] == "1" ? " active" : "";
 			$class = !$enabled ? " disabled" : $class;
 			$state = $daysVal[$i] == "1" ? " checked" : "";
 			$state = !$enabled ? " disabled" : $state;
@@ -357,16 +342,16 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0 
 */
 	
 	public function getEndDate() {
 		if ($this->recurring) {
 			$dateFormatter = new \DateTime($this->data->EndDate);
 			
-			return "<input autocomplete=\"off\" class=\"validate[required,custom[date]]\" id=\"until\" name=\"until\" placeholder=\"How long can you share a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
+			return "<input autocomplete=\"off\" class=\"validate[required,custom[date]]\" id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
 		} else {
-			return "<input autocomplete=\"off\" class=\"validate[required,custom[date],past[now]]\" disabled id=\"until\" name=\"until\" placeholder=\"How long can you share a ride?\" type=\"text\" value=\"\">";
+			return "<input autocomplete=\"off\" class=\"validate[required,custom[date],past[now]]\" disabled id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"\">";
 		}
 	}
 	

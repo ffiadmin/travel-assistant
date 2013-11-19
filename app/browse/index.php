@@ -13,7 +13,7 @@
 	$API = $APIs[0]->GoogleMaps;
 
 //Include the necessary scripts
-	$essentials->includeCSS("styles/browse.css");
+	$essentials->includeCSS("browse.css");
 	$essentials->includePluginClass("display/City");
 	$essentials->includePluginClass("display/State");
 	

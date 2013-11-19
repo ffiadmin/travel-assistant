@@ -1,23 +1,33 @@
 <?php
 //Include the necessary scripts
-	$essentials->requireLogin();
-	$essentials->setTitle("Share a Ride");
-	$essentials->includePluginClass("forms/display/Ride_Share_Display");
-	$essentials->includePluginClass("forms/processing/Ride_Share_Process");
+	$essentials->includeCSS("ride.superpackage.min.css");
 	$essentials->includeJS("//ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js");
 	$essentials->includeJS("//tinymce.cachefly.net/4/tinymce.min.js");
-	$essentials->includeJS("scripts/ride.superpackage.min.js");
-	$essentials->includeCSS("styles/ride.superpackage.min.css");
+	$essentials->includeJS("ride.superpackage.min.js");
+	$essentials->includePluginClass("display/Ride_Share_Display");
+	$essentials->includePluginClass("exceptions/No_Data_Returned");
+	$essentials->includePluginClass("exceptions/Validation_Failed");
+	$essentials->includePluginClass("processing/Ride_Share_Process");
+	$essentials->requireLogin();
+	$essentials->setTitle("Share a Ride");
 	
-//Instantiate form element display class
+//Instantiate the form element display and processor classes
 	$params = $essentials->params ? $essentials->params[0] : 0;
 	$userID = $essentials->user->ID;
-	$successRedirect = $essentials->friendlyURL("");
-	$failRedirect = $essentials->friendlyURL("share-a-ride");
-	$display = new FFI\TA\Ride_Share_Display($params, $userID, $failRedirect);
 	
-//Instantiate the form processor class
-	new FFI\TA\Ride_Share_Process($params, $successRedirect, $failRedirect);
+	try {
+		$display = new FFI\TA\Ride_Share_Display($params, $userID);
+		new FFI\TA\Ride_Share_Process($params);
+	} catch (No_Data_Returned $e) {
+		wp_redirect($essentials->friendlyURL("share-a-ride"));
+		exit;
+	} catch (Validation_Failed $e) {
+		echo $e->getMessage();
+		exit;
+	} catch (Exception $e) {
+		wp_redirect($essentials->friendlyURL("share-a-ride"));
+		exit;
+	}
 	
 //Display the page
 	echo "<h1>Share a Ride</h1>
@@ -134,16 +144,6 @@
 </div>
 
 <div class=\"control-group\">
-<label class=\"control-label\" for=\"days\">I'll need a head count:</label>
-<div class=\"controls\">
-<div class=\"input-append\">
-" . $display->getDaysNotice() . "
-<span class=\"add-on\">day(s) before my trip</span>
-</div>
-</div>
-</div>
-
-<div class=\"control-group\">
 <label class=\"control-label\" for=\"time\">I'll drive an extra:</label>
 <div class=\"controls\">
 <div class=\"input-append\">
@@ -240,7 +240,7 @@
 //Display the submit button
 	echo "<section class=\"no-border step stripe\">
 <button class=\"btn btn-warning\" type=\"submit\">Agree<span class=\"collapse\"> to Terms</span> &amp; Submit<span class=\"collapse\"> Request</span></button>
-<button class=\"btn cancel\" type=\"button\">Cancel</button>
+<a class=\"btn\" href=\"" . $essentials->friendlyURL("") . "\">Cancel</a>
 </section>
 </form>";
 ?>

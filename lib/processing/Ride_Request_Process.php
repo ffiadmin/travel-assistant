@@ -1,9 +1,9 @@
 <?php
 /**
- * Ride Share Processing class
+ * Ride Request Processing class
  *
  * This class is used to:
- *  - Determine whether or not a user has sumbitted the ride sharing
+ *  - Determine whether or not a user has sumbitted the ride request
  *    form.
  *  - Validate all incoming data.
  *  - Either insert the data into a database or update existing data.
@@ -23,7 +23,7 @@ require_once(dirname(__FILE__) . "/Processor_Base.php");
 require_once(dirname(dirname(__FILE__)) . "/exceptions/Validation_Failed.php");
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/link-template.php");
 
-class Ride_Share_Process extends Processor_Base {
+class Ride_Request_Process extends Processor_Base {
 /**
  * Hold a constant which will be used when processing the "From 
  * Where" form item.
@@ -65,8 +65,8 @@ class Ride_Share_Process extends Processor_Base {
 	private $person;
 	
 /**
- * Hold a formatted string representing the date and time the user
- * is leaving.
+ * Hold a formatted string representing the date and time the user.
+ * is leaving
  *
  * @access private
  * @type   string
@@ -82,7 +82,7 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private $leavingTimeZone;
-	
+
 /**
  * Hold the city from which the user will be traveling.
  *
@@ -156,15 +156,6 @@ class Ride_Share_Process extends Processor_Base {
 	private $toLongitude;
 	
 /**
- * Hold the total number of avaliable seats.
- *
- * @access private
- * @type   int
-*/
-	
-	private $seats;
-	
-/**
  * Hold the number of males present for the trip.
  *
  * @access private
@@ -183,8 +174,8 @@ class Ride_Share_Process extends Processor_Base {
 	private $females;
 	
 /**
- * Hold the number of minutes the is willing to travel out of his or her
- * way to take passengers to their proper destination.
+ * Hold the number of minutes the driver should take this user within
+ * their desired destination.
  *
  * @access private
  * @type   int
@@ -202,7 +193,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $reimburse;
 	
 /**
- * Hold whether there is room for luggage.
+ * Hold whether this user will bring luggage.
  *
  * @access private
  * @type   int
@@ -220,7 +211,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $recurring;
 	
 /**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Monday.
  *
  * @access private
@@ -230,7 +221,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $monday;
 	
 /**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Tuesday.
  *
  * @access private
@@ -240,7 +231,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $tuesday;
 	
 /**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Wednesday.
  *
  * @access private
@@ -250,7 +241,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $wednesday;
 	
 /**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Thursday.
  *
  * @access private
@@ -260,7 +251,7 @@ class Ride_Share_Process extends Processor_Base {
 	private $thursday;
 	
 /**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Friday.
  *
  * @access private
@@ -291,7 +282,7 @@ class Ride_Share_Process extends Processor_Base {
  * CONSTRUCTOR
  *
  * This method will call helper methods to:
- *  - Determine whether or not a user has sumbitted the ride sharing
+ *  - Determine whether or not a user has sumbitted the ride request
  *    form.
  *  - Validate all incoming data.
  *  - Either insert the data into a database or update existing data.
@@ -299,10 +290,10 @@ class Ride_Share_Process extends Processor_Base {
  * @access public
  * @param  int    $ID The ID of the tuple to update in the database. $ID = 0 means there is no entry to update (i.e. insert a tuple).
  * @return void
- * @since  1.0
+ * @since  1.0 
 */
 	
-	public function __construct($ID, $redirectSuccess, $redirectFail) {
+	public function __construct($ID) {
 		parent::__construct();
 	
 	//Check to see if the user has submitted the form
@@ -330,8 +321,8 @@ class Ride_Share_Process extends Processor_Base {
 	
 	private function userSubmittedForm() {
 		if (is_array($_POST) && count($_POST) && 
-			isset($_POST['when']) && isset($_POST['from-where-city']) && isset($_POST['from-where-state'])  && isset($_POST['to-where-city']) && isset($_POST['to-where-state']) && isset($_POST['seats']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
-			!empty($_POST['when']) && !empty($_POST['from-where-city']) && !empty($_POST['from-where-state']) && !empty($_POST['to-where-city']) && !empty($_POST['to-where-state']) && is_numeric($_POST['seats']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
+			isset($_POST['when']) && isset($_POST['from-where-city']) && isset($_POST['from-where-state']) && isset($_POST['to-where-city']) && isset($_POST['to-where-state']) && isset($_POST['males']) && isset($_POST['females']) && isset($_POST['minutes']) && isset($_POST['reimburse']) && isset($_POST['luggage']) && isset($_POST['recurring']) &&
+			!empty($_POST['when']) && !empty($_POST['from-where-city']) && !empty($_POST['from-where-state']) && !empty($_POST['to-where-city']) && !empty($_POST['to-where-state']) && is_numeric($_POST['males']) && is_numeric($_POST['females']) && is_numeric($_POST['minutes']) && is_numeric($_POST['reimburse']) && is_numeric($_POST['luggage']) && is_numeric($_POST['recurring'])) {
 			return true;	
 		}
 		
@@ -344,7 +335,7 @@ class Ride_Share_Process extends Processor_Base {
  * store the data within the class for later database entry.
  * 
  * @access private
- * @return bool    Whether or not validation has succeeded
+ * @return bool              Whether or not validation has succeeded
  * @since  1.0
  * @throws Validation_Failed Thrown when ANY portion of the validation process fails
 */
@@ -400,26 +391,12 @@ class Ride_Share_Process extends Processor_Base {
 			throw new Validation_Failed("The either the origin or destination city or state name is invalid");
 		}
 		
-	//Validate and retain the number of seats
-		if ($this->intBetween($_POST['seats'], 1, 10)) {
-			$this->seats = $_POST['seats'];
-		} else {
-			throw new Validation_Failed("The number of seats is invalid");
-		}
-		
 	//Validate and retain the number of males/females	
 		if ($this->intBetween($_POST['males'], 0, 5) && $this->intBetween($_POST['females'], 0, 5)) {
 			$this->males = $_POST['males'];
 			$this->females = $_POST['females'];
 		} else {
 			throw new Validation_Failed("The number of men or women is invalid");
-		}
-		
-	//Validate and retain the number of days notice needed before a trip
-		if ($this->intBetween($_POST['days'], 0, 30)) {
-			$this->days = $_POST['days'];
-		} else {
-			return false;
 		}
 		
 	//Validate and retain the number of minutes within the final destination value
@@ -499,9 +476,9 @@ class Ride_Share_Process extends Processor_Base {
  * code, for later entry into a database
  * 
  * @access private
- * @param  string  $city  The name of the city to locate
- * @param  string  $state The state in which the city is located
- * @param  string  $type  Whether to store the results in the "From Where" or "To Where" variables
+ * @param  string   $city  The name of the city to locate
+ * @param  string   $state The state in which the city is located
+ * @param  string   $type  Whether to store the results in the "From Where" or "To Where" variables
  * @return bool            Whether or not the latitude and longitude of the city could be determined
  * @since  1.0
 */
@@ -552,11 +529,11 @@ class Ride_Share_Process extends Processor_Base {
  * the table and get the city ID.
  * 
  * @access private
- * @param  string  $city      The name of the city
- * @param  string  $stateCode The state code where the city resides
- * @param  int     $latitude  The latitude of the city
- * @param  int     $longitude The longitude of the city
- * @return int                The ID of the city of interest
+ * @param  string   $city      The name of the city
+ * @param  string   $stateCode The state code where the city resides
+ * @param  int      $latitude  The latitude of the city
+ * @param  int      $longitude The longitude of the city
+ * @return int                 The ID of the city of interest
  * @since  1.0
 */
 	
@@ -599,15 +576,14 @@ class Ride_Share_Process extends Processor_Base {
 		$fromCityID = $this->cityID($this->fromCity, $this->fromStateCode, $this->fromLatitude, $this->fromLongitude);
 		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
-	//Insert the sharing information in the database
-		$wpdb->insert("ffi_ta_share", array(
+	//Insert the request in the database
+		$wpdb->insert("ffi_ta_need", array(
 			"ID"              => NULL,
 			"Person"          => $this->person,
 			"Leaving"         => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"FromCity"        => $fromCityID,
 			"ToCity"          => $toCityID,
-			"Seats"           => $this->seats,
 			"MalesPresent"    => $this->males,
 			"FemalesPresent"  => $this->females,
 			"MinutesWithin"   => $this->minutes,
@@ -621,7 +597,7 @@ class Ride_Share_Process extends Processor_Base {
 			"EndDate"         => $this->until,
 			"Comments"        => $this->comments
 		), array(
-			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 		
 	//Redirect to the trip
@@ -637,7 +613,7 @@ class Ride_Share_Process extends Processor_Base {
  * database
  * 
  * @access private
- * @param  int     $ID The ID of the tuple to update
+ * @param  int      $ID The ID of the tuple to update
  * @return void
  * @since  1.0
 */
@@ -649,16 +625,14 @@ class Ride_Share_Process extends Processor_Base {
 		$fromCityID = $this->cityID($this->fromCity, $this->fromStateCode, $this->fromLatitude, $this->fromLongitude);
 		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
-	//Update the sharing information in the database
-		$wpdb->update("ffi_ta_share", array(
+	//Update the request in the database
+		$wpdb->update("ffi_ta_need", array(
 			"Leaving"         => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"FromCity"        => $fromCityID,
 			"ToCity"          => $toCityID,
-			"Seats"           => $this->seats,
 			"MalesPresent"    => $this->males,
 			"FemalesPresent"  => $this->females,
-			"DaysNotice"      => $this->days,
 			"MinutesWithin"   => $this->minutes,
 			"GasMoney"        => $this->reimburse,
 			"Luggage"         => $this->luggage,
@@ -672,14 +646,14 @@ class Ride_Share_Process extends Processor_Base {
 		), array (
 			"ID" => $ID
 		), array(
-			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));
 		
 	//Redirect to the trip
 		$URL = $this->fromCity . "-" . $this->fromStateCode . "-to-" . $this->toCity . "-" . $this->toStateCode;
-        wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
+        wp_redirect(get_site_url() . "/travel-assistant/trips/available/" . $ID . "/" . $this->URLPurify($URL));
         exit;
 	}
 }

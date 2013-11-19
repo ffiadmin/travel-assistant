@@ -8,10 +8,11 @@
  * 
  * Its abilities include:
  *  - Checking and storing the user's login status.
- *  - Log the user into his or her account. This procedure will
- *    automatically store the user's account information.
  *  - Fetching and storing the plugin's settings from the database.
  *  - Validating if the value of an integer lies between two values.
+ *  - Log the user into his or her account. This procedure will
+ *    automatically store the user's account information.
+ *  - Purify a string for use in a URL.
  *
  * @abstract
  * @author     Oliver Spryn
@@ -72,6 +73,44 @@ abstract class Processor_Base {
 	}
 	
 /**
+ * Fetch the plugin settings from the database and make the data
+ * available to the rest of the class.
+ *
+ * @access protected
+ * @return void
+ * @since  1.0
+*/
+
+	protected function fetchSettings($tableName = "settings") {
+		global $wpdb;
+
+		$this->settings = $wpdb->get_results("SELECT * FROM `" . $tableName . "`");
+	}
+	
+/**
+ * Check to see if a particular integer value falls between a specified
+ * range, including the extrema values.
+ * 
+ * @access protected
+ * @param  int      $value The integer value to check
+ * @param  int      $min   The minimum value the integer may equal
+ * @param  int      $max   The maximum value the integer may equal
+ * @return bool            Whether or not the integer falls within the specified range
+ * @since  1.0
+*/
+	
+	protected function intBetween($value, $min, $max) {
+		if (!is_numeric($value)) {
+			return false;
+		}
+		
+		$value = intval($value);
+		
+	//Check the integer extrema
+		return ($value >= $min && $value <= $max);
+	}
+	
+/**
  * Log in the user. The user's account data will be automatically
  * retained, even if they were previously logged in.
  *
@@ -128,41 +167,22 @@ abstract class Processor_Base {
 	}
 	
 /**
- * Fetch the plugin settings from the database and make the data
- * available to the rest of the class.
- *
- * @access protected
- * @return void
- * @since  1.0
-*/
-
-	protected function fetchSettings($tableName = "settings") {
-		global $wpdb;
-
-		$this->settings = $wpdb->get_results("SELECT * FROM `" . $tableName . "`");
-	}
-	
-/**
- * Check to see if a particular integer value falls between a specified
- * range, including the extrema values.
+ * This method will take a string and prepare it for use 
+ * in a URL by removing any spaces and special characters, and
+ * then making all characters lower case, which is this plugin's
+ * convention when placing strings in a URL.
  * 
  * @access protected
- * @param  int      $value The integer value to check
- * @param  int      $min   The minimum value the integer may equal
- * @param  int      $max   The maximum value the integer may equal
- * @return bool            Whether or not the integer falls within the specified range
+ * @param  string    $input The string string
+ * @return string           The URL purified version of the input string
  * @since  1.0
 */
-	
-	protected function intBetween($value, $min, $max) {
-		if (!is_numeric($value)) {
-			return false;
-		}
-		
-		$value = intval($value);
-		
-	//Check the integer extrema
-		return ($value >= $min && $value <= $max);
+
+	protected function URLPurify($input) {
+		$input = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $input); //Remove all non-alphanumeric characters, except for spaces
+		$input = preg_replace("/[\s]/", "-", $input);          //Replace remaining spaces with a "-"
+		$input = str_replace("--", "-", $input);               //Replace "--" with "-", will occur if a something like " & " is removed
+		return strtolower($input);
 	}
 }
 ?>

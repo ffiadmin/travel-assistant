@@ -131,9 +131,9 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	
 	public function getWhen() {
 		if ($this->data) {
-			$dateFormatter = new \DateTime($this->data[0]->Leaving);
+			$dateFormatter = new \DateTime($this->data->Leaving);
 		
-			return "<input autocomplete=\"off\" class=\"validate[required,validate[required,custom[dateTimeFormat]]\" id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y h:i a") . " " . $this->data[0]->LeavingTimeZone) . "\">";
+			return "<input autocomplete=\"off\" class=\"validate[required,validate[required,custom[dateTimeFormat]]\" id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y h:i a") . " " . $this->data->LeavingTimeZone) . "\">";
 		} else {
 			return "<input autocomplete=\"off\" class=\"validate[required,custom[dateTimeFormat],past[now]]\" id=\"when\" name=\"when\" placeholder=\"When do you plan on leaving?\" type=\"text\" value=\"\">";
 		}
@@ -149,11 +149,11 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getFromWhere() {
-		return "<input autocomplete=\"off\" class=\"rounded-left validate[required,funcCall[locDifferent]]\" id=\"from-where-city\" name=\"from-where-city\" placeholder=\"Origin city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->FromCityName : "") . "\">
+		return "<input autocomplete=\"off\" class=\"rounded-left validate[required,funcCall[locDifferent]]\" id=\"from-where-city\" name=\"from-where-city\" placeholder=\"Origin city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data->FromCityName : "") . "\">
 
 <select class=\"input-small rounded-right validate[required]\" id=\"from-where-state\" name=\"from-where-state\">
 <option selected value=\"\">State</option>
-" . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->FromState : "", "codes") . "
+" . State::buildDropDown($this->data ? $this->data->FromState : "") . "
 </select>";
 	}
 	
@@ -167,11 +167,11 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getToWhere() {
-		return "<input autocomplete=\"off\" class=\"rounded-left validate[required]\" id=\"to-where-city\" name=\"to-where-city\" placeholder=\"Destination city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data[0]->ToCityName : "") . "\">
+		return "<input autocomplete=\"off\" class=\"rounded-left validate[required]\" id=\"to-where-city\" name=\"to-where-city\" placeholder=\"Destination city\" type=\"text\" value=\"" . htmlentities($this->data ? $this->data->ToCityName : "") . "\">
 
 <select class=\"input-small rounded-right validate[required]\" id=\"to-where-state\" name=\"to-where-state\">
 <option selected value=\"\">State</option>
-" . Destination_Manager::buildStatesDropDown($this->data ? $this->data[0]->ToState : "", "codes") . "
+" . State::buildDropDown($this->data ? $this->data->ToState : "") . "
 </select>";
 	}
 	
@@ -198,7 +198,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getMales() {
-		return "<input autocomplete=\"off\" class=\"input-mini rounded-left validate[required,custom[integer],min[0],max[5]]\" id=\"males\" max=\"5\" min=\"0\" name=\"males\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->MalesPresent : "0") . "\">";
+		return "<input autocomplete=\"off\" class=\"input-mini rounded-left validate[required,custom[integer],min[0],max[5]]\" id=\"males\" max=\"5\" min=\"0\" name=\"males\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->MalesPresent : "0") . "\">";
 	}
 	
 /**
@@ -211,7 +211,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getFemales() {
-		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[5]]\" id=\"females\" max=\"5\" min=\"0\" name=\"females\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->FemalesPresent : "0") . "\">";
+		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[5]]\" id=\"females\" max=\"5\" min=\"0\" name=\"females\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->FemalesPresent : "0") . "\">";
 	}
 	
 /**
@@ -224,7 +224,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getDaysNotice() {
-		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[30]]\" id=\"days\" max=\"30\" min=\"0\" name=\"days\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->DaysNotice : "1") . "\">";
+		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[30]]\" id=\"days\" max=\"30\" min=\"0\" name=\"days\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->DaysNotice : "1") . "\">";
 	}
 	
 /**
@@ -237,7 +237,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getMinutesWithin() {
-		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[120]]\" id=\"time\" max=\"120\" min=\"0\" name=\"minutes\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->MinutesWithin : "15") . "\">";
+		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[120]]\" id=\"time\" max=\"120\" min=\"0\" name=\"minutes\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->MinutesWithin : "15") . "\">";
 	}
 	
 /**
@@ -250,7 +250,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getGasMoney() {
-		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[100]]\" id=\"reimburse\" max=\"100\" min=\"0\" name=\"reimburse\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data[0]->GasMoney : "5") . "\">";
+		return "<input autocomplete=\"off\" class=\"input-mini validate[required,custom[integer],min[0],max[100]]\" id=\"reimburse\" max=\"100\" min=\"0\" name=\"reimburse\" type=\"number\" value=\"" . htmlentities($this->data ? $this->data->GasMoney : "5") . "\">";
 	}
 	
 /**
@@ -267,11 +267,11 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		$checkedNo = false;
 		
 	//Determine which option should be checked
-		if (!$this->data || ($this->data && $this->data[0]->Luggage == "1")) {
+		if (!$this->data || ($this->data && $this->data->Luggage == "1")) {
 			$checkedYes = true;
 		}
 		
-		if ($this->data && $this->data[0]->Luggage == "0") {
+		if ($this->data && $this->data->Luggage == "0") {
 			$checkedNo = true;
 		}
 		
@@ -298,7 +298,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		$checkedNo = false;
 		
 	//Determine which option should be checked
-		if ($this->data && ($this->data[0]->Monday == "1" || $this->data[0]->Tuesday == "1" || $this->data[0]->Wednesday == "1" || $this->data[0]->Thursday == "1" || $this->data[0]->Friday == "1")) {
+		if ($this->data && ($this->data->Monday == "1" || $this->data->Tuesday == "1" || $this->data->Wednesday == "1" || $this->data->Thursday == "1" || $this->data->Friday == "1")) {
 			$checkedYes = true;
 			$this->recurring = true;
 		} else {
@@ -327,7 +327,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 		$class = "";
 		$daysID = array("monday", "tuesday", "wednesday", "thursday", "friday");
         $daysText = array("M<span class=\"collapse\">onday</span>", "T<span class=\"collapse\">uesday</span>", "W<span class=\"collapse\">ednesday</span>", "T<span class=\"collapse\">hursday</span>", "F<span class=\"collapse\">riday</span>");
-		$daysVal = array($this->data[0]->Monday, $this->data[0]->Tuesday, $this->data[0]->Wednesday, $this->data[0]->Thursday, $this->data[0]->Friday);
+		$daysVal = array($this->data->Monday, $this->data->Tuesday, $this->data->Wednesday, $this->data->Thursday, $this->data->Friday);
 		$enabled = $this->recurring ? true : false;
 		$return = "<div class=\"btn-group\" data-toggle=\"buttons-checkbox\">
 ";
@@ -359,7 +359,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 	
 	public function getEndDate() {
 		if ($this->recurring) {
-			$dateFormatter = new \DateTime($this->data[0]->EndDate);
+			$dateFormatter = new \DateTime($this->data->EndDate);
 			
 			return "<input autocomplete=\"off\" class=\"validate[required,custom[date]]\" id=\"until\" name=\"until\" placeholder=\"How long will you need a ride?\" type=\"text\" value=\"" . htmlentities($dateFormatter->format("m/d/Y")) . "\">";
 		} else {
@@ -377,7 +377,7 @@ class Ride_Request_Display extends Ride_Data_Fetch {
 */
 	
 	public function getComments() {
-		return "<textarea id=\"comments\" name=\"comments\">" . ($this->data ? $this->data[0]->Comments : "") . "</textarea>";
+		return "<textarea id=\"comments\" name=\"comments\">" . ($this->data ? $this->data->Comments : "") . "</textarea>";
 	}
 }
 ?>

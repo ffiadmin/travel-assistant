@@ -1,14 +1,13 @@
 <?php
 /**
- * Invalid State Exception class
+ * Database No Data Returned Exception class
  *
  * This is a custom exception class intended to be thrown
- * when the user attempts to access information about a
- * non-existant US state.
+ * when an SQL query returns 0 tuples.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   FFI\TA\Base
+ * @extends   Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.exceptions
@@ -19,5 +18,5 @@ namespace FFI\TA;
 
 require_once(dirname(__FILE__) . "/Base.php");
 
-final class Invalid_State_Exception extends Base {}
+final class No_Data_Returned extends Base {}
 ?>

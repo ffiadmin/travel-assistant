@@ -58,13 +58,13 @@ class City {
 	public static function getMyNeeds($userID) {
 		global $wpdb;
 		
-		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_need.ID, ffi_ta_need.Leaving, ffi_ta_need.LeavingTimeZone, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_need` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_need.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_need.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
+		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_need.ID, ffi_ta_need.Leaving, ffi_ta_need.LeavingTimeZone, ffi_ta_need.Fulfilled, ffi_ta_need.EndDate, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_need` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_need.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_need.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
 	}
 	
 	public static function getMyShares($userID) {
 		global $wpdb;
 		
-		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_share.ID, ffi_ta_share.Leaving, ffi_ta_share.LeavingTimeZone, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_share` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_share.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_share.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
+		return $wpdb->get_results($wpdb->prepare("SELECT ffi_ta_share.ID, ffi_ta_share.Leaving, ffi_ta_share.LeavingTimeZone, ffi_ta_share.Seats, ffi_ta_share.Fulfilled, ffi_ta_share.EndDate, q1.City AS `FromCity`, q1.State AS `FromState`, q1.Latitude AS `FromLatitude`, q1.Longitude AS `FromLongitude`, q2.City AS `ToCity`, q2.State AS `ToState`, q2.Latitude AS `ToLatitude`, q2.Longitude AS `ToLongitude` FROM `ffi_ta_share` LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q1` ON ffi_ta_share.FromCity = q1.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `q2` ON ffi_ta_share.ToCity = q2.ID WHERE `Person` = %d ORDER BY `Leaving` ASC", $userID));
 	}
 }
 ?>

@@ -41,7 +41,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * multiple times.
  *
  * @access private
- * @type   boolean
+ * @type   bool
 */
 	
 	private $recurring = false;
@@ -80,7 +80,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * @since  1.0
 */
 	
-	public function __construct($ID, $userID, $failRedirect) {
+	public function __construct($ID, $userID) {
 		parent::__construct("ffi_ta_share", $ID, $userID);
 		$this->rand = mt_rand(0, 4);
 	}

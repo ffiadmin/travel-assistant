@@ -4,14 +4,15 @@
 	$API = $APIs[0]->GoogleMaps;
 	
 //Include the necessary scripts
-	$essentials->setTitle("Travel Assistant");
-	$essentials->includePluginClass("Destination_Manager");
+	$essentials->includeCSS("welcome.min.css");
+	$essentials->includeHeadHTML("<script>\$(function(){\$('article.map').FFI_TA_Map_Maker()})</script>");
 	$essentials->includeJS("//maps.googleapis.com/maps/api/js?key=" . $API . "&sensor=false");
-	$essentials->includeJS("scripts/FFI_Map_Maker.js");
-	$essentials->includeCSS("styles/welcome.css");
-	$essentials->includeHeadHTML("<script>\$(function(){\$('article.map').FFI_Map_Maker()})</script>");
+	$essentials->includeJS("map-maker.min.js");
+	$essentials->includePluginClass("display/State");
+	$essentials->includePluginClass("display/Trip_Info");
+	$essentials->setTitle("Travel Assistant");
 
-//Display the a Google Maps of the United States with all avaliable or needed trip locations
+//Display the a Google Map of the United States with all avaliable or needed trip locations
 	echo "<article class=\"map\"><h2>Map of Avaliable or Needed Trip Locations</h2></article>
 
 ";
@@ -45,7 +46,7 @@
 ";
 
 //Browse trips section
-	$totals = FFI\TA\Destination_Manager::getTotals();
+	$totals = FFI\TA\Trip_Info::getTotals();
 
 	echo "<article class=\"center content even browse\">
 <h2>Browse Trips</h2>
@@ -56,6 +57,6 @@
 <li class=\"college\"><a href=\"" . $essentials->friendlyURL("browse/pennsylvania/grove-city") . "\">Rides for</a></li>
 </ul>
 
-" . FFI\TA\Destination_Manager::getStatesList() . "
+" . FFI\TA\State::getStatesList() . "
 </article>";
 ?>

@@ -302,7 +302,7 @@ class Ride_Share_Process extends Processor_Base {
  * @since  1.0
 */
 	
-	public function __construct($ID, $redirectSuccess, $redirectFail) {
+	public function __construct($ID) {
 		parent::__construct();
 	
 	//Check to see if the user has submitted the form
@@ -344,7 +344,7 @@ class Ride_Share_Process extends Processor_Base {
  * store the data within the class for later database entry.
  * 
  * @access private
- * @return bool    Whether or not validation has succeeded
+ * @return bool              Whether or not validation has succeeded
  * @since  1.0
  * @throws Validation_Failed Thrown when ANY portion of the validation process fails
 */

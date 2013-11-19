@@ -17,7 +17,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.form.processing
- * @since     v1.0 Dev
+ * @since     1.0
 */
 
 namespace FFI\TA;
@@ -36,16 +36,16 @@ abstract class Ride_Data_Fetch {
  * CONSTRUCTOR
  *
  * This method will:
- *  - Grab the name of the table which which data should be fetched
- *  - Run the SQL query to fetch data
- *  - Share the data with child classes
+ *  - Grab the name of the table which which data should be fetched.
+ *  - Run the SQL query to fetch data.
+ *  - Share the data with child classes.
  * 
  * @access public
  * @param  string   $tableName The name of the table from which data should be fetched
  * @param  int      $ID        The ID of the tuple to fetch from the database
  * @param  int      $userID    The ID of the user requesting this information
  * @return void
- * @since  v1.0 Dev
+ * @since  1.0
 */
 
 	public function __construct($tableName, $ID, $userID) {
@@ -53,7 +53,8 @@ abstract class Ride_Data_Fetch {
 		
 		if ($ID) {
 			$tableName = esc_sql($tableName);
-			$this->data = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.*, ffi_ta_cities.City AS `FromCityName`, ffi_ta_cities.State AS `FromState`, cities.City AS `ToCityName`, cities.State AS `ToState` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.FromCity = ffi_ta_cities.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `cities` ON {$tableName}.ToCity = cities.ID WHERE {$tableName}.ID = %d AND {$tableName}.Person = %d LIMIT 1", $ID, $userID));
+			$temp = $wpdb->get_results($wpdb->prepare("SELECT {$tableName}.*, ffi_ta_cities.City AS `FromCityName`, ffi_ta_cities.State AS `FromState`, cities.City AS `ToCityName`, cities.State AS `ToState` FROM `{$tableName}` LEFT JOIN `wp_usermeta` ON {$tableName}.Person = wp_usermeta.user_id LEFT JOIN `ffi_ta_cities` ON {$tableName}.FromCity = ffi_ta_cities.ID LEFT JOIN (SELECT * FROM `ffi_ta_cities`) `cities` ON {$tableName}.ToCity = cities.ID WHERE {$tableName}.ID = %d AND {$tableName}.Person = %d LIMIT 1", $ID, $userID));
+			$this->data = $temp[0];
 			
 		//SQL returned 0 tuples
 			if (!count($this->data)) {
