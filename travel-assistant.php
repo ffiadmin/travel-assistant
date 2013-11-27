@@ -34,5 +34,18 @@ License: MIT
 		$intercept->registerException("trips/needed", "trips/needed/index.php", 3);
 		$intercept->highlightNavLink(URL_ACTIVATE);
 		$intercept->go();
+	} else {
+		function addMenuItems() {
+   			global $submenu;
+			
+		//Add the desired pages to the Wordpress Administration menu
+			add_menu_page("Settings", "Travel Assistant", "update_core", "travel-assistant/admin/settings.php");
+			add_submenu_page("travel-assistant/admin/settings.php", "API Management", "API Management", "update_core", "travel-assistant/admin/api.php");
+			
+		//Modify the name of the first sub-menu item
+			$submenu['travel-assistant/admin/settings.php'][0][0] = "Settings";
+		}
+
+		add_action("admin_menu", "FFI\\TA\\addMenuItems");
 	}
 ?>
