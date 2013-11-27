@@ -95,7 +95,7 @@
 
 <li class=\"luggage\">
 <figure></figure>
-<h3>Luggage Room " . ($info[0]->Luggage == 1 ? "Available" : "Unvailable") . "</h3>
+<h3>Luggage Room " . ($info[0]->Luggage == 1 ? "Available" : "Unavailable") . "</h3>
 <p>" . $info[0]->Sharer . ($info[0]->Luggage == 1 ? " can" : " cannot") . " provide room for luggage.</p>
 </li>
 </ul>

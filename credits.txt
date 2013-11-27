@@ -1,5 +1,7 @@
 Photo credits:
 
+Dynamic maps are generated and courtesy of Google: https://developers.google.com/maps/documentation/javascript/
+
 New York City and Yellow Cabs: http://static.tumblr.com/865f9438857c335609a9b49b7f8c4569/frqjgyu/T1lmgzdiz/tumblr_static_new-york-city-black-and-white-photography-0l_2.jpg
 Ammendments by: Joseph Spryn
 
@@ -7,15 +9,15 @@ Rays Hill Tunnel 1942: http://upload.wikimedia.org/wikipedia/commons/d/d6/Rays_H
 
 Rays Hill Tunnel Colorized: http://www.coroflot.com/sbulifant/photo-restoration
 
-Liberty Bell: http://www.flirtygirlpublishing.com/wp-content/uploads/2010/02/Liberty-Bell.jpg
+Grove City College: http://commons.wikimedia.org/wiki/File:Grove_City_College_Campus.jpg
 
-Wild Horses in Sunset: http://www.mrwallpaper.com/wallpapers/wild-horses-sunset.jpg
+Grand Canyon: http://en.wikipedia.org/wiki/File:Grand_Canyon_Horse_Shoe_Bend_MC.jpg
 
 Trees with Spanish Moss: http://artfuss.files.wordpress.com/2011/01/live-oaks-81.jpg
 
 New York City: http://www.myuglyphotos.com/wp-content/uploads/2011/10/Brooklyn_Bridge_New_York_Skyline_MyUglyPhotos.com_FullSize.jpg
 
-Barn and Farm: http://farm5.staticflickr.com/4116/4776583088_307b719a45_o.jpg
+Wheat Farm: http://upload.wikimedia.org/wikipedia/commons/1/1a/Kansas_Summer_Wheat_and_Storm_Panorama.jpg
 
 Korean War Memorial: http://www.myuglyphotos.com/wp-content/uploads/2011/12/Korean_War_Memorial_-_Washington_DC_MyUglyPhotos.com_FullSize.jpg
 
@@ -25,7 +27,7 @@ Beach Lighthouse: http://www.travelsmartblog.com/wp-content/uploads/2013/04/0_PA
 
 Northern Lights (but they are really in Iceland... shhh): http://ticketspy.nl/wp-content/uploads/2013/03/westfjords-iceland-northern-lights1.jpg
 
-Hawaii Beach: http://xn--80aqafcrtq.cc/img/4/6/1/Waikiki,%20beach,%20hawaii,%20%D0%BF%D0%BB%D1%8F%D0%B6,%20%D0%B2%D0%BE%D0%BB%D0%BD%D1%8B,%20%D0%BE%D0%BA%D0%B5%D0%B0%D0%BD,%203872x2592.jpg
+Coral in the Sea: http://www.allmacwallpaper.com/mac-wallpaper/Underwater-Coral-Scene/543#.Uo2TBsSfjf5
 
 Calendar icon by Designmodo:
 https://www.iconfinder.com/icons/115762/calendar_date_event_month_icon

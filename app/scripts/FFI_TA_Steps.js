@@ -19,9 +19,13 @@
 			var container = $(this);
 			
 			$.ajax({
-			    dataType    : 'jsonp',
+				data        : {
+					from    : fromPOI,
+					to      : toPOI
+				},
+			    dataType    : 'json',
 				type        : 'GET',
-				url         : '//maps.googleapis.com/maps/api/directions/json?origin=' + encodeURIComponent(fromPOI) + '&destination=' + encodeURIComponent(toPOI) + '&sensor=false&mode=driving',
+				url         : $.fn.FFI_TA_Steps.defaults.processURL,
 				error       : function(jqXHR, textStatus) {
 					alert('An error was encountered while creating a list of directions for this trip.\n\nIf this is the first time you have seen this error, wait one minute and try reloading this page. If this error continues to occur, contact the site administrator for assistance and include the details listed below.\n\n-----------------------\n\nPage URL:\n' + window.location.href + '\n\nAJAX Status:\n' + textStatus);
 				},
@@ -71,4 +75,15 @@
 		
 		return output;
 	}
-})(jQuery)
+
+/**
+ * Plugin default settings
+ *
+ * @access public
+ * @type   object<string>
+*/
+
+	$.fn.FFI_TA_Steps.defaults = {
+		processURL   : document.location.href.substring(0, document.location.href.indexOf('travel-assistant')) + 'wp-content/plugins/travel-assistant/app/includes/ajax/directions.php'
+	};
+})(jQuery);

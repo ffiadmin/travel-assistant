@@ -13,6 +13,20 @@ section#splash div.ad-container div.ad-contents h2 {
 	display: none;
 }
 
+@media screen and (min-width: 1280px) {
+	section#splash div.ad-container.city {
+		background-position: center center;
+		background-size: 100% auto;
+	}
+}
+
+@media screen and (min-width: 2000px) {
+	section#splash div.ad-container.state {
+		background-position: center center;
+		background-size: 100% auto;
+	}
+}
+
 /**
  * City disks
  * ----------------------------------
@@ -226,15 +240,6 @@ ul.cities li a h3 {
 }
 
 /**
- * Nothing available section
- * ----------------------------------
-*/
-
-button.request, button.share {
-	margin: 30px 20px;
-}
-
-/**
  * Destination city list
  * ----------------------------------
 */
@@ -370,4 +375,14 @@ ul.destinations li ul li span.mobile {
 	ul.destinations li ul li span.mobile {
 		display: inline;
 	}
+}
+
+/**
+ * Nothing available section
+ * ----------------------------------
+*/
+
+a.btn {
+	color: #FFFFFF;
+	margin: 30px 20px;
 }

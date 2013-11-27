@@ -47,15 +47,26 @@
 							modal.modal('hide');
 							
 						//Decrement the total trip counter near the top of the page
-							if (!button.parent().hasClass('expired') && !button.parent().hasClass('sold')) {
-								var total = $('span.saleTotal');
-								var value = parseInt(total.text());
+							var total;
+							var value;
+
+							if (button.parent().parent().hasClass('needed')) {
+								total = $('li.needed p span.count');
+								value = parseInt(total.text());
 								total.text(--value);
 								
-								value == 1 ? total.next('span').text('Book for Sale') : total.next('span').text('Books for Sale');
+								value == 1 ? total.next('span').text('Trip I\'ve Needed') : total.next('span').text('Trips I\'ve Needed');
 							}
 							
-						//Show the "Ask/Share a RIde" prompt, if the user deleted the last of the rides
+							if (button.parent().parent().hasClass('shared')) {
+								total = $('li.shared p span.count');
+								value = parseInt(total.text());
+								total.text(--value);
+								
+								value == 1 ? total.next('span').text('Active Recurring Trip') : total.next('span').text('Active Recurring Trips');
+							}
+
+						//Show the "Ask/Share a Ride" prompt, if the user deleted the last of the rides
 							if (!button.parent().siblings('li').length) {
 								!button.parent().parent().siblings('div.none').show();
 							}

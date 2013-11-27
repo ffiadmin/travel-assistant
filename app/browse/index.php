@@ -8,13 +8,10 @@
 //Identify whether this page should be showing a listing of origin cities, or destination cities 
 	define("FFI\TA\DISPLAY_MODE", isset($essentials->params[2]) ? "destination" : "origin");
 
-//Fetch the Google Maps API key for use when creating the map views of each city
-	$APIs = $wpdb->get_results("SELECT `GoogleMaps` FROM `ffi_ta_apis`");
-	$API = $APIs[0]->GoogleMaps;
-
 //Include the necessary scripts
 	$essentials->includeCSS("browse.css");
 	$essentials->includePluginClass("display/City");
+	$essentials->includePluginClass("display/Map_Images");
 	$essentials->includePluginClass("display/State");
 	
 //Check to see if this state exists
@@ -29,9 +26,7 @@
 	}
 	
 //Display a listing a available origin cities
-	if (FFI\TA\DISPLAY_MODE == "origin") {
-		$essentials->includeHeadHTML("<script>\$(function(){\$('button.request').click(function(){document.location='" . $essentials->friendlyURL("need-a-ride") . "'});\$('button.share').click(function(){document.location='" . $essentials->friendlyURL("share-a-ride") . "'})})</script>");
-
+	if (FFI\TA\DISPLAY_MODE == "origin" && $info[0]->District != 1) {
 	//Set the page title
 		$essentials->setTitle($state->Name);
 
@@ -42,7 +37,7 @@
 
 	//Display the welcome splash section
 		echo "<section id=\"splash\">
-<div class=\"ad-container\" style=\"background-image:url(" . $essentials->normalizeURL("styles/splash/state-backgrounds/" . $state->Image) . ".jpg)\">
+<div class=\"ad-container state\" style=\"background-image:url(" . $essentials->normalizeURL("styles/splash/state-backgrounds/" . $state->Image) . ".jpg)\">
 <div class=\"ad-contents\">
 <h2>" . $state->Name . "</h2>
 </div>
@@ -63,7 +58,7 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\TA\State::URLPurify($city->City)) . "\">
-<div style=\"background-image: url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->City) . ",+" . urlencode($city->Code) . "&zoom=13&size=180x180&markers=color:red%7C" . $city->Latitude . "," . $city->Longitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off')\">
+<div style=\"background-image: url('" . Map_Images::cityPreview($city->City, $city->Code, $city->Latitude, $city->Longitude) . "')\">
 <p class=\"needed" . ($city->Needs > 0 ? " highlight" : "") . "\">" . $city->Needs . " <span>" . ($city->Needs == 1 ? "Need" : "Needs") . "</span></p>
 <p class=\"shares" . ($city->Shares > 0 ? " highlight" : "") . "\">" . $city->Shares . " <span>" . ($city->Shares == 1 ? "Ride" : "Rides") . "</span></p>
 </div>
@@ -81,18 +76,33 @@
 <h2>Nothing Available</h2>
 <p>We do not currently have anyone who needs or can share a ride in the state of " . $state->Name . ". Sorry about that. :-(</p>
 <p class=\"center\">
-<button class=\"btn btn-warning request\">Request Ride</button>
-<button class=\"btn btn-warning share\">Share Ride</button>
+<a class=\"btn btn-warning\" href=\"" . $essentials->friendlyURL("need-a-ride") . "\">Request Ride</a>
+<a class=\"btn btn-warning\" href=\"" . $essentials->friendlyURL("share-a-ride") . "\">Share Ride</a>
 </p>
 </section>";
 		}
 //Display a listing a available destination cities
 	} else {
-		$needs = FFI\TA\City::getDestinationNeedCities($essentials->params[2], $state->Code);
-		$shares = FFI\TA\City::getDestinationShareCities($essentials->params[2], $state->Code);
-		$title = $needs[0]->FromCity . ", " . $state->Name;
+		if ($info[0]->District != 1) {
+			$needs = FFI\TA\City::getDestinationNeedCities($essentials->params[2], $state->Code);
+			$shares = FFI\TA\City::getDestinationShareCities($essentials->params[2], $state->Code);
+		} else {
+			$needs = FFI\TA\City::getDestinationNeedCities(FFI\TA\State::URLPurify($info[0]->City), $state->Code);
+			$shares = FFI\TA\City::getDestinationShareCities(FFI\TA\State::URLPurify($info[0]->City), $state->Code);
+		}
+		
+	//Does this city have any needs or shares?
+		if (count($needs)) {
+			$info = &$needs;
+		} elseif (count($shares)) {
+			$info = &$shares;
+		} else {
+			wp_redirect($essentials->friendlyURL("browse/" . $params));
+			exit;
+		}
 		
 	//Set the page title
+		$title = $info[0]->FromCity . ", " . $state->Name;
 		$essentials->setTitle($title);
 
 	//Display the page
@@ -102,7 +112,7 @@
 
 	//Display the welcome splash section
 		echo "<section id=\"splash\">
-<div class=\"ad-container\" style=\"background-image:url('//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($needs[0]->FromCity) . ",+" . urlencode($needs[0]->FromState) . "&zoom=13&size=1000x141&scale=2&markers=color:red%7C" . $needs[0]->FromLatitude . "," . $needs[0]->FromLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off')\">
+<div class=\"ad-container city\" style=\"background-image:url('" . Map_Images::cityBanner($info[0]->FromCity, $info[0]->FromState, $info[0]->FromLatitude, $info[0]->FromLongitude) . "')\">
 <div class=\"ad-contents\">
 <h2>" . $title . "</h2>
 </div>
@@ -129,8 +139,8 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/needed/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>
@@ -150,7 +160,7 @@
 			$formatter = new DateTime();
 			$URL = "";
 			
-			echo "<section class=\"center content even\">
+			echo "<section class=\"center content" . (count($needs) ? " even" : ""). "\">
 <h2>Available Rides</h2>
 <p>Below is a listing of available rides from people leaving " . $title . " to one of the destination cities listed below. Each item will be listed with the departure date and the total number of available seats.</p>
 
@@ -163,8 +173,8 @@
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/available/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&size=230x190&scale=1&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"//maps.googleapis.com/maps/api/staticmap?center=" . urlencode($city->ToCity) . ",+" . urlencode($city->ToState) . "&zoom=13&scale=1&size=100x100&markers=color:red%7C" . $city->ToLatitude . "," . $city->ToLongitude . "&key=" . $API . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>

@@ -63,6 +63,11 @@ section.welcome ul.stats li p span {
 	padding: 10px 0px 0px 0px;
 }
 
+section.welcome ul.stats li p span.count {
+	font-size: 36px;
+	padding-top: 0px;
+}
+
 @media screen and (max-width: 750px) {
 	section.welcome ul.stats li.needed, section.welcome ul.stats li.shared {
 		display: none;

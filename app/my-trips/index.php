@@ -31,9 +31,9 @@
 
 <ul class=\"stats\">
 <li class=\"next\"><p>" . $date . "<span>Next Trip</span></p></li>
-<li class=\"needed\"><p>" . $stats->Needed . "<span>Trips I've Needed</span></p></li>
-<li class=\"shared\"><p>" . $stats->Shared . "<span>Trips I've Shared</span></p></li>
-<li class=\"recurring\"><p>" . $stats->Recurring . "<span>Active Recurring Trips</span></p></li>
+<li class=\"needed\"><p><span class=\"count\">" . $stats->Needed . "</span><span>Trips I've Needed</span></p></li>
+<li class=\"shared\"><p><span class=\"count\">" . $stats->Shared . "</span><span>Trips I've Shared</span></p></li>
+<li class=\"recurring\"><p><span class=\"count\">" . $stats->Recurring . "</span><span>Active Recurring Trips</span></p></li>
 </ul>
 </section>
 
@@ -64,24 +64,21 @@
 			
 		//Generate a tooltip for each of the items
 			$message = "";
+			$endPast = $now > $endTS;
 			
 			if ($need->Fulfilled > 0) {
-				$endPast = true;
 				$message = "<span class=\"notice fulfilled\">Fulfilled</span>";
 			}
 			
 			if ($need->Fulfilled > 0 && $now < $leaveTS) {
-				$endPast = false;
 				$message = "<span class=\"notice fulfilled\">Future Ride</span>";
 			}
 			
 			if ($need->Fulfilled > 0 && $now > $leaveTS && $now < $endTS) {
-				$endPast = false;
 				$message = "<span class=\"notice recurring\">Recurring</span>";
 			}
 			
 			if ($need->Fulfilled == 0 && $now > $leaveTS) {
-				$endPast = true;
 				$message = "<span class=\"notice warning\">Not Fulfilled</span>";
 			}
 		
@@ -148,24 +145,21 @@
 			
 		//Generate a tooltip for each of the items
 			$message = "";
+			$endPast = $now > $endTS;
 			
 			if ($share->Fulfilled > 0) {
-				$endPast = true;
 				$message = "<span class=\"notice fulfilled\">Shared</span>";
 			}
 			
 			if ($share->Fulfilled > 0 && $now < $leaveTS) {
-				$endPast = false;
 				$message = "<span class=\"notice fulfilled\">Future Ride</span>";
 			}
 			
 			if ($share->Fulfilled > 0 && $now > $leaveTS && $now < $endTS) {
-				$endPast = false;
 				$message = "<span class=\"notice recurring\">Recurring</span>";
 			}
 			
 			if ($share->Fulfilled == 0 && $now > $leaveTS) {
-				$endPast = true;
 				$message = "<span class=\"notice warning\">Not Shared</span>";
 			}
 		
