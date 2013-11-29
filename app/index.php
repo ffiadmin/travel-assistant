@@ -37,7 +37,7 @@
 
 <li class=\"my-trips\">
 <a href=\"" . $essentials->friendlyURL("my-trips") . "\">
-<h3>My Trips</h3>
+<h3>My Trips<span class=\"tablet\"> &#187;</span></h3>
 </a>
 </li>
 </ul>

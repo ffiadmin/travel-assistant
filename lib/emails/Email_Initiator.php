@@ -24,19 +24,9 @@
 namespace FFI\TA;
 
 require_once(dirname(__FILE__) . "/Email_Base.php");
+require_once(dirname(dirname(__FILE__)) . "/display/Map_Images.php");
 
 class Email_Initiator extends Email_Base {
-/**
- * Hold the name of the city and state, in a format such as this:
- * 
- *     Orlando, FL
- *
- * @access public
- * @type   string
-*/
-
-	public $cityAndState;
-	
 /**
  * Hold the PREFORMATTED departure date and time.
  *
@@ -47,13 +37,16 @@ class Email_Initiator extends Email_Base {
 	public $departureTime;
 	
 /**
- * Hold the Google API key for generating the city map.
+ * Hold the name of the origin city and state, in a format such
+ * as this:
+ * 
+ *     Orlando, FL
  *
  * @access public
  * @type   string
 */
 
-	public $googleAPI;
+	public $fromCityAndState;
 	
 /**
  * Hold the latitude of the city.
@@ -101,6 +94,18 @@ class Email_Initiator extends Email_Base {
 */
 
 	public $posterFirstName;
+	
+/**
+ * Hold the name of the destination city and state, in a format such
+ * as this:
+ * 
+ *     Orlando, FL
+ *
+ * @access public
+ * @type   string
+*/
+
+	public $toCityAndState;
 
 /**
  * Build the HTML and plain-text versions of the email body 
@@ -113,7 +118,7 @@ class Email_Initiator extends Email_Base {
 	
 	public function buildBody() {
 	//Generate the absolute URL to the directory where the images in the email can be found
-		$directory = "http://" . $_SERVER['HTTP_HOST'] . str_replace("includes/ajax/trip.php", "", $_SERVER['PHP_SELF']) . "images/email-assets/";
+		$directory = "http://" . $_SERVER['HTTP_HOST'] . str_replace("ajax/trip.php", "", $_SERVER['PHP_SELF']) . "images/email-assets/";
 		
 	//Generate the HTML version of the email
 		$this->HTMLBody = "<!DOCTYPE html>
@@ -134,7 +139,7 @@ class Email_Initiator extends Email_Base {
 
 <tr>
 <td align=\"center\" height=\"376\" style=\"border: 1px solid #000000;\" valign=\"top\" width=\"660\">
-<img alt=\"Map of " . htmlentities($this->cityAndState) . "\" height=\"376\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=" . urlencode($this->cityAndState) . "&zoom=13&size=331x188&scale=2&markers=color:red%7C" . urlencode($this->latitude) . "," . urlencode($this->longitude) . "&key=" . urlencode($this->googleAPI) . "&sensor=false&visual_refresh=true&style=feature:road|color:0xFFFFFF&style=feature:road.arterial|color:0xF1C40F&style=feature:road.highway|color:0xF1C40F&style=feature:landscape|color:0xECF0F1&style=feature:water|color:0x73BFC1&style=feature:road|element:labels|visibility:off&style=feature:poi.park|element:geometry.fill|color:0x2ECC71&style=feature:landscape.man_made|element:geometry|visibility:off\" width=\"660\" />
+<img alt=\"Map of " . htmlentities($this->toCityAndState) . "\" height=\"376\" src=\"" . Map_Images::emailBanner($this->toCityAndState, $this->latitude, $this->longitude) . "\" width=\"660\" />
 </td>
 </tr>
 
@@ -149,7 +154,7 @@ class Email_Initiator extends Email_Base {
 <tr>
 <td width=\"25\"></td>
 <td align=\"center\">
-<p align=\"center\" style=\"font-family: Arial,sans-serif; font-size: 16px;\">Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which states that you are willing to provide the transportation for a trip to <strong>" . $this->cityAndState . " on " . $this->departureTime . "</strong>." : "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which requests transportation for your trip to <strong>" . $this->cityAndState . " on " . $this->departureTime . "</strong>.") . "</p>
+<p align=\"center\" style=\"font-family: Arial,sans-serif; font-size: 16px;\">Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which states that you are willing to provide the transportation for a trip <strong>from " . $this->fromCityAndState . " to " . $this->toCityAndState . " on " . $this->departureTime . "</strong>." : "You've successfully sent a notification to <strong>" . $this->poster . "</strong> which requests transportation for your trip <strong>from " . $this->fromCityAndState . " to " . $this->toCityAndState . " on " . $this->departureTime . "</strong>.") . "</p>
 </td>
 <td width=\"25\"></td>
 </tr>
@@ -239,7 +244,7 @@ class Email_Initiator extends Email_Base {
 </html>";
 
 	//Generate the plain-text version of the email
-		$this->textBody = "Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to " . $this->poster . " which states that you are willing to provide the transportation for a trip to " . $this->cityAndState . " on " . $this->departureTime . "." : "You've successfully sent a notification to " . $this->poster . " which requests transportation for your trip to " . $this->cityAndState . " on " . $this->departureTime . ".") . "
+		$this->textBody = "Congratulations! " . ($this->mode == "assist" ? "You've successfully sent a notification to " . $this->poster . " which states that you are willing to provide the transportation for a trip from " . $this->fromCityAndState . " to " . $this->toCityAndState . " on " . $this->departureTime . "." : "You've successfully sent a notification to " . $this->poster . " which requests transportation for your trip from " . $this->fromCityAndState . " to " . $this->toCityAndState . " on " . $this->departureTime . ".") . "
 
 *** Next Steps ***
  

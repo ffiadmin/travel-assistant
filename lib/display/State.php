@@ -1,13 +1,13 @@
 <?php
 /**
- * State details information class
+ * State Details Information class
  *
  * This class is used to fetch data from the MySQL database for 
  * information regarding US states. Some of the capibilities of
  * this class includes:
- *  - checking if a state or district exists
- *  - fetch all available information about a state by the URL
- *  - generating a dropdown list of state codes (PA, OH, NY, ...)
+ *  - Check if a state or district exists.
+ *  - Fetch all available information about a state by the URL.
+ *  - Generating a dropdown list of state codes (PA, OH, NY, ...)
  * 
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
@@ -20,30 +20,9 @@
 namespace FFI\TA;
 
 require_once(dirname(dirname(__FILE__)) . "/exceptions/No_Data_Returned.php");
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
 
 class State {
-/**
- * This method will determine whether or not a particular state exists
- * when given the URL of the state. All available information about a
- * state will be returned (see State::getInfo) on success, or false
- * if the state does not exist.
- *
- * @access public
- * @param  string         $stateURL The URL of the state to check
- * @return boolean|object           State information on success or false if the state does not exist
- * @see                             State::getInfo()
- * @static
-*/
-
-	public static function exists($stateURL) {
-		try {
-			$info = self::getInfo($stateURL);
-			return $info;
-		} catch (No_Data_Returned $e) {
-			return false;
-		}
-	}
-	
 /**
  * This method will fetch all of the US states and build a list
  * of HTML <option> elements for each state. This can be useed
@@ -58,6 +37,7 @@ class State {
  * @access public
  * @param  string $selectedValue The code (PA, OH, etc...) of the state to select
  * @return string                A list of <option> elements for each US state, to place in a dropdown menu
+ * @since  1.0
  * @static
 */
 	
@@ -83,6 +63,29 @@ class State {
 	}
 
 /**
+ * This method will determine whether or not a particular state exists
+ * when given the URL of the state. All available information about a
+ * state will be returned (see State::getInfo()) on success, or false
+ * if the state does not exist.
+ *
+ * @access public
+ * @param  string         $stateURL The URL of the state to check
+ * @return boolean|object           State information on success or false if the state does not exist
+ * @see                             State::getInfo()
+ * @since  1.0
+ * @static
+*/
+
+	public static function exists($stateURL) {
+		try {
+			$info = self::getInfo($stateURL);
+			return $info;
+		} catch (No_Data_Returned $e) {
+			return false;
+		}
+	}
+
+/**
  * This method will fetch all available data about a particular state
  * as defined in the ffi_ta_states relation. This method will NOT fetch
  * information such as how many rides are needed or available for a 
@@ -92,6 +95,7 @@ class State {
  * @access public
  * @param  string $stateURL The URL of the state to fetch information
  * @return object           All available state information from the ffi_ta_states relation
+ * @since  1.0
  * @static
  * @throws No_Data_Returned Thrown when the given state does not exist
 */
@@ -119,6 +123,7 @@ class State {
  * @access public
  * @param  string $columnLength The default number of states to include in a column
  * @return string               The HTML for rendering a list of US states and associated trip totals
+ * @since  1.0
  * @static
 */
 	
@@ -166,21 +171,21 @@ class State {
 	}
 
 /**
- * This function will take either the name of a state and prepare it
- * for use in a URL by removing any spaces and special characters, and
- * then making all characters lower case, which is this plugin's
- * convention when placing names of cities and states in a URL.
+ * This function will take a string and prepare it for use in a
+ * URL by removing any spaces and special characters, and then 
+ * making all characters lower case, which is this plugin's
+ * convention when placing strings in a URL.
  * 
  * @access public
  * @param  string $name The name of a state
- * @return string       The URL purified version of the state name
+ * @return string       The URL purified version of the string
  * @since  1.0
  * @static
 */
 	public static function URLPurify($name) {
 		$name = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $name); //Remove all non-alphanumeric characters, except for spaces
-		$name = preg_replace("/[\s]/", "-", $name);          //Replace remaining spaces with a "-"
-		$name = str_replace("--", "-", $name);               //Replace "--" with "-", will occur if a something like " & " is removed
+		$name = preg_replace("/[\s]/", "-", $name);            //Replace remaining spaces with a "-"
+		$name = str_replace("--", "-", $name);                 //Replace "--" with "-", will occur if a something like " & " is removed
 		return strtolower($name);
 	}
 }

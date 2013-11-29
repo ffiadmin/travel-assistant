@@ -53,7 +53,7 @@ abstract class Processor_Base {
  * Hold the plugin settings fetched from a database.
  *
  * @access protected
- * @type   object<mixed>
+ * @type   object
 */
 
 	protected $settings;
@@ -158,7 +158,7 @@ abstract class Processor_Base {
 		//Log the user in and retain the account information
 			$this->user = wp_signon($credentials, false);
 			
-			if (is_wp_error($this->buyer)) {
+			if (is_wp_error($this->user)) {
 				throw new Login_Failed("Your username or password is invalid");
 			}
 		} else {
@@ -167,22 +167,23 @@ abstract class Processor_Base {
 	}
 	
 /**
- * This method will take a string and prepare it for use 
- * in a URL by removing any spaces and special characters, and
- * then making all characters lower case, which is this plugin's
+ * This function will take a string and prepare it for use in a
+ * URL by removing any spaces and special characters, and then 
+ * making all characters lower case, which is this plugin's
  * convention when placing strings in a URL.
  * 
  * @access protected
- * @param  string    $input The string string
- * @return string           The URL purified version of the input string
+ * @param  string $name The name of a state
+ * @return string       The URL purified version of the string
  * @since  1.0
+ * @static
 */
 
-	protected function URLPurify($input) {
-		$input = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $input); //Remove all non-alphanumeric characters, except for spaces
-		$input = preg_replace("/[\s]/", "-", $input);          //Replace remaining spaces with a "-"
-		$input = str_replace("--", "-", $input);               //Replace "--" with "-", will occur if a something like " & " is removed
-		return strtolower($input);
+	protected function URLPurify($name) {
+		$name = preg_replace("/[^a-zA-Z0-9\s\-]/", "", $name); //Remove all non-alphanumeric characters, except for spaces
+		$name = preg_replace("/[\s]/", "-", $name);            //Replace remaining spaces with a "-"
+		$name = str_replace("--", "-", $name);                 //Replace "--" with "-", will occur if a something like " & " is removed
+		return strtolower($name);
 	}
 }
 ?>

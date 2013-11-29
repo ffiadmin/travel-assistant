@@ -21,7 +21,6 @@
  * @author     Oliver Spryn
  * @copyright  Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @extends    Processor_Base
- * @implements IProcessor
  * @license    MIT
  * @namespace  FFI\TA
  * @package    lib.processing
@@ -158,7 +157,7 @@ class Trip extends Processor_Base {
 		}
 		
 	//Fetch, validate, and retain the poster user data
-		$this->poster = get_userdata($this->mode == "assist" ? $this->info[0]->RequesteeID : $this->info[0]->SharerID);
+		$this->poster = get_userdata($this->mode == "assist" ? $this->info->RequesteeID : $this->info->SharerID);
 		
 		if (!$this->poster) {
 			throw new Validation_Failed("The person who posted this trip is not available");
@@ -181,32 +180,26 @@ class Trip extends Processor_Base {
  * @since  1.0
 */
 	
-	private function sendEmails() {
-		global $wpdb;
-		
-	//Fetch the Google Maps API key for use when creating the map views the city
-		$APIs = $wpdb->get_results("SELECT `GoogleMaps` FROM `ffi_ta_apis`");
-		$API = $APIs[0]->GoogleMaps;
-		
+	private function sendEmails() {		
 	//Create a date and time string for the departure time
-		$formatter = \DateTime::createFromFormat("Y-m-d H:i:s", $this->info[0]->Leaving, new \DateTimeZone($this->info[0]->LeavingTimeZone));
+		$formatter = \DateTime::createFromFormat("Y-m-d H:i:s", $this->info->Leaving, new \DateTimeZone($this->info->LeavingTimeZone));
 		
 	//Send the initiator an email
 		$emailInitiator = new Email_Initiator();
 		$emailInitiator->fromEmail = $this->mode == "assist" ? $this->poster->user_email : $this->settings[0]->EmailAddress;
 		$emailInitiator->fromName = $this->mode == "assist" ? $this->poster->first_name . " " . $this->poster->last_name : $this->settings[0]->EmailName;
-		$emailInitiator->subject = ($this->mode == "assist" ? "Assisting" : "Requesting") . " a Trip to " . $this->info[0]->ToCity . ", " . $this->info[0]->ToState;
+		$emailInitiator->subject = ($this->mode == "assist" ? "Assisting" : "Requesting") . " a Trip to " . $this->info->ToCity . ", " . $this->info->ToState;
 		$emailInitiator->toEmail = $this->user->user_email;
 		$emailInitiator->toName = $this->user->first_name . " " . $this->user->last_name;
-
-		$emailInitiator->cityAndState = $this->info[0]->ToCity . ", " . $this->info[0]->ToState;
+		
 		$emailInitiator->departureTime = $formatter->format("M jS \a\\t g:i A");
-		$emailInitiator->googleAPI = $API;
+		$emailInitiator->fromCityAndState = $this->info->FromCity . ", " . $this->info->FromState;
 		$emailInitiator->latitude = 0.0;
 		$emailInitiator->longitude = 0.0;
 		$emailInitiator->mode = $this->mode;
 		$emailInitiator->poster = $this->poster->first_name . " " . $this->poster->last_name;
 		$emailInitiator->posterFirstName = $this->poster->first_name;
+		$emailInitiator->toCityAndState = $this->info->ToCity . ", " . $this->info->ToState;
 
 		$emailInitiator->buildBody();
 		$emailInitiator->send();
@@ -215,19 +208,19 @@ class Trip extends Processor_Base {
 		$emailPoster = new Email_Poster();
 		$emailPoster->fromEmail = $this->mode == "assist" ? $this->settings[0]->EmailAddress : $this->user->user_email;
 		$emailPoster->fromName = $this->mode == "assist" ? $this->settings[0]->EmailName : $this->user->first_name . " " . $this->user->last_name;
-		$emailPoster->subject = ($this->mode == "assist" ? "Assistance Available for a" : "Request for a Seat on your") . " Trip to " . $this->info[0]->ToCity . ", " . $this->info[0]->ToState;
+		$emailPoster->subject = ($this->mode == "assist" ? "Assistance Available for a" : "Request for a Seat on your") . " Trip to " . $this->info->ToCity . ", " . $this->info->ToState;
 		$emailPoster->toEmail = $this->poster->user_email;
 		$emailPoster->toName = $this->poster->first_name . " " . $this->poster->last_name;
 
-		$emailPoster->cityAndState = $this->info[0]->ToCity . ", " . $this->info[0]->ToState;
 		$emailPoster->comments = $this->comments;
 		$emailPoster->departureTime = $formatter->format("M jS \a\\t g:i A");
-		$emailPoster->googleAPI = $API;
+		$emailPoster->fromCityAndState = $this->info->FromCity . ", " . $this->info->FromState;
 		$emailPoster->initiator = $this->user->first_name . " " . $this->user->last_name;
 		$emailPoster->initiatorFirstName = $this->user->first_name;
 		$emailPoster->latitude = 0.0;
 		$emailPoster->longitude = 0.0;
 		$emailPoster->mode = $this->mode;
+		$emailPoster->toCityAndState = $this->info->ToCity . ", " . $this->info->ToState;
 
 		$emailPoster->buildBody();
 		$emailPoster->send();
@@ -249,15 +242,17 @@ class Trip extends Processor_Base {
 		
 	//Log the transaction
 		$wpdb->insert("ffi_ta_transactions", array(
-			"TransID"       => NULL,
-			"Type"          => strtoupper($this->mode),
-			"FromCityID"    => $this->info[0]->FromCityID,
-			"ToCityID"      => $this->info[0]->ToCityID,
-			"InitiatorID"   => $this->user->ID,
-			"PosterID"      => $this->poster->ID,
-			"DepartureTime" => $this->info[0]->Leaving
+			"ID"              => NULL,
+			"Type"            => strtoupper($this->mode),
+			"FromCity"        => $this->info->FromCityID,
+			"ToCity"          => $this->info->ToCityID,
+			"Initiator"       => $this->user->ID,
+			"Poster"          => $this->poster->ID,
+			"Leaving"         => $this->info->Leaving,
+			"LeavingTimeZone" => $this->info->LeavingTimeZone,
+			"EndDate"         => $this->info->EndDate
 		), array (
-			"%d", "%s", "%d", "%d", "%d", "%d", "%s"
+			"%d", "%s", "%d", "%d", "%d", "%d", "%s", "%s", "%s"
 		));
 	}
 }

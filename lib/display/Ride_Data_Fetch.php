@@ -30,7 +30,7 @@ abstract class Ride_Data_Fetch {
  * Hold the results of the SQL query.
  *
  * @access protected
- * @type   boolean|object<mixed>
+ * @type   bool|object
 */
 	
 	protected $data;

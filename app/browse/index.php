@@ -9,7 +9,7 @@
 	define("FFI\TA\DISPLAY_MODE", isset($essentials->params[2]) ? "destination" : "origin");
 
 //Include the necessary scripts
-	$essentials->includeCSS("browse.css");
+	$essentials->includeCSS("browse.min.css");
 	$essentials->includePluginClass("display/City");
 	$essentials->includePluginClass("display/Map_Images");
 	$essentials->includePluginClass("display/State");
@@ -37,7 +37,7 @@
 
 	//Display the welcome splash section
 		echo "<section id=\"splash\">
-<div class=\"ad-container state\" style=\"background-image:url(" . $essentials->normalizeURL("styles/splash/state-backgrounds/" . $state->Image) . ".jpg)\">
+<div class=\"ad-container state\" style=\"background-image:url(" . $essentials->normalizeURL("system/images/state-backgrounds/" . $state->Image) . ".jpg)\">
 <div class=\"ad-contents\">
 <h2>" . $state->Name . "</h2>
 </div>
@@ -57,8 +57,8 @@
 			foreach($info as $city) {
 				echo "
 <li>
-<a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\TA\State::URLPurify($city->City)) . "\">
-<div style=\"background-image: url('" . Map_Images::cityPreview($city->City, $city->Code, $city->Latitude, $city->Longitude) . "')\">
+<a href=\"" . $essentials->friendlyURL("browse/" . $params . "/" . FFI\TA\City::URLPurify($city->City)) . "\">
+<div style=\"background-image: url('" . FFI\TA\Map_Images::cityPreview($city->City, $city->Code, $city->Latitude, $city->Longitude) . "')\">
 <p class=\"needed" . ($city->Needs > 0 ? " highlight" : "") . "\">" . $city->Needs . " <span>" . ($city->Needs == 1 ? "Need" : "Needs") . "</span></p>
 <p class=\"shares" . ($city->Shares > 0 ? " highlight" : "") . "\">" . $city->Shares . " <span>" . ($city->Shares == 1 ? "Ride" : "Rides") . "</span></p>
 </div>
@@ -87,22 +87,22 @@
 			$needs = FFI\TA\City::getDestinationNeedCities($essentials->params[2], $state->Code);
 			$shares = FFI\TA\City::getDestinationShareCities($essentials->params[2], $state->Code);
 		} else {
-			$needs = FFI\TA\City::getDestinationNeedCities(FFI\TA\State::URLPurify($info[0]->City), $state->Code);
-			$shares = FFI\TA\City::getDestinationShareCities(FFI\TA\State::URLPurify($info[0]->City), $state->Code);
+			$needs = FFI\TA\City::getDestinationNeedCities(FFI\TA\City::URLPurify($info[0]->City), $state->Code);
+			$shares = FFI\TA\City::getDestinationShareCities(FFI\TA\City::URLPurify($info[0]->City), $state->Code);
 		}
 		
 	//Does this city have any needs or shares?
 		if (count($needs)) {
-			$info = &$needs;
+			$info = &$needs[0];
 		} elseif (count($shares)) {
-			$info = &$shares;
+			$info = &$shares[0];
 		} else {
 			wp_redirect($essentials->friendlyURL("browse/" . $params));
 			exit;
 		}
 		
 	//Set the page title
-		$title = $info[0]->FromCity . ", " . $state->Name;
+		$title = $info->FromCity . ", " . $state->Name;
 		$essentials->setTitle($title);
 
 	//Display the page
@@ -112,7 +112,7 @@
 
 	//Display the welcome splash section
 		echo "<section id=\"splash\">
-<div class=\"ad-container city\" style=\"background-image:url('" . Map_Images::cityBanner($info[0]->FromCity, $info[0]->FromState, $info[0]->FromLatitude, $info[0]->FromLongitude) . "')\">
+<div class=\"ad-container city\" style=\"background-image:url('" . FFI\TA\Map_Images::cityBanner($info->FromCity, $info->FromState, $info->FromLatitude, $info->FromLongitude) . "')\">
 <div class=\"ad-contents\">
 <h2>" . $title . "</h2>
 </div>
@@ -123,9 +123,6 @@
 
 	//Display all of the destination cities which are requesting rides
 		if (count($needs)) {
-			$formatter = new DateTime();
-			$URL = "";
-			
 			echo "<section class=\"center content\">
 <h2>Needed Rides</h2>
 <p>Below is a listing of requests from people who need a ride from " . $title . " to one of the destination cities listed below. Each request will be listed with the departure date and the total number of occupants requesting a ride within the party.</p>
@@ -134,13 +131,13 @@
 
 			foreach($needs as $city) {
 				$formatter = DateTime::createFromFormat("Y-m-d H:i:s", $city->Leaving, new DateTimeZone($city->LeavingTimeZone));
-				$URL = FFI\TA\State::URLPurify($needs[0]->FromCity . "-" . $needs[0]->FromState . "-to-" . $city->ToCity . "-" . $city->ToState);
+				$URL = FFI\TA\City::URLPurify($info->FromCity . "-" . $info->FromState . "-to-" . $city->ToCity . "-" . $city->ToState);
 				
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/needed/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . FFI\TA\Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . FFI\TA\Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>
@@ -157,9 +154,6 @@
 		
 	//Display all of the destination cities which have rides available
 		if (count($shares)) {
-			$formatter = new DateTime();
-			$URL = "";
-			
 			echo "<section class=\"center content" . (count($needs) ? " even" : ""). "\">
 <h2>Available Rides</h2>
 <p>Below is a listing of available rides from people leaving " . $title . " to one of the destination cities listed below. Each item will be listed with the departure date and the total number of available seats.</p>
@@ -168,13 +162,13 @@
 
 			foreach($shares as $city) {
 				$formatter = DateTime::createFromFormat("Y-m-d H:i:s", $city->Leaving, new DateTimeZone($city->LeavingTimeZone));
-				$URL = FFI\TA\State::URLPurify($shares[0]->FromCity . "-" . $shares[0]->FromState . "-to-" . $city->ToCity . "-" . $city->ToState);
+				$URL = FFI\TA\City::URLPurify($info->FromCity . "-" . $info->FromState . "-to-" . $city->ToCity . "-" . $city->ToState);
 				
 				echo "
 <li>
 <a href=\"" . $essentials->friendlyURL("trips/available/" . $city->ID . "/" . $URL) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
-<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"desktop\" src=\"" . FFI\TA\Map_Images::browseLarge($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
+<img alt=\"" . htmlentities($city->ToCity . ", " . $city->ToState) . " Map\" class=\"mobile\" src=\"" . FFI\TA\Map_Images::browseSmall($city->ToCity, $city->ToState, $city->ToLatitude, $city->ToLongitude) . "\">
 <h3>" . $city->ToCity . ", " . $city->ToState . "</h3>
 <ul>
 <li class=\"departure\">" . $formatter->format("M jS") . "<span class=\"mobile\"> at " . $formatter->format("g:i A") . "</span></li>

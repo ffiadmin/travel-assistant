@@ -136,7 +136,7 @@ class Settings_Process {
 		$this->address = $_POST['email-address'];
 		
 	//Validate and retain the plugin's time zone
-		$zones = array(
+		$zones = array (
 			"America/New_York",
 			"America/Chicago",
 			"America/Denver",
@@ -191,9 +191,9 @@ class Settings_Process {
 		global $wpdb;
 		
 		$wpdb->update("ffi_ta_settings", array(
-			"EmailName"        => $this->name,
-			"EmailAddress"     => $this->address,
-			"TimeZone"         => $this->timeZone
+			"EmailName"    => $this->name,
+			"EmailAddress" => $this->address,
+			"TimeZone"     => $this->timeZone
 		), array(
 			"ID" => 1
 		), array(

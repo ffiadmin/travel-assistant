@@ -415,13 +415,6 @@ class Ride_Share_Process extends Processor_Base {
 			throw new Validation_Failed("The number of men or women is invalid");
 		}
 		
-	//Validate and retain the number of days notice needed before a trip
-		if ($this->intBetween($_POST['days'], 0, 30)) {
-			$this->days = $_POST['days'];
-		} else {
-			return false;
-		}
-		
 	//Validate and retain the number of minutes within the final destination value
 		if ($this->intBetween($_POST['minutes'], 0, 120)) {
 			$this->minutes = $_POST['minutes'];
@@ -496,7 +489,7 @@ class Ride_Share_Process extends Processor_Base {
 /**
  * Fetch the latitude and longitude of a particular city from the Google
  * Geocode API, and store these results, along with the city and state
- * code, for later entry into a database
+ * code, for later entry into a database.
  * 
  * @access private
  * @param  string  $city  The name of the city to locate
@@ -575,7 +568,7 @@ class Ride_Share_Process extends Processor_Base {
 				"State"     => $stateCode,
 				"Latitude"  => $latitude,
 				"Longitude" => $longitude
-			), array(
+			), array (
 				"%s", "%s", "%s", "%s", "%s"
 			));
 			
@@ -585,7 +578,7 @@ class Ride_Share_Process extends Processor_Base {
 	
 /**
  * Use the values validated and retained in memory by the 
- * validateAndRetain() method to insert a new entry into the database
+ * validateAndRetain() method to insert a new entry into the database.
  * 
  * @access private
  * @return void
@@ -600,7 +593,7 @@ class Ride_Share_Process extends Processor_Base {
 		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
 	//Insert the sharing information in the database
-		$wpdb->insert("ffi_ta_share", array(
+		$wpdb->insert("ffi_ta_share", array (
 			"ID"              => NULL,
 			"Person"          => $this->person,
 			"Leaving"         => $this->leavingDate,
@@ -620,8 +613,8 @@ class Ride_Share_Process extends Processor_Base {
 			"Friday"          => $this->friday,
 			"EndDate"         => $this->until,
 			"Comments"        => $this->comments
-		), array(
-			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+		), array (
+			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
 		
 	//Redirect to the trip
@@ -634,7 +627,7 @@ class Ride_Share_Process extends Processor_Base {
 /**
  * Use the values validated and retained in memory by the 
  * validateAndRetain() method to update an existing entry in the 
- * database
+ * database.
  * 
  * @access private
  * @param  int     $ID The ID of the tuple to update
@@ -650,7 +643,7 @@ class Ride_Share_Process extends Processor_Base {
 		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
 	//Update the sharing information in the database
-		$wpdb->update("ffi_ta_share", array(
+		$wpdb->update("ffi_ta_share", array (
 			"Leaving"         => $this->leavingDate,
 			"LeavingTimeZone" => $this->leavingTimeZone,
 			"FromCity"        => $fromCityID,
@@ -658,7 +651,6 @@ class Ride_Share_Process extends Processor_Base {
 			"Seats"           => $this->seats,
 			"MalesPresent"    => $this->males,
 			"FemalesPresent"  => $this->females,
-			"DaysNotice"      => $this->days,
 			"MinutesWithin"   => $this->minutes,
 			"GasMoney"        => $this->reimburse,
 			"Luggage"         => $this->luggage,
@@ -671,15 +663,15 @@ class Ride_Share_Process extends Processor_Base {
 			"Comments"        => $this->comments
 		), array (
 			"ID" => $ID
-		), array(
-			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
+		), array (
+			"%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		), array (
 			"%d"
 		));
 		
 	//Redirect to the trip
 		$URL = $this->fromCity . "-" . $this->fromStateCode . "-to-" . $this->toCity . "-" . $this->toStateCode;
-        wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
+        wp_redirect(get_site_url() . "/travel-assistant/trips/available/" . $ID . "/" . $this->URLPurify($URL));
         exit;
 	}
 }

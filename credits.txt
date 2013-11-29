@@ -1,5 +1,7 @@
 Photo credits:
 
+All copyrights are property of their respective owners.
+
 Dynamic maps are generated and courtesy of Google: https://developers.google.com/maps/documentation/javascript/
 
 New York City and Yellow Cabs: http://static.tumblr.com/865f9438857c335609a9b49b7f8c4569/frqjgyu/T1lmgzdiz/tumblr_static_new-york-city-black-and-white-photography-0l_2.jpg
