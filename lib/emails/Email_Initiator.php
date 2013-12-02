@@ -18,7 +18,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.email
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -113,7 +113,7 @@ class Email_Initiator extends Email_Base {
  *
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function buildBody() {

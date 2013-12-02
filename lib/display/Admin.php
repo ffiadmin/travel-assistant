@@ -13,7 +13,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -26,7 +26,7 @@ class Admin {
  * 
  * @access public
  * @return object An object containing a set of values from the API table in the database
- * @since  1.0
+ * @since  1.0.0
  * @static 
 */
 
@@ -42,7 +42,7 @@ class Admin {
  * 
  * @access public
  * @return object An object containing the plugin's settings from the settings table in the database
- * @since  1.0
+ * @since  1.0.0
  * @static 
 */
 	

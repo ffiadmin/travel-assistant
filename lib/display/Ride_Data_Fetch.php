@@ -17,7 +17,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -48,7 +48,7 @@ abstract class Ride_Data_Fetch {
  * @param  int              $ID        The ID of the tuple to fetch from the database
  * @param  int              $userID    The ID of the user requesting this information
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @throws No_Data_Returned            Thrown if the given table and ID yield no results
 */
 

@@ -14,7 +14,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.processing
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -290,7 +290,7 @@ class Ride_Request_Process extends Processor_Base {
  * @access public
  * @param  int    $ID The ID of the tuple to update in the database. $ID = 0 means there is no entry to update (i.e. insert a tuple).
  * @return void
- * @since  1.0 
+ * @since  1.0.0 
 */
 	
 	public function __construct($ID) {
@@ -316,7 +316,7 @@ class Ride_Request_Process extends Processor_Base {
  * 
  * @access private
  * @return bool    Whether or not the user has submitted the form
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function userSubmittedForm() {
@@ -336,7 +336,7 @@ class Ride_Request_Process extends Processor_Base {
  * 
  * @access private
  * @return bool              Whether or not validation has succeeded
- * @since  1.0
+ * @since  1.0.0
  * @throws Validation_Failed Thrown when ANY portion of the validation process fails
 */
 	
@@ -478,7 +478,7 @@ class Ride_Request_Process extends Processor_Base {
  * @param  string   $state The state in which the city is located
  * @param  string   $type  Whether to store the results in the "From Where" or "To Where" variables
  * @return bool            Whether or not the latitude and longitude of the city could be determined
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function getCoords($city, $state, $type) {
@@ -529,7 +529,7 @@ class Ride_Request_Process extends Processor_Base {
  * @param  int      $latitude  The latitude of the city
  * @param  int      $longitude The longitude of the city
  * @return int                 The ID of the city of interest
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function cityID($city, $stateCode, $latitude, $longitude) {
@@ -561,7 +561,7 @@ class Ride_Request_Process extends Processor_Base {
  * 
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function insert() {
@@ -610,7 +610,7 @@ class Ride_Request_Process extends Processor_Base {
  * @access private
  * @param  int      $ID The ID of the tuple to update
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function update($ID) {

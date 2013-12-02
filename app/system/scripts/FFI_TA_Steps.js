@@ -10,7 +10,7 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI_TA
- * @since     1.0
+ * @since     1.0.0
 */
 
 (function($) {
@@ -63,7 +63,7 @@
  * @access public
  * @param  string input The string to parse and BOLD all numbers
  * @return string       The input string with all numbers in BOLD
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Steps.boldNumbers = function(input) {

@@ -17,7 +17,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -40,7 +40,7 @@ class State {
  * @access public
  * @param  string $selectedValue The code (PA, OH, etc...) of the state to select
  * @return string                A list of <option> elements for each US state, to place in a dropdown menu
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -75,7 +75,7 @@ class State {
  * @param  string         $stateURL The URL of the state to check
  * @return boolean|object           State information on success or false if the state does not exist
  * @see                             State::getInfo()
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 
@@ -98,7 +98,7 @@ class State {
  * @access public
  * @param  string $stateURL The URL of the state to fetch information
  * @return object           All available state information from the ffi_ta_states relation
- * @since  1.0
+ * @since  1.0.0
  * @static
  * @throws No_Data_Returned Thrown when the given state does not exist
 */
@@ -126,7 +126,7 @@ class State {
  * @access public
  * @param  string $columnLength The default number of states to include in a column
  * @return string               The HTML for rendering a list of US states and associated trip totals
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -182,7 +182,7 @@ class State {
  * @access public
  * @param  string $name The name of a state
  * @return string       The URL purified version of the string
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	public static function URLPurify($name) {

@@ -13,7 +13,7 @@
  * @license    MIT
  * @namespace  FFI\TA
  * @package    lib.email
- * @since      1.0
+ * @since      1.0.0
 */
 
 namespace FFI\TA;
@@ -94,7 +94,7 @@ abstract class Email_Base implements IEmail {
  *
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @throws Mandrill_Send_Failed     Thrown in the event that Mandrill cannot send the email
  * @throws Network_Connection_Error [Bubbled up] Thrown in the event there is an error while trying to communicate with Mandrill
 */
@@ -122,7 +122,7 @@ abstract class Email_Base implements IEmail {
 		);
 		
 	//Open a cURL session for making the call
-		$request = new Proxy("https://mandrillapp.com/api/1.0/messages/send.json");
+		$request = new Proxy("https://mandrillapp.com/api/1.0.0/messages/send.json");
 		$request->contentType = "application/json";
 		$request->POST = true;
 		$request->POSTData = json_encode($args);

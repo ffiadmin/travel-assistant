@@ -11,7 +11,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.processing
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -27,7 +27,7 @@ class Installer {
  * 
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	public function __construct() {
@@ -49,7 +49,7 @@ class Installer {
  * 
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function createRelations() {
@@ -172,7 +172,7 @@ class Installer {
  * 
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function establishFKs() {
@@ -208,21 +208,21 @@ class Installer {
  * 
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function populateDefaults() {
 		global $wpdb;
 		
-		if (!count($wpdb->query("SELECT * FROM `ffi_ta_apis`"))) {
+		if (!count($wpdb->get_results("SELECT * FROM `ffi_ta_apis`"))) {
 			$wpdb->query("INSERT INTO `ffi_ta_apis` (`ID`, `GoogleMaps`, `MandrillKey`) VALUES (1, '', '')");
 		}
 		
-		if (!count($wpdb->query("SELECT * FROM `ffi_ta_settings`"))) {
+		if (!count($wpdb->get_results("SELECT * FROM `ffi_ta_settings`"))) {
 			$wpdb->query("INSERT INTO `ffi_ta_settings` (`ID`, `EmailName`, `EmailAddress`, `TimeZone`) VALUES (1, 'No Reply', 'example@changeme.com', 'America/New_York')");
 		}
 		
-		if (!count($wpdb->query("SELECT * FROM `ffi_ta_states`"))) {
+		if (!count($wpdb->get_results("SELECT * FROM `ffi_ta_states`"))) {
 			$wpdb->query("INSERT INTO `ffi_ta_states` (`Code`, `Name`, `Image`, `District`) VALUES
 							('AK', 'Alaska', 'alaska', 0),
 							('AL', 'Alabama', 'south', 0),

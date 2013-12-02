@@ -15,7 +15,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -31,7 +31,7 @@ class User {
  *
  * @access public
  * @return string A JSON encoded array of cities a user has visited
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -70,7 +70,7 @@ class User {
  *
  * @access public
  * @return object A list of cities where a user has requested a trip
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -95,7 +95,7 @@ class User {
  *
  * @access public
  * @return object A list of cities where a user has participated in a trip
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -119,7 +119,7 @@ class User {
  *
  * @access public
  * @return object A list of cities where a user has shared a trip
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -150,7 +150,7 @@ class User {
  *
  * @access public
  * @return object An object containing a set of statistical data for the current user
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	

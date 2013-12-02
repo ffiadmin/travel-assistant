@@ -17,7 +17,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -33,7 +33,7 @@ class City {
  * @param  string $cityURL   The URL of the origin city
  * @param  string $stateCode The code of the origin state
  * @return object            A list of destination cities which have at least one requested ride
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -51,7 +51,7 @@ class City {
  * @param  string $cityURL   The URL of the origin city
  * @param  string $stateCode The code of the origin state
  * @return object            A list of destination cities which have at least one available ride
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -69,7 +69,7 @@ class City {
  * @access public
  * @param  string $stateURL The URL of the state in which to fetch the listing of cities
  * @return object           A list of origin cities with available or needed trips
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 
@@ -88,7 +88,7 @@ class City {
  * @access public
  * @param  string $name The name of a state
  * @return string       The URL purified version of the string
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	public static function URLPurify($name) {

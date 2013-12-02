@@ -24,7 +24,7 @@
  * @license    MIT
  * @namespace  FFI\TA
  * @package    lib.processing
- * @since      1.0
+ * @since      1.0.0
 */
 
 namespace FFI\TA;
@@ -96,7 +96,7 @@ class Trip extends Processor_Base {
  * 
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	public function __construct() {
@@ -119,7 +119,7 @@ class Trip extends Processor_Base {
  *
  * @access private
  * @return bool     Whether or not the user has submitted the form
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function userSubmittedForm() {
@@ -139,7 +139,7 @@ class Trip extends Processor_Base {
  *
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @throws Validation_Failed Thrown when ANY portion of the validation process fails
 */
 
@@ -177,7 +177,7 @@ class Trip extends Processor_Base {
  *
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	private function sendEmails() {		
@@ -231,7 +231,7 @@ class Trip extends Processor_Base {
  *
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	private function updateLocal() {

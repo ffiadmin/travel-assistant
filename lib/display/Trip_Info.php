@@ -11,7 +11,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -29,7 +29,7 @@ class Trip_Info {
  * @access public
  * @param  int    $tripID The ID of the trip of interest
  * @return object         An object from the database of all available information about a trip
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 
@@ -51,7 +51,7 @@ class Trip_Info {
  * @access public
  * @param  int    $tripID The ID of the trip of interest
  * @return object         An object from the database of all available information about a trip
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 
@@ -73,7 +73,7 @@ class Trip_Info {
  *
  * @access public
  * @return string A JSON encoded array of cities which have at least one trip needed or available
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -109,7 +109,7 @@ class Trip_Info {
  * 
  * @access public
  * @return array<int> An array of available and needed trips
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	

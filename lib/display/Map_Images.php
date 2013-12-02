@@ -10,7 +10,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -38,7 +38,7 @@ class Map_Images {
  * @param  float  $latitude  The latitude of the city
  * @param  float  $longitude The longitude of the city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -59,7 +59,7 @@ class Map_Images {
  * @param  float  $latitude  The latitude of the city
  * @param  float  $longitude The longitude of the city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -79,7 +79,7 @@ class Map_Images {
  * @param  float  $latitude  The latitude of the city
  * @param  float  $longitude The longitude of the city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -99,7 +99,7 @@ class Map_Images {
  * @param  float  $latitude  The latitude of the city
  * @param  float  $longitude The longitude of the city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -118,7 +118,7 @@ class Map_Images {
  * @param  float  $latitude     The latitude of the city
  * @param  float  $longitude    The longitude of the city
  * @return string               A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -133,7 +133,7 @@ class Map_Images {
  *
  * @access private
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	
@@ -156,7 +156,7 @@ class Map_Images {
  * @param  float  $toLatitude    The latitude of the destination city
  * @param  float  $toLongitude   The longitude of the destination city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 
@@ -176,7 +176,7 @@ class Map_Images {
  * @param  float  $toLatitude    The latitude of the destination city
  * @param  float  $toLongitude   The longitude of the destination city
  * @return string            A URL to the Google Static Maps API of the desired location
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 	

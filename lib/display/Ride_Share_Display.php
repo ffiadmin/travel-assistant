@@ -16,7 +16,7 @@
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display
- * @since     1.0
+ * @since     1.0.0
 */
 
 namespace FFI\TA;
@@ -77,7 +77,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * @param  int    $ID     The ID of the ride share to fetch from the database
  * @param  int    $userID The ID of the user requesting this page
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function __construct($ID, $userID) {
@@ -91,7 +91,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getWho() {
@@ -106,7 +106,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getWhat() {
@@ -119,7 +119,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getWhen() {
@@ -146,7 +146,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getFromWhere() {
@@ -164,7 +164,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getToWhere() {
@@ -182,7 +182,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getWhy() {
@@ -195,7 +195,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getSeats() {
@@ -208,7 +208,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getMales() {
@@ -221,7 +221,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getFemales() {
@@ -235,7 +235,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getMinutesWithin() {
@@ -248,7 +248,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getGasMoney() {
@@ -261,7 +261,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getLuggage() {
@@ -292,7 +292,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string   A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getRecurrence() {
@@ -322,7 +322,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getRecurrenceDays() {
@@ -357,7 +357,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getEndDate() {
@@ -376,7 +376,7 @@ class Ride_Share_Display extends Ride_Data_Fetch {
  * 
  * @access public
  * @return string A form item prefilled with a value from either the database or a default value
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	public function getComments() {

@@ -20,7 +20,7 @@
  * @license    MIT
  * @namespace  FFI\TA
  * @package    lib.processing
- * @since      1.0
+ * @since      1.0.0
 */
 
 namespace FFI\TA;
@@ -75,7 +75,7 @@ abstract class Processor_Base {
  * 
  * @access protected
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	protected function __construct() {
@@ -89,7 +89,7 @@ abstract class Processor_Base {
  * @access protected
  * @return bool         Whether or not the user is logged in as the administrator
  * @throws Login_Failed Thrown if the user does not have sufficent privileges to update the APIs
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	protected function hasAdminPrivileges() {
@@ -107,7 +107,7 @@ abstract class Processor_Base {
  * @access protected
  * @param  string    $tableName The name of the settings table in the database
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	protected function fetchSettings($tableName = "settings") {
@@ -125,7 +125,7 @@ abstract class Processor_Base {
  * @param  int      $min   The minimum value the integer may equal
  * @param  int      $max   The maximum value the integer may equal
  * @return bool            Whether or not the integer falls within the specified range
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	protected function intBetween($value, $min, $max) {
@@ -161,7 +161,7 @@ abstract class Processor_Base {
  * @param  string    $username The user's username
  * @param  string    $password The user's plain text password
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @throws Login_Failed        Thrown if a user's login credentials are invalid
 */
 	
@@ -200,7 +200,7 @@ abstract class Processor_Base {
  * 
  * @access protected
  * @return void
- * @since  1.0
+ * @since  1.0.0
  * @static
  * @throws Login_Failed        Thrown if a user's login credentials are invalid
 */
@@ -222,7 +222,7 @@ abstract class Processor_Base {
  * @access protected
  * @param  string $name The name of a state
  * @return string       The URL purified version of the string
- * @since  1.0
+ * @since  1.0.0
  * @static
 */
 

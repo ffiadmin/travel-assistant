@@ -11,7 +11,7 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI_TA
- * @since     1.0
+ * @since     1.0.0
 */
 
 (function($) {
@@ -50,7 +50,7 @@
  * 
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 	$.fn.FFI_TA_Trip.buildDialog = function() {
@@ -136,7 +136,7 @@
  *
  * @access public
  * @return bool   Whether the user's browser supports placeholders
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.placeholderSupported = function() {
@@ -151,7 +151,7 @@
  *
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.submitHandler = function() {
@@ -233,7 +233,7 @@
  *
  * @access public
  * @return bool   Whether or not both the username and password have been provided
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.validate = function() {
@@ -246,7 +246,7 @@
  * @access public
  * @param  string text The text to fill in as the dialog's validation message
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.msg = function(text) {
@@ -264,7 +264,7 @@
  *
  * @access public
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.clearMsg = function() {
@@ -277,7 +277,7 @@
  * @access public
  * @param  string input The string to be decoded from HTML entities
  * @return string       The input string decoded from HTML entities
- * @since  1.0
+ * @since  1.0.0
 */
 
 	$.fn.FFI_TA_Trip.htmlEntitiesDecode = function(input) {

@@ -12,7 +12,7 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI_TA
- * @since     1.0
+ * @since     1.0.0
 */
 
 (function($) {

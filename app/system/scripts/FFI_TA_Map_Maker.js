@@ -21,7 +21,7 @@
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
  * @license   MIT
  * @namespace FFI_TA
- * @since     1.0
+ * @since     1.0.0
 */
 
 (function($) {
@@ -192,7 +192,7 @@
  * @param  InfoWindow infoWindow A reference to the balloon which will display the content
  * @param  string     html       The content to display inside of the balloon
  * @return void
- * @since  1.0
+ * @since  1.0.0
 */
 	
 //Callback function when a marker is clicked
@@ -207,7 +207,7 @@
  * The plugin settings.
  *
  * @access public
- * @since  1.0
+ * @since  1.0.0
  * @type   object<mixed>
 */
 	
