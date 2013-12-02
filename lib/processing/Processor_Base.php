@@ -86,13 +86,13 @@ abstract class Processor_Base {
 /**
  * Ensure the user is logged in with administrative privileges.
  *
- * @access private
+ * @access protected
  * @return bool         Whether or not the user is logged in as the administrator
  * @throws Login_Failed Thrown if the user does not have sufficent privileges to update the APIs
  * @since  1.0
 */
 	
-	private function hasAdminPrivileges() {
+	protected function hasAdminPrivileges() {
 		if ($this->isAdmin) {
 			//Nice!
 		} else {
