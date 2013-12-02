@@ -5,8 +5,8 @@
  * This class is responsible for fetching data for the main display of 
  * the Travel Assistant administration in the Wordpress Administration
  * section of the site. Some of its duties includes:
- *  - Fetch all of the plugin's settings.
  *  - Fetch all of the APIs which the plugin uses.
+ *  - Fetch all of the plugin's settings.
  * 
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations

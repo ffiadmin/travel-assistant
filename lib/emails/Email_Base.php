@@ -94,9 +94,9 @@ abstract class Email_Base implements IEmail {
  *
  * @access public
  * @return void
- * @throws Network_Connection_Error [Bubbled up] Thrown in the event there is an error while trying to communicate with Mandrill
- * @throws Mandrill_Send_Failed     Thrown in the event that Mandrill cannot send the email
  * @since  1.0
+ * @throws Mandrill_Send_Failed     Thrown in the event that Mandrill cannot send the email
+ * @throws Network_Connection_Error [Bubbled up] Thrown in the event there is an error while trying to communicate with Mandrill
 */
 
 	public function send() {
@@ -107,17 +107,17 @@ abstract class Email_Base implements IEmail {
 	
 	//Assemble the API call
 		$args = array (
-			"key" => $key[0]->MandrillKey,
-			"message" => array (
-				"to" => array(array("email" => $this->toEmail, "name" => $this->toName)),
-				"from_name" => $this->fromName,
-				"from_email" => $this->fromEmail,
-				"subject" => $this->subject,
-				"html" => $this->HTMLBody,
-				"text" => $this->textBody,
-				"track_opens" => true,
+			"key"              => $key[0]->MandrillKey,
+			"message"          => array (
+				"auto_text"    => false,
+				"from_email"   => $this->fromEmail,
+				"from_name"    => $this->fromName,
+				"html"         => $this->HTMLBody,
+				"subject"      => $this->subject,
+				"text"         => $this->textBody,
+				"to"           => array(array("email" => $this->toEmail, "name" => $this->toName)),
 				"track_clicks" => true,
-				"auto_text" => false
+				"track_opens"  => true
 			)
 		);
 		

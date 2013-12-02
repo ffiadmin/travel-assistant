@@ -21,7 +21,7 @@ namespace FFI\TA;
 
 require_once(dirname(__FILE__) . "/Processor_Base.php");
 require_once(dirname(dirname(__FILE__)) . "/exceptions/Validation_Failed.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/link-template.php");
+require_once(dirname(dirname(__FILE__)) . "/processing/Proxy.php");
 
 class Ride_Share_Process extends Processor_Base {
 /**
@@ -45,6 +45,15 @@ class Ride_Share_Process extends Processor_Base {
 */
 
 	const TO = "to";
+	
+/**
+ * Hold the user's comments.
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $comments;
 
 /**
  * Hold the DateTime objcet which will be used to format dates.
@@ -54,35 +63,7 @@ class Ride_Share_Process extends Processor_Base {
 */
 
 	private $dateFormatter;
-	
-/**
- * Hold the ID of the user submitting the form.
- *
- * @access private
- * @type   int
-*/
-	
-	private $person;
-	
-/**
- * Hold a formatted string representing the date and time the user
- * is leaving.
- *
- * @access private
- * @type   string
-*/
-	
-	private $leavingDate;
-	
-/**
- * Hold the time zone in which the user will be leaving.
- *
- * @access private
- * @type   string
-*/
-	
-	private $leavingTimeZone;
-	
+
 /**
  * Hold the city from which the user will be traveling.
  *
@@ -100,6 +81,35 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private $fromStateCode;
+	
+/**
+ * Hold a formatted string representing the date and time the user.
+ * is leaving
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $leavingDate;
+	
+/**
+ * Hold the number of females present for the trip.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $females;
+	
+/**
+ * Hold whether this user will need a regular trip on a 
+ * Friday.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $friday;
 	
 /**
  * Hold the latitude of the user's origin city.
@@ -120,6 +130,99 @@ class Ride_Share_Process extends Processor_Base {
 	private $fromLongitude;
 	
 /**
+ * Hold the time zone in which the user will be leaving.
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $leavingTimeZone;
+	
+/**
+ * Hold whether this user will bring luggage.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $luggage;
+	
+/**
+ * Hold the number of males present for the trip.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $males;
+	
+/**
+ * Hold the number of minutes the driver should take this user within
+ * their desired destination.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $minutes;
+	
+/**
+ * Hold whether this user will need a regular trip on a 
+ * Monday.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $monday;
+	
+/**
+ * Hold the ID of the user submitting the form.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $person;
+	
+/**
+ * Hold whether this trip will be recurring.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $recurring;
+	
+/**
+ * Hold the gas money reimbursement total.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $reimburse;
+	
+/**
+ * Hold the total number of avaliable seats.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $seats;
+	
+/**
+ * Hold whether this user will need a regular trip on a 
+ * Thursday.
+ *
+ * @access private
+ * @type   int
+*/
+	
+	private $thursday;
+	
+/**
  * Hold the city to which the user will be traveling.
  *
  * @access private
@@ -127,15 +230,6 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private $toCity;
-	
-/**
- * Hold the state to which the user will be traveling.
- *
- * @access private
- * @type   string
-*/
-	
-	private $toStateCode;
 	
 /**
  * Hold the latitude of the user's destination city.
@@ -156,81 +250,16 @@ class Ride_Share_Process extends Processor_Base {
 	private $toLongitude;
 	
 /**
- * Hold the total number of avaliable seats.
+ * Hold the state to which the user will be traveling.
  *
  * @access private
- * @type   int
+ * @type   string
 */
 	
-	private $seats;
+	private $toStateCode;
 	
 /**
- * Hold the number of males present for the trip.
- *
- * @access private
- * @type   int
-*/
-	
-	private $males;
-	
-/**
- * Hold the number of females present for the trip.
- *
- * @access private
- * @type   int
-*/
-	
-	private $females;
-	
-/**
- * Hold the number of minutes the is willing to travel out of his or her
- * way to take passengers to their proper destination.
- *
- * @access private
- * @type   int
-*/
-	
-	private $minutes;
-	
-/**
- * Hold the gas money reimbursement total.
- *
- * @access private
- * @type   int
-*/
-	
-	private $reimburse;
-	
-/**
- * Hold whether there is room for luggage.
- *
- * @access private
- * @type   int
-*/
-	
-	private $luggage;
-	
-/**
- * Hold whether this trip will be recurring.
- *
- * @access private
- * @type   int
-*/
-	
-	private $recurring;
-	
-/**
- * Hold whether this user can share a regular trip on a 
- * Monday.
- *
- * @access private
- * @type   int
-*/
-	
-	private $monday;
-	
-/**
- * Hold whether this user can share a regular trip on a 
+ * Hold whether this user will need a regular trip on a 
  * Tuesday.
  *
  * @access private
@@ -238,36 +267,6 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private $tuesday;
-	
-/**
- * Hold whether this user can share a regular trip on a 
- * Wednesday.
- *
- * @access private
- * @type   int
-*/
-	
-	private $wednesday;
-	
-/**
- * Hold whether this user can share a regular trip on a 
- * Thursday.
- *
- * @access private
- * @type   int
-*/
-	
-	private $thursday;
-	
-/**
- * Hold whether this user can share a regular trip on a 
- * Friday.
- *
- * @access private
- * @type   int
-*/
-	
-	private $friday;
 	
 /**
  * Hold the ending date of the user's trip recurrence schedule.
@@ -279,13 +278,14 @@ class Ride_Share_Process extends Processor_Base {
 	private $until;
 	
 /**
- * Hold the user's comments.
+ * Hold whether this user will need a regular trip on a 
+ * Wednesday.
  *
  * @access private
- * @type   string
+ * @type   int
 */
 	
-	private $comments;
+	private $wednesday;
 	
 /**
  * CONSTRUCTOR
@@ -350,10 +350,8 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private function validateAndRetain() {
-		global $essentials;
-		
 	//Retain the user ID, an earlier script will already have ensured the user is logged in
-		$this->person = $essentials->user->ID;
+		$this->person = $this->user->ID;
 		
 	//Validate and retain the leaving date
 		$date = trim(mb_substr($_POST['when'], 0, -3)); //Will handle trimming " ET" and "AKT"
@@ -501,11 +499,8 @@ class Ride_Share_Process extends Processor_Base {
 	
 	private function getCoords($city, $state, $type) {
 		$URL = "http://maps.googleapis.com/maps/api/geocode/json?address=" . urlencode($city . ", " . $state) . "&components=country:US&sensor=false";
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_URL, $URL);
-		$data = curl_exec($ch);
-		curl_close($ch);
+		$request = new Proxy($URL);
+		$data = $request->fetch();
 		
 	//Check if data was returned from the Google API
 		if ($data === FALSE) {

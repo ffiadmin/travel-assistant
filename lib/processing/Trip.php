@@ -241,7 +241,7 @@ class Trip extends Processor_Base {
 		$wpdb->query($wpdb->prepare("UPDATE `" . ($this->mode == "assist" ? "ffi_ta_need" : "ffi_ta_share") . "` SET `Fulfilled` = Fulfilled + 1 WHERE `ID` = %d", $this->ID));
 		
 	//Log the transaction
-		$wpdb->insert("ffi_ta_transactions", array(
+		$wpdb->insert("ffi_ta_transactions", array (
 			"ID"              => NULL,
 			"Type"            => strtoupper($this->mode),
 			"FromCity"        => $this->info->FromCityID,

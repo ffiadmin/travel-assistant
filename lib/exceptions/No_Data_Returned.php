@@ -7,7 +7,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   Base
+ * @extends   FFI\TA\Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.exceptions

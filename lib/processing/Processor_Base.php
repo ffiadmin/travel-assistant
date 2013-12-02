@@ -4,14 +4,14 @@
  *
  * This is an abstract class which is designed to provide a basic
  * set of methods which is commonly useful when building a processor
- * class.
- * 
- * Its abilities include:
+ * class. Its abilities include:
  *  - Checking and storing the user's login status.
+ *  - Checking if the user is logged in with Administrator privileges.
  *  - Fetching and storing the plugin's settings from the database.
  *  - Validating if the value of an integer lies between two values.
  *  - Log the user into his or her account. This procedure will
  *    automatically store the user's account information.
+ *  - Retain the user's identifying information.
  *  - Purify a string for use in a URL.
  *
  * @abstract
@@ -25,12 +25,22 @@
 
 namespace FFI\TA;
 
+require_once(dirname(dirname(__FILE__)) . "/exceptions/Login_Failed.php");
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
+require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/link-template.php");
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/pluggable.php");
 require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/user.php");
-require_once(dirname(dirname(__FILE__)) . "/exceptions/Login_Failed.php");
 
 abstract class Processor_Base {
+/**
+ * Hold the administrative status.
+ *
+ * @access protected
+ * @type   bool
+*/
+	
+	protected $isAdmin = false;
+
 /**
  * Hold the user's login status.
  *
@@ -41,15 +51,6 @@ abstract class Processor_Base {
 	protected $loggedIn = false;
 	
 /**
- * Hold the data about the user.
- *
- * @access protected
- * @type   WP_User
-*/
-	
-	protected $user;
-	
-/**
  * Hold the plugin settings fetched from a database.
  *
  * @access protected
@@ -57,6 +58,15 @@ abstract class Processor_Base {
 */
 
 	protected $settings;
+	
+/**
+ * Hold the data about the user.
+ *
+ * @access protected
+ * @type   WP_User
+*/
+	
+	protected $user;
 	
 /**
  * CONSTRUCTOR
@@ -70,6 +80,24 @@ abstract class Processor_Base {
 	
 	protected function __construct() {
 		$this->loggedIn = is_user_logged_in();
+		$this->isAdmin = is_user_logged_in() && current_user_can("update_core");
+	}
+	
+/**
+ * Ensure the user is logged in with administrative privileges.
+ *
+ * @access private
+ * @return bool         Whether or not the user is logged in as the administrator
+ * @throws Login_Failed Thrown if the user does not have sufficent privileges to update the APIs
+ * @since  1.0
+*/
+	
+	private function hasAdminPrivileges() {
+		if ($this->isAdmin) {
+			//Nice!
+		} else {
+			throw new Login_Failed("You are not logged in with administrator privileges");
+		}
 	}
 	
 /**
@@ -77,6 +105,7 @@ abstract class Processor_Base {
  * available to the rest of the class.
  *
  * @access protected
+ * @param  string    $tableName The name of the settings table in the database
  * @return void
  * @since  1.0
 */
@@ -133,7 +162,7 @@ abstract class Processor_Base {
  * @param  string    $password The user's plain text password
  * @return void
  * @since  1.0
- * @throws Login_Failed Thrown if a user's login credentials are invalid
+ * @throws Login_Failed        Thrown if a user's login credentials are invalid
 */
 	
 	protected function login() {
@@ -142,16 +171,16 @@ abstract class Processor_Base {
 			
 		//Was the username and password passed as arguments, or should we expect them in $_POST?
 			if (count($args) == 2) {
-				$credentials = array(
+				$credentials = array (
+					"remember"      => false,
 					"user_login"    => func_get_arg(0),
-					"user_password" => func_get_arg(1),
-					"remember"      => false
+					"user_password" => func_get_arg(1)
 				);
 			} else {
-				$credentials = array(
+				$credentials = array (
+					"remember"      => false,
 					"user_login"    => $_POST['username'],
 					"user_password" => $_POST['password'],
-					"remember"      => false
 				);
 			}
 			
@@ -161,6 +190,24 @@ abstract class Processor_Base {
 			if (is_wp_error($this->user)) {
 				throw new Login_Failed("Your username or password is invalid");
 			}
+		} else {
+			$this->user = wp_get_current_user();
+		}
+	}
+	
+/**
+ * Retain the user's identifying information.
+ * 
+ * @access protected
+ * @return void
+ * @since  1.0
+ * @static
+ * @throws Login_Failed        Thrown if a user's login credentials are invalid
+*/
+
+	protected function retainUserInfo() {
+		if (!$this->loggedIn) {
+			throw new Login_Failed("Your username or password is invalid");
 		} else {
 			$this->user = wp_get_current_user();
 		}

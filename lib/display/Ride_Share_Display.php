@@ -12,7 +12,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   Ride_Data_Fetch
+ * @extends   FFI\TA\Ride_Data_Fetch
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.display

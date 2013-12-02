@@ -10,6 +10,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
+ * @extends   FFI\TA\Processor_Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.processing
@@ -18,11 +19,10 @@
 
 namespace FFI\TA;
 
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/pluggable.php");
+require_once(dirname(__FILE__) . "/Processor_Base.php");
 require_once(dirname(dirname(__FILE__)) . "/exceptions/Validation_Failed.php");
 
-class Delete_Process {
+class Delete_Process extends Processor_Base {
 /**
  * Hold the ID of the trip to delete.
  *
@@ -48,7 +48,7 @@ class Delete_Process {
  *  - Determine whether or not a user has sumbitted the delete trip
  *    form.
  *  - Validate all incoming data.
- *  - Delete the tip.
+ *  - Delete the trip.
  * 
  * @access public
  * @return void
@@ -56,6 +56,8 @@ class Delete_Process {
 */
 
 	public function __construct() {
+		parent::__construct();
+	
 	//Check to see if the user has submitted the form
 		if ($this->userSubmittedForm()) {
 			$this->validateAndRetain();
@@ -95,7 +97,7 @@ class Delete_Process {
 */
 	
 	private function validateAndRetain() {
-		global $current_user, $wpdb;
+		global $wpdb;
 		
 	//Check to see if the user is logged in
 		if (!is_user_logged_in()) {
@@ -119,9 +121,9 @@ class Delete_Process {
 		}
 		
 	//Check to see if the user actually posted this trip
-		get_currentuserinfo();
+		$this->retainUserInfo();
 		
-		if ($data[0]->Person != $current_user->ID) {
+		if ($data[0]->Person != $this->user->ID) {
 			throw new Validation_Failed("You do not own this trip");
 		}
 	

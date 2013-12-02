@@ -4,10 +4,11 @@
  *
  * This class is designed to gather information about a particular 
  * user. Its capibilities include:
- *  - Get a statistical overview of a user's data.
  *  - Get a listing of locations the user has visited.
- *  - Get a listing of trip the user has requested, shared, or
- *    otherwise been a participated in.
+ *  - Get a listing of trip the user has requested.
+ *  - Get a listing of other trips the user has participated in.
+ *  - Get a listing of trip the user has shared.
+ *  - Get a statistical overview of a user's data.
  * 
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations

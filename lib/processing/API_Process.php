@@ -10,6 +10,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
+ * @extends   FFI\TA\Processor_Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.processing
@@ -18,12 +19,9 @@
 
 namespace FFI\TA;
 
-require_once(dirname(dirname(__FILE__)) . "/exceptions/Validation_Failed.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/link-template.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/pluggable.php");
+require_once(dirname(__FILE__) . "/Processor_Base.php");
 
-class API_Process {
+class API_Process extends Processor_Base {
 /**
  * Hold the Google API key.
  *
@@ -58,29 +56,13 @@ class API_Process {
 */
 	
 	public function __construct() {
-		$this->hasPrivileges();
+		parent::__construct();
+		$this->hasAdminPrivileges();
 		
 	//Check to see if the user has submitted the form
 		if ($this->userSubmittedForm()) {
 			$this->validateAndRetain();
 			$this->update();
-		}
-	}
-	
-/**
- * Ensure the user is logged in with administrative privileges.
- *
- * @access private
- * @return bool              Whether or not the user is logged in as the administrator
- * @throws Validation_Failed Thrown if the user does not have sufficent privileges to update the APIs
- * @since  1.0
-*/
-	
-	private function hasPrivileges() {
-		if (is_user_logged_in() && current_user_can("update_core")) {
-			//Nice!
-		} else {
-			throw new Validation_Failed("You are not logged in with administrator privileges");
 		}
 	}
 	
@@ -134,14 +116,14 @@ class API_Process {
 	private function update() {
 		global $wpdb;
 		
-		$wpdb->update("ffi_ta_apis", array(
-			"GoogleMaps" => $this->google,
-			"MandrillKey"   => $this->mandrill
-		), array(
+		$wpdb->update("ffi_ta_apis", array (
+			"GoogleMaps"  => $this->google,
+			"MandrillKey" => $this->mandrill
+		), array (
 			"ID" => 1
-		), array(
+		), array (
 			"%s", "%s"
-		), array(
+		), array (
 			"%d"
 		));
 		

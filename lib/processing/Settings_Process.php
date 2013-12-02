@@ -10,6 +10,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
+ * @extends   FFI\TA\Processor_Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.processing
@@ -18,22 +19,10 @@
 
 namespace FFI\TA;
 
+require_once(dirname(__FILE__) . "/Processor_Base.php");
 require_once(dirname(dirname(__FILE__)) . "/exceptions/Validation_Failed.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-blog-header.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/link-template.php");
-require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . "/wp-includes/pluggable.php");
 
-class Settings_Process {
-/**
- * Hold the automated email from name.
- *
- * @access private
- * @type   string
-*/
-	
-	private $name;
-	
-	
+class Settings_Process extends Processor_Base {
 /**
  * Hold the automated email from address.
  *
@@ -42,6 +31,15 @@ class Settings_Process {
 */
 	
 	private $address;
+
+/**
+ * Hold the automated email from name.
+ *
+ * @access private
+ * @type   string
+*/
+	
+	private $name;
 	
 /**
  * Hold the plugin's time zone.
@@ -67,29 +65,13 @@ class Settings_Process {
 */
 	
 	public function __construct() {
-		$this->hasPrivileges();
+		parent::__construct();
+		$this->hasAdminPrivileges();
 		
 	//Check to see if the user has submitted the form
 		if ($this->userSubmittedForm()) {
 			$this->validateAndRetain();
 			$this->update();
-		}
-	}
-	
-/**
- * Ensure the user is logged in with administrative privileges.
- *
- * @access private
- * @return bool              Whether or not the user is logged in as the administrator
- * @throws Validation_Failed Thrown if the user does not have sufficent privileges to update the settings
- * @since  1.0
-*/
-	
-	private function hasPrivileges() {
-		if (is_user_logged_in() && current_user_can("update_core")) {
-			//Nice!
-		} else {
-			throw new Validation_Failed("You are not logged in with administrator privileges");
 		}
 	}
 	
@@ -153,33 +135,6 @@ class Settings_Process {
 	}
 	
 /**
- * Check to see if a particular integer value falls between a specified
- * range.
- * 
- * @access private
- * @param  int      $value The integer value to check
- * @param  int      $min   The minimum value the integer may equal
- * @param  int      $max   The maximum value the integer may equal
- * @return bool            Whether or not the integer falls within the specified range
- * @since  1.0
-*/
-	
-	private function intBetween($value, $min, $max) {
-		if (!is_numeric($value)) {
-			return false;
-		}
-		
-		$value = intval($value);
-		
-	//Check the integer extrema
-		if ($value >= $min && $value <= $max) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-/**
  * Update the plugin's settings.
  *
  * @access private
@@ -190,15 +145,15 @@ class Settings_Process {
 	private function update() {
 		global $wpdb;
 		
-		$wpdb->update("ffi_ta_settings", array(
+		$wpdb->update("ffi_ta_settings", array (
 			"EmailName"    => $this->name,
 			"EmailAddress" => $this->address,
 			"TimeZone"     => $this->timeZone
-		), array(
+		), array (
 			"ID" => 1
-		), array(
+		), array (
 			"%s", "%s", "%s"
-		), array(
+		), array (
 			"%d"
 		));
 		

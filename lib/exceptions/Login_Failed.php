@@ -5,13 +5,14 @@
  * This is a custom exception class intended to be thrown
  * when the application attempts to log an individual in 
  * using a username and password supplied by the user, and
- * their credentials are invalid.
+ * their credentials are invalid, or a user is logged in with
+ * insufficient privileges.
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   FFI\BE\Base
+ * @extends   FFI\TA\Base
  * @license   MIT
- * @namespace FFI\BE
+ * @namespace FFI\TA
  * @package   lib.exceptions
  * @since     1.0
 */

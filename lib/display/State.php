@@ -5,9 +5,12 @@
  * This class is used to fetch data from the MySQL database for 
  * information regarding US states. Some of the capibilities of
  * this class includes:
+ *  - Generating a dropdown list of state codes (PA, OH, NY, ...)
  *  - Check if a state or district exists.
  *  - Fetch all available information about a state by the URL.
- *  - Generating a dropdown list of state codes (PA, OH, NY, ...)
+ *  - Create an HTML <ul> listing of states with the number of
+ *    needed and available rides.
+ *  - Purify a string for use in a URL.
  * 
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations

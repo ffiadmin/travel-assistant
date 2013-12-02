@@ -15,7 +15,7 @@
  *
  * @author    Oliver Spryn
  * @copyright Copyright (c) 2013 and Onwards, ForwardFour Innovations
- * @extends   Email_Base
+ * @extends   FFI\TA\Email_Base
  * @license   MIT
  * @namespace FFI\TA
  * @package   lib.email

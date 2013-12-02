@@ -5,7 +5,10 @@
  * This class is used to fetch data from the MySQL database for 
  * information regarding cities. Some of the capibilities of
  * this class includes:
- *  - Fetch a listing of rides cities leaving a particular city.
+ *  - Fetch a listing of needed rides cities leaving a particular
+ *    city.
+ *  - Fetch a listing of available rides cities leaving a particular
+ *    city.
  *  - Fetch a listing of cities with rides in a state.
  *  - Purify a string for use in a URL.
  * 

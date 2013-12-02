@@ -16,7 +16,7 @@ License: MIT
 	define("FFI\TA\FAKE_ADDR", get_site_url() . "/travel-assistant/");
 	define("FFI\TA\PATH", plugin_dir_path(__FILE__));
 	define("FFI\TA\REAL_ADDR", get_site_url() . "/wp-content/plugins/travel-assistant/");
-	define("FFI\TA\RESOURCE_PATH", (CDN ? "//ffistatic.appspot.com/sga" : site_url()) . "/wp-content/plugins/travel-assistant/");
+	define("FFI\TA\RESOURCE_PATH", (CDN ? "//your-cdn.com" : site_url()) . "/wp-content/plugins/travel-assistant/");
 	define("FFI\TA\URL_ACTIVATE", "travel-assistant");
 	
 	define("FFI\TA\ENABLED", true);
