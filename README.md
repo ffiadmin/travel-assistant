@@ -25,10 +25,9 @@ Installation
 1. Click on "Pages" on the navigation panel
 2. Add a new page and give it a title which can be used to access the Travel Assistant on your site's navigation bar, such as "Travel Assistant" or "Available Rides"
 3. Click the "Edit" button under the page title text input
-4. Enter "travel-assistant" in the text input, and select "OK"
-5. It is not necessary to add any content to the page. since the plugin will replace this page with the Travel Assistant home page.
-6. Click "Publish"
-7. The Travel Assistant will now appear as a link on your site's navigation bar
+4. Enter "travel-assistant" in the text input, and select "OK". It is not necessary to add any content to the page, since the plugin will replace the contents of the page with the Travel Assistant home page.
+5. Click "Publish"
+6. The Travel Assistant will now appear as a link on your site's navigation bar
 
 System Requirements
 ---
