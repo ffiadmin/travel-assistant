@@ -295,12 +295,12 @@ class Ride_Request_Process extends Processor_Base {
 	
 	public function __construct($ID) {
 		parent::__construct();
-	
+		
 	//Check to see if the user has submitted the form
 		if ($this->userSubmittedForm()) {
 			$this->dateFormatter = new \DateTime();
 			$this->validateAndRetain();
-			
+	
 			if (intval($ID)) {
 				$this->update($ID);
 			} else {
@@ -341,6 +341,8 @@ class Ride_Request_Process extends Processor_Base {
 */
 	
 	private function validateAndRetain() {
+		$this->retainUserInfo();
+		
 	//Retain the user ID, an earlier script will already have ensured the user is logged in
 		$this->person = $this->user->ID;
 		
@@ -571,7 +573,7 @@ class Ride_Request_Process extends Processor_Base {
 		$fromCityID = $this->cityID($this->fromCity, $this->fromStateCode, $this->fromLatitude, $this->fromLongitude);
 		$toCityID = $this->cityID($this->toCity, $this->toStateCode, $this->toLatitude, $this->toLongitude);
 		
-	//Insert the request in the database
+	//Insert the request in the database	
 		$wpdb->insert("ffi_ta_need", array (
 			"ID"              => NULL,
 			"Person"          => $this->person,
@@ -594,12 +596,12 @@ class Ride_Request_Process extends Processor_Base {
 		), array (
 			"%d", "%d", "%s", "%s", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%d", "%s", "%s"
 		));
-		
+
 	//Redirect to the trip
 		$ID = $wpdb->insert_id;
 		$URL = $this->fromCity . "-" . $this->fromStateCode . "-to-" . $this->toCity . "-" . $this->toStateCode;
-        wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
-        exit;
+		wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
+		exit;
 	}
 	
 /**
@@ -648,8 +650,8 @@ class Ride_Request_Process extends Processor_Base {
 		
 	//Redirect to the trip
 		$URL = $this->fromCity . "-" . $this->fromStateCode . "-to-" . $this->toCity . "-" . $this->toStateCode;
-        wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
-        exit;
+		wp_redirect(get_site_url() . "/travel-assistant/trips/needed/" . $ID . "/" . $this->URLPurify($URL));
+		exit;
 	}
 }
 ?>
