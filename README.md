@@ -7,7 +7,7 @@ Installation
 ---
 
 1. Click on the [Releases][1] tab above
-2. Download the latest installation package, currently `1.0.0`
+2. Download the latest installation package, currently `1.0.1`
 3. Extract the `zip` or `tar.gz` file
 4. Move the folder and its contents to `<your WordPress installation>/wp-content/plugins/`
 5. Log into your WordPress Management panel with Administrator privileges
