@@ -3,7 +3,7 @@
 Plugin Name: Travel Assistant
 Plugin URI: https://github.com/ffiadmin/travel-assistant
 Description: This is a plugin which is used to organize student travels to and from Grove City College. Commuters can benefit from it by organizing regular carpools for their daily commute with others from their hometown. Resident students can use it to organize trips with other students to and from home for breaks.
-Version: 1.0.0
+Version: 1.0.1
 Author: Oliver Spryn
 Author URI: http://spryn.me/
 License: MIT
