@@ -350,6 +350,8 @@ class Ride_Share_Process extends Processor_Base {
 */
 	
 	private function validateAndRetain() {
+		$this->retainUserInfo();
+
 	//Retain the user ID, an earlier script will already have ensured the user is logged in
 		$this->person = $this->user->ID;
 		
